@@ -14,7 +14,7 @@
         "lastModification": 1741500564084,
         "creation": 1741355324698,
         "categories": [
-            "fd4b3e96eea142a993124535e213573e",
+            "07c8464bb9cb4db6beb329339be906af",
             "3fe5b2dad8954c7fb6dfabb66c7177df",
             "3adabf227432490c81183a5e424c46eb",
             true
@@ -28,11 +28,12 @@
         "lastModification": 1741499950820,
         "creation": 1741357389703,
         "categories": [
-            "fd4b3e96eea142a993124535e213573e",
+            "07c8464bb9cb4db6beb329339be906af",
             true
         ],
         "MIMEType": "text/wkl",
-        "encrypted": false
+        "encrypted": false,
+        "revised": true
     },
     "d0c73a6d7e6e49c59488cbf95b866397": {
         "name": "Marckensoft",
@@ -161,5 +162,69 @@
         ],
         "MIMEType": "text/wkl",
         "encrypted": false
+    },
+    "0f6dc02823ed4f46a8d9bf73e397efc7": {
+        "name": "Takeda Mika",
+        "author": "Fryze",
+        "lastModification": 1747060525635,
+        "creation": 1747060525635,
+        "categories": [],
+        "MIMEType": "text/wkl",
+        "encrypted": false
+    },
+    "acb59074475d4487b8de743a8bc99fad": {
+        "name": "fuwaru_title.jpg",
+        "author": "Fryze",
+        "lastModification": 1747061968007,
+        "creation": 1747061968007,
+        "categories": [],
+        "MIMEType": "image/jpeg",
+        "encrypted": false
+    },
+    "b1092686d1d44d83988655c9adc1a799": {
+        "name": "pokora_title.jpg",
+        "author": "Fryze",
+        "lastModification": 1747061987938,
+        "creation": 1747061987938,
+        "categories": [],
+        "MIMEType": "image/jpeg",
+        "encrypted": false
+    },
+    "6566b239496e42faa83cac688383d412": {
+        "name": "The Adventures of Fuwaru the Apprentice Magician",
+        "author": "Fryze",
+        "lastModification": 1747062933484,
+        "creation": 1747062933484,
+        "categories": [
+            "07c8464bb9cb4db6beb329339be906af"
+        ],
+        "MIMEType": "text/wkl",
+        "encrypted": false
+    },
+    "685d2f15a6fb4d64a9846ebf0f4171cc": {
+        "name": "Pokora of the Mysterious Forest",
+        "author": "Fryze",
+        "lastModification": 1747063866687,
+        "creation": 1747063866687,
+        "categories": [
+            "07c8464bb9cb4db6beb329339be906af"
+        ],
+        "MIMEType": "text/wkl",
+        "encrypted": false
+    },
+    "07c8464bb9cb4db6beb329339be906af": {
+        "name": "Lizsoft",
+        "author": "Fryze",
+        "lastModification": 1747068192053,
+        "creation": 1741357389703,
+        "categories": [
+            "07c8464bb9cb4db6beb329339be906af",
+            true
+        ],
+        "MIMEType": "text/wkl",
+        "encrypted": false,
+        "revisions": [
+            "fd4b3e96eea142a993124535e213573e"
+        ]
     }
 }
