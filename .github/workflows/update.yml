@@ -1,0 +1,12 @@
+on:
+  push:
+    branches: [ master ]
+  workflow_dispatch:
+
+jobs:
+  dispatch:
+    runs-on: ubuntu-latest
+    steps:
+    - name: dispatch
+      run: |
+        curl -fL -X POST -H "Authorization: Bearer ${{ secrets.CI_TOKEN }}" ${{ github.api_url }}/repos/178619/scotsholm-website/actions/workflows/update.yml/dispatches -d '{ "ref": "main" }'
