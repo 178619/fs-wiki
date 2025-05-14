@@ -163,7 +163,7 @@ Wiklo.moduleHandlers = {
             if (uuid) source = './data/' + uuid
         }
         if (!source) '<img src="">'
-        return `<img src="${source}" width="${kwargs.width}" height="${kwargs.height}" onerror="Wiklo.retryImage(this, '${uuid || args[0]}')">`
+        return `<img src="${source}"${kwargs.class ? (' class="'+kwargs.class+'"') : ''} width="${kwargs.width}" height="${kwargs.height}" onerror="Wiklo.retryImage(this, '${uuid || args[0]}')">`
     },
     'nestaudio': (args, kwargs) => {
         if (!args.length) return '<audio></audio>'

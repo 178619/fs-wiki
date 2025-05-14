@@ -43,7 +43,7 @@
         color: inherit;
     }
     
-    header .header-button.darkinvert > img {
+    .darkinvert {
         filter: invert(1)
     }
 }
@@ -410,6 +410,10 @@ article {
     a:hover + div.refhover, div.refhover:hover {
         display: inline-block;
         opacity: 1;
+    }
+
+    img, audio, video {
+        vertical-align: middle;
     }
 }
 
