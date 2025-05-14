@@ -14,10 +14,10 @@
         "lastModification": 1741500564084,
         "creation": 1741355324698,
         "categories": [
-            "07c8464bb9cb4db6beb329339be906af",
-            "3fe5b2dad8954c7fb6dfabb66c7177df",
             "3adabf227432490c81183a5e424c46eb",
-            true
+            true,
+            "07c8464bb9cb4db6beb329339be906af",
+            "5f9baa46d118473393f6a131e154ba00"
         ],
         "MIMEType": "text/wkl",
         "encrypted": false
@@ -28,8 +28,8 @@
         "lastModification": 1741499950820,
         "creation": 1741357389703,
         "categories": [
-            "07c8464bb9cb4db6beb329339be906af",
-            true
+            true,
+            "07c8464bb9cb4db6beb329339be906af"
         ],
         "MIMEType": "text/wkl",
         "encrypted": false,
@@ -137,11 +137,12 @@
         "lastModification": 1741499936331,
         "creation": 1741498889685,
         "categories": [
-            "3fe5b2dad8954c7fb6dfabb66c7177df",
-            true
+            true,
+            "5f9baa46d118473393f6a131e154ba00"
         ],
         "MIMEType": "text/wkl",
-        "encrypted": false
+        "encrypted": false,
+        "revised": true
     },
     "a4430d4f3150470db48716d73e32650f": {
         "name": "chara_chiffon2.jpg",
@@ -170,7 +171,8 @@
         "creation": 1747060525635,
         "categories": [],
         "MIMEType": "text/wkl",
-        "encrypted": false
+        "encrypted": false,
+        "revised": true
     },
     "acb59074475d4487b8de743a8bc99fad": {
         "name": "fuwaru_title.jpg",
@@ -218,13 +220,140 @@
         "lastModification": 1747068192053,
         "creation": 1741357389703,
         "categories": [
-            "07c8464bb9cb4db6beb329339be906af",
-            true
+            true,
+            "07c8464bb9cb4db6beb329339be906af"
         ],
         "MIMEType": "text/wkl",
         "encrypted": false,
         "revisions": [
             "fd4b3e96eea142a993124535e213573e"
+        ]
+    },
+    "ade4561973584dcfaa84a3cb7a84cd6c": {
+        "name": "リズソフト音楽作品集1.jpg",
+        "author": "Fryze",
+        "lastModification": 1747123917477,
+        "creation": 1747123917477,
+        "categories": [
+            "fd4b3e96eea142a993124535e213573e"
+        ],
+        "MIMEType": "image/jpeg",
+        "encrypted": false
+    },
+    "38160abc5c904b059f933d393a423f42": {
+        "name": "Lizsoft Music Collection",
+        "author": "Fryze",
+        "lastModification": 1747126255444,
+        "creation": 1747126255444,
+        "categories": [
+            "fd4b3e96eea142a993124535e213573e"
+        ],
+        "MIMEType": "text/wkl",
+        "encrypted": false
+    },
+    "5f9baa46d118473393f6a131e154ba00": {
+        "name": "Carpe Fulgur",
+        "author": "Fryze",
+        "lastModification": 1747129937808,
+        "creation": 1741498889685,
+        "categories": [
+            true,
+            "5f9baa46d118473393f6a131e154ba00"
+        ],
+        "MIMEType": "text/wkl",
+        "encrypted": false,
+        "revisions": [
+            "3fe5b2dad8954c7fb6dfabb66c7177df"
+        ]
+    },
+    "9884f966f3834d3fb7bd7c83232ae14a": {
+        "name": "logo_steam.svg",
+        "author": "Fryze",
+        "lastModification": 1747134292606,
+        "creation": 1747134292606,
+        "categories": [],
+        "MIMEType": "image/svg+xml",
+        "encrypted": false
+    },
+    "eb06140e212f47cc915f6a711695f05f": {
+        "name": "voice_arche.mp3",
+        "author": "Fryze",
+        "lastModification": 1747140378551,
+        "creation": 1747140378551,
+        "categories": [
+            "3adabf227432490c81183a5e424c46eb"
+        ],
+        "MIMEType": "audio/mpeg",
+        "encrypted": false
+    },
+    "923121ed187b47fd8944dceb4c26d1ae": {
+        "name": "voice_sana.mp3",
+        "author": "Fryze",
+        "lastModification": 1747140402541,
+        "creation": 1747140402541,
+        "categories": [
+            "3adabf227432490c81183a5e424c46eb"
+        ],
+        "MIMEType": "audio/mpeg",
+        "encrypted": false
+    },
+    "28f891f5e15042c88c2740941981dce0": {
+        "name": "voice_stella.mp3",
+        "author": "Fryze",
+        "lastModification": 1747140420884,
+        "creation": 1747140420884,
+        "categories": [
+            "3adabf227432490c81183a5e424c46eb"
+        ],
+        "MIMEType": "audio/mpeg",
+        "encrypted": false
+    },
+    "17a9ebddc6d24eb7b00a504efbc49b9a": {
+        "name": "natsumi_talk.mp3",
+        "author": "Fryze",
+        "lastModification": 1747140465014,
+        "creation": 1747140465014,
+        "categories": [],
+        "MIMEType": "audio/mpeg",
+        "encrypted": false
+    },
+    "47939fe9119f4850981c5f5432d0863f": {
+        "name": "natsumi_sample.mp3",
+        "author": "Fryze",
+        "lastModification": 1747140490902,
+        "creation": 1747140490902,
+        "categories": [],
+        "MIMEType": "audio/mpeg",
+        "encrypted": false
+    },
+    "a302392e045c4af1a245e51b5bb00e7b": {
+        "name": "natsumi.jpg",
+        "author": "Fryze",
+        "lastModification": 1747140634149,
+        "creation": 1747140634149,
+        "categories": [],
+        "MIMEType": "image/jpeg",
+        "encrypted": false
+    },
+    "1155200da4104c43a21d2169c240777c": {
+        "name": "Natsumi",
+        "author": "Fryze",
+        "lastModification": 1747141276997,
+        "creation": 1747141276997,
+        "categories": [],
+        "MIMEType": "text/wkl",
+        "encrypted": false
+    },
+    "49e49c833697482cbc593045525cabc7": {
+        "name": "Takeda Mika",
+        "author": "Fryze",
+        "lastModification": 1747141655982,
+        "creation": 1747060525635,
+        "categories": [],
+        "MIMEType": "text/wkl",
+        "encrypted": false,
+        "revisions": [
+            "0f6dc02823ed4f46a8d9bf73e397efc7"
         ]
     }
 }
