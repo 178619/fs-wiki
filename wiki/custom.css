@@ -72,3 +72,21 @@ article {
         opacity: 0.375;
     }
 }
+
+footer {
+    a {
+        color: var(--link-color);
+    }
+    
+    a:visited {
+        color: var(--visited-link-color);
+    }
+
+    a[href] {
+        text-decoration-line: none;
+    }
+
+    a:hover {
+        text-decoration-line: underline;
+    }
+}

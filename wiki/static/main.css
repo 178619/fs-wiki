@@ -245,6 +245,22 @@ header #article_search_list > li::marker {
         border-radius: 2px;
         --box-shadow-color: var(--text-color);
         box-shadow: 0px 0px 4px 2px var(--box-shadow-color);
+
+        a {
+            color: var(--link-color);
+        }
+        
+        a:visited {
+            color: var(--visited-link-color);
+        }
+
+        a[href] {
+            text-decoration-line: none;
+        }
+
+        a:hover {
+            text-decoration-line: underline;
+        }
     }
 
     div.TRACE {
@@ -342,8 +358,21 @@ article {
         text-decoration-line: none;
     }
 
+    a[href^="http://"]::after, a[href^="https://"]::after {
+        content: '⎋ ';
+        display: inline-block;
+        max-height: 1lh;
+        transform: scaleX(-1);
+        font-size: small;
+    }
+
+    a[href^="http://"]:hover::after, a[href^="https://"]:hover::after {
+        text-decoration-line: underline;
+    }
+
     a:hover {
         text-decoration-line: underline;
+        text-decoration-style: inherit;
     }
 
     a.self-link {
@@ -353,14 +382,13 @@ article {
         cursor: inherit;
     }
 
-    *[title] {
+    *[title]:not(a) {
         text-decoration-style: dotted;
         text-decoration-line: underline;
         cursor: help;
     }
 
     a[href][title] {
-        text-decoration-style: inherit;
         cursor: pointer;
     }
 
@@ -407,13 +435,79 @@ article {
         transition: opacity 125ms;
     }
 
-    a:hover + div.refhover, div.refhover:hover {
+    a:hover + div.refhover, div.refhover:hover, div.refhover:focus {
         display: inline-block;
         opacity: 1;
     }
 
     img, audio, video {
         vertical-align: middle;
+    }
+}
+
+.wiklo-popup-layer {
+    background-color: var(--layer-color);
+    margin: 0;
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    z-index: 500;
+
+    .wiklo-popup-container {
+        background: var(--background-color);
+        color: var(--text-color);
+        transition: opacity 256ms ease-in-out;
+        margin: auto;
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        width: max-content;
+        height: max-content;
+        max-height: 75%;
+        padding: 8px;
+        border-radius: 4px;
+        box-shadow: 0px 0px 8px 4px var(--text-color);
+        overflow: scroll;
+    }
+}
+
+ol.wiklo-page-history {
+    font-family: var(--font-monospace);
+    padding-left: 24px;
+    padding-right: 24px;
+    list-style: none;
+    counter-reset: reversed(counter);
+    li {
+        color: var(--date-color);
+        cursor: pointer;
+        a {
+            color: inherit;
+            text-decoration: inherit;
+            padding-left: 48px;
+        }
+        a::before {
+            counter-increment: counter -1;
+            content: counter(counter) '.';
+            text-align: right;
+            position: absolute;
+            left: 24px;
+            width: 48px;
+        }
+    }
+    li.current {
+        color: var(--text-color);
+        cursor: inherit;
+    }
+    li:hover {
+        color: var(--text-color);
+        font-weight: bold;
+    }
+    li.current:hover {
+        font-weight: inherit;
     }
 }
 
@@ -493,55 +587,6 @@ form {
         margin: 2px;
         border-radius: 4px;
         cursor: pointer;
-    }
-}
-
-.wiklo-popup-layer {
-    background-color: var(--layer-color);
-    margin: 0;
-    position: fixed;
-    left: 0;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    z-index: 500;
-
-    .wiklo-popup-container {
-        background: var(--background-color);
-        color: var(--text-color);
-        transition: opacity 256ms ease-in-out;
-        margin: auto;
-        position: absolute;
-        left: 0;
-        right: 0;
-        top: 0;
-        bottom: 0;
-        width: max-content;
-        height: max-content;
-        max-height: 75%;
-        padding: 8px;
-        border-radius: 4px;
-        box-shadow: 0px 0px 8px 4px var(--text-color);
-    }
-}
-
-ol.wiklo-page-history {
-    font-family: var(--font-monospace);
-    padding-right: 16px;
-    li {
-        color: var(--date-color);
-        cursor: pointer;
-    }
-    li.current {
-        color: var(--text-color);
-        cursor: inherit;
-    }
-    li:hover {
-        color: var(--text-color);
-        font-weight: bold;
-    }
-    li.current:hover {
-        font-weight: inherit;
     }
 }
 
