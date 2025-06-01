@@ -542,7 +542,7 @@ Wiklo.linkToHTML = (v) => {
         args.push(k.trim())
         return 
     })
-    if (args[0].startsWith('http://') || args[0].startsWith('https://')) return `<a href="${args[0]}" title="${args[0]}">${args[1] || args[0]}</a>`
+    if (args[0].startsWith('http://') || args[0].startsWith('https://')) return `<a href="${args[0]}" title="${args[0]}" target="${kwargs.target || '_blank'}">${args[1] || args[0]}</a>`
     const hash = args[0].split('#').slice(1).join('#')
     args[0] = args[0].split('#')[0]
     const entries = Object.entries(metadata).filter(([k,v])=>!v.revised)
@@ -551,8 +551,8 @@ Wiklo.linkToHTML = (v) => {
         const category = Wiklo.getPageUUIDUnsafe(kwargs.category)
         if (category) categories.push(category)
     }
-    const article = args[0].match(/^[0-9a-f]{32}$/) && entries.find(([k,v])=>(args[0]==k)) ||entries.find(([k,v])=>(args[0]==v.name)&&v.categories.some(t=>categories.includes(t))) || entries.find(([k,v])=>args[0]==v.name&&v.categories.includes(false)) || entries.find(([k,v])=>args[0]==v.name) || entries.find(([k,v])=>args[0].toLocaleLowerCase()==v.name.toLocaleLowerCase()) || null
-    return `<a href="./?${article ? article[0] : args[0]}${hash ? ('#'+hash) : ''}" title="${kwargs.title || args[0]}"${!article ? ' class="no-article"' : (Wiklo.PAGEUUID == article[0] ? ' class="self-link"' : '')}>${args[1] || (hash ? (args[0] + ' &#xA7; ' + hash) : args[0])}</a>`
+    const article = args[0].match(/^[0-9a-f]{32}$/) && entries.find(([k,v])=>(args[0]==k)) || entries.find(([k,v])=>(args[0]==v.name)&&v.categories.some(t=>categories.includes(t))) || entries.find(([k,v])=>args[0]==v.name&&v.categories.includes(false)) || entries.find(([k,v])=>args[0]==v.name) || entries.find(([k,v])=>args[0].toLocaleLowerCase()==v.name.toLocaleLowerCase()) || null
+    return `<a href="./?${article ? article[0] : args[0]}${hash ? ('#'+hash) : ''}" title="${kwargs.title || args[0]}"${!article ? ' class="no-article"' : (Wiklo.PAGEUUID == article[0] && !hash ? ' class="self-link"' : '')} target="${kwargs.target || '_self'}">${args[1] || (hash ? (args[0] + ' &#xA7; ' + hash) : args[0])}</a>`
 }
 Wiklo.textToHTML = (v) => {
     return Wiklo.modulesHandler(
@@ -672,7 +672,7 @@ Wiklo.loadUUIDPage = async (uuid, hash=null) => {
     if (metadata[uuid].revised) Wiklo.alert('You are looking at a displaced revision.')
     document.querySelectorAll('section.included').forEach(v=>{v.onloadedmetadata()})
     document.querySelectorAll('article script').forEach(v=>{eval(v.textContent)})
-    if (hash || location.hash) document.getElementById(decodeURIComponent(hash.slice(1) || location.hash.slice(1))).scrollIntoView()
+    if (hash || location.hash) document.getElementById(decodeURIComponent(hash?.slice(1) || location.hash.slice(1)))?.scrollIntoView()
     return true
 }
 Wiklo._forceScroll = (t) => {
@@ -743,6 +743,10 @@ Wiklo.loadArticleList = async (key) => {
 Wiklo.loadFromSearch = () => {
     updateButtons()
     if (location.pathname == '/edit') return
+    if (location.search && location.search.match(/^\?[0-9a-f]{32}$/) && location.search.slice(1) == Wiklo.PAGEUUID) {
+        if (location.hash) document.getElementById(decodeURIComponent(location.hash.slice(1)))?.scrollIntoView()
+        return
+    }
     if (location.search && location.search.match(/^\?[0-9a-f]{32}$/)) Wiklo.loadUUIDPage(location.search.slice(1), location.hash).then(()=>{document.title = Wiklo.PAGENAME + ' - ' + Wiklo.title})
     else if (location.search) Wiklo.loadPageFromName(decodeURIComponent(location.search.slice(1)), [], location.hash).then(()=>{window.history.replaceState(null, null, './?' + Wiklo.PAGEUUID + location.hash); updateButtons(); document.title = Wiklo.PAGENAME + ' - ' + Wiklo.title})
     else Wiklo.loadHome()
@@ -850,6 +854,11 @@ window.addEventListener('load', () => {
         } else if (e.target.nodeName == 'A' && e.target.origin == location.origin && e.target.search) {
             e.preventDefault()
             if (e.target.classList.value.includes('self-link')) return
+            if (e.target.search == location.search) {
+                document.getElementById(decodeURIComponent(e.target.hash.slice(1)))?.scrollIntoView()
+                window.history.replaceState(null, null, './?' + Wiklo.PAGEUUID + e.target.hash)
+                return
+            }
             if (e.target.classList.value.includes('no-article')) return Wiklo.alert(`Page '${decodeURIComponent(e.target.search.slice(1))}' does not exist.`, 'WARN')
             if (e.target.search.match(/^\?[0-9a-f]{32}$/)) Wiklo.loadUUIDPage(decodeURIComponent(e.target.search.slice(1)), e.target.hash).then(()=>{window.history.pushState(null, null, './?' + Wiklo.PAGEUUID + e.target.hash); updateButtons(); document.title = Wiklo.PAGENAME + ' - ' + Wiklo.title})
             else Wiklo.loadPageFromName(decodeURIComponent(e.target.search.slice(1)), Wiklo.PAGEINFO?.categories || [], e.target.hash).then(()=>{window.history.pushState(null, null, './?' + Wiklo.PAGEUUID + e.target.hash); updateButtons(); document.title = Wiklo.PAGENAME + ' - ' + Wiklo.title})

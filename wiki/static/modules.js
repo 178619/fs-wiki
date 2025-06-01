@@ -275,7 +275,7 @@ const mediawiki = {
         return v
     }).join('') : '')+'</ul>',
     'redirect': (args, kwargs) => toOtherDocumentMulti('"'+args[0]+'" redirects here. ', '', args.slice(1), kwargs),
-    'reflist': (args, kwargs) => '<div class="reflist"'+ (kwargs.group ? ' id="reflist-'+kwargs.group+'"' : '') +' style="column-width:' + (args[0] || '30em') + '"><ol></ol></div>',
+    'reflist': (args, kwargs) => '<div class="reflist"'+ (kwargs.group ? ' id="reflist-'+kwargs.group+'"' : '') + (args[0] ? (' style="column-width:' + (args[0] || '30em')) : '') + '"><ol></ol></div>',
     'replace': (args, kwargs) => {
         if (kwargs.count) {
             for (let i=0; i<parseInt(kwargs.count); i++) args[0] = args[0].replace(args[1], args[2])
