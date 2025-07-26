@@ -354,9 +354,7 @@
         "categories": [],
         "MIMEType": "text/wkl",
         "encrypted": false,
-        "revisions": [
-            "0f6dc02823ed4f46a8d9bf73e397efc7"
-        ]
+        "revised": true
     },
     "da49aaac9e604fdabe7b095422f84f89": {
         "name": "Pokora of the Mysterious Forest",
@@ -456,5 +454,184 @@
         "revisions": [
             "889c9dcf0467483fb8cf26e2380b9552"
         ]
+    },
+    "8125693cead64892bcc77e71cd61fb3a": {
+        "name": "Illustrator",
+        "author": "Fryze",
+        "lastModification": 1753180064543,
+        "creation": 1753180064543,
+        "categories": [
+            true
+        ],
+        "MIMEType": "text/wkl",
+        "encrypted": false
+    },
+    "00b870ab69de4865970cc63f4c943c4b": {
+        "name": "Takeda Mika",
+        "author": "Fryze",
+        "lastModification": 1753180181474,
+        "creation": 1747060525635,
+        "categories": [
+            "8125693cead64892bcc77e71cd61fb3a"
+        ],
+        "MIMEType": "text/wkl",
+        "encrypted": false,
+        "revised": true
+    },
+    "47d21a65e84e45258ccd9b77ec2f52f0": {
+        "name": "Voice actor",
+        "author": "Fryze",
+        "lastModification": 1753180713301,
+        "creation": 1753180713301,
+        "categories": [
+            true
+        ],
+        "MIMEType": "text/wkl",
+        "encrypted": false
+    },
+    "688f3391809d444f9c897b11b5e6fdd7": {
+        "name": "Voice actress",
+        "author": "Fryze",
+        "lastModification": 1753181145840,
+        "creation": 1753181145840,
+        "categories": [],
+        "MIMEType": "text/wkl",
+        "encrypted": false
+    },
+    "27c2805f4bd6449594c8a91bd04c5277": {
+        "name": "Kaori Aihara",
+        "author": "Fryze",
+        "lastModification": 1753181961101,
+        "creation": 1753181961101,
+        "categories": [
+            "47d21a65e84e45258ccd9b77ec2f52f0"
+        ],
+        "MIMEType": "text/wkl",
+        "encrypted": false
+    },
+    "0ce99808e0034e629e2843a2ce42536a": {
+        "name": "Aihara Kaori",
+        "author": "Fryze",
+        "lastModification": 1753181997674,
+        "creation": 1753181997674,
+        "categories": [],
+        "MIMEType": "text/wkl",
+        "encrypted": false
+    },
+    "eeeda6a2b3994bf1b81a8062129c3d4b": {
+        "name": "Sono Sachika",
+        "author": "Fryze",
+        "lastModification": 1753182742591,
+        "creation": 1753182742591,
+        "categories": [
+            "47d21a65e84e45258ccd9b77ec2f52f0"
+        ],
+        "MIMEType": "text/wkl",
+        "encrypted": false,
+        "revised": true
+    },
+    "c7731df6bb4146e298f99ff7f09bc12b": {
+        "name": "Takeda Mika",
+        "author": "Fryze",
+        "lastModification": 1753183021367,
+        "creation": 1747060525635,
+        "categories": [
+            "8125693cead64892bcc77e71cd61fb3a"
+        ],
+        "MIMEType": "text/wkl",
+        "encrypted": false,
+        "revisions": [
+            "0f6dc02823ed4f46a8d9bf73e397efc7",
+            "49e49c833697482cbc593045525cabc7",
+            "00b870ab69de4865970cc63f4c943c4b"
+        ]
+    },
+    "5e3bde50b7a04ff2859575b8b6f761a8": {
+        "name": "Sono Sachika",
+        "author": "Fryze",
+        "lastModification": 1753183062540,
+        "creation": 1753182742591,
+        "categories": [
+            "47d21a65e84e45258ccd9b77ec2f52f0"
+        ],
+        "MIMEType": "text/wkl",
+        "encrypted": false,
+        "revisions": [
+            "eeeda6a2b3994bf1b81a8062129c3d4b"
+        ]
+    },
+    "40a54119baa749d5849cf0582c2406d8": {
+        "name": "Ruo Ryoki",
+        "author": "Fryze",
+        "lastModification": 1753183415418,
+        "creation": 1753183415418,
+        "categories": [
+            "47d21a65e84e45258ccd9b77ec2f52f0"
+        ],
+        "MIMEType": "text/wkl",
+        "encrypted": false,
+        "revised": true
+    },
+    "76cf27ed969c49d98d2175cf7db8c502": {
+        "name": "Ruo Ryoki",
+        "author": "Fryze",
+        "lastModification": 1753183549615,
+        "creation": 1753183415418,
+        "categories": [
+            "47d21a65e84e45258ccd9b77ec2f52f0"
+        ],
+        "MIMEType": "text/wkl",
+        "encrypted": false,
+        "revisions": [
+            "40a54119baa749d5849cf0582c2406d8"
+        ]
+    },
+    "c30cdea05e5f4141aae559843d1c7604": {
+        "name": "Oka Kasuga",
+        "author": "Fryze",
+        "lastModification": 1753184310051,
+        "creation": 1753184310051,
+        "categories": [
+            "47d21a65e84e45258ccd9b77ec2f52f0"
+        ],
+        "MIMEType": "text/wkl",
+        "encrypted": false,
+        "revised": true
+    },
+    "3447459819b748c3b75b6074376eca5e": {
+        "name": "Oka Kasuga",
+        "author": "Fryze",
+        "lastModification": 1753184397809,
+        "creation": 1753184310051,
+        "categories": [
+            "47d21a65e84e45258ccd9b77ec2f52f0"
+        ],
+        "MIMEType": "text/wkl",
+        "encrypted": false,
+        "revisions": [
+            "c30cdea05e5f4141aae559843d1c7604"
+        ]
+    },
+    "41addb65c3e4458ba9fcdc335a55e771": {
+        "name": "Miyazi Atsushi",
+        "author": "Fryze",
+        "lastModification": 1753186299273,
+        "creation": 1753186299273,
+        "categories": [
+            "8125693cead64892bcc77e71cd61fb3a"
+        ],
+        "MIMEType": "text/wkl",
+        "encrypted": false
+    },
+    "05a73087a19f415dba1901c7ed2c39d5": {
+        "name": "Yuri Momoka",
+        "author": "Fryze",
+        "lastModification": 1753187035677,
+        "creation": 1753187035677,
+        "categories": [
+            "47d21a65e84e45258ccd9b77ec2f52f0"
+        ],
+        "MIMEType": "text/wkl",
+        "encrypted": false
     }
 }
