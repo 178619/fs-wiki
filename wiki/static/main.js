@@ -766,7 +766,8 @@ Wiklo.popup = (v) => {
     return bg
 }
 Wiklo.popupVersionHistory = async (uuid=Wiklo.PAGEUUID) => {
-    const info = (await Wiklo.getMetadata())[uuid]
+    let info = (await Wiklo.getMetadata())[uuid]
+    if (info?.revised) [uuid, info] = Object.entries(await Wiklo.getMetadata()).find(([k, v])=>!v.revised&&v.revisions?.includes(uuid)) || [null, null]
     if (!info) {
         const v = document.createElement('div')
         v.textContent = 'This page does not support history view.'
@@ -776,9 +777,17 @@ Wiklo.popupVersionHistory = async (uuid=Wiklo.PAGEUUID) => {
     v.classList.add('wiklo-page-history')
     v.reversed = true
     const crev = document.createElement('li')
-    crev.classList.add('current')
     const ca = document.createElement('a')
     ca.textContent = new Date(info.lastModification).toLocaleString(undefined, Wiklo.timeFormat) + (' | ' + info.name) + (info.author ? (' | ' + info.author) : '')
+    if (info.revisions?.includes(Wiklo.PAGEUUID)) {
+        ca.href = './?' + uuid
+        ca.addEventListener('click', (e)=>{
+            e.preventDefault()
+            if (location.pathname == '/edit') return
+            Wiklo.loadUUIDPage(uuid).then(()=>{window.history.pushState(null, null, './?' + Wiklo.PAGEUUID); updateButtons(); document.title = Wiklo.PAGENAME + ' - ' + Wiklo.title})
+            document.querySelectorAll('.wiklo-popup-layer').forEach(v=>{v.remove()})
+        })
+    } else crev.classList.add('current')
     crev.appendChild(ca)
     v.appendChild(crev)
     if (info.revisions && info.revisions.length) info.revisions.toReversed().forEach((uid)=>{
@@ -786,13 +795,15 @@ Wiklo.popupVersionHistory = async (uuid=Wiklo.PAGEUUID) => {
         const rev = document.createElement('li')
         const a = document.createElement('a')
         a.textContent = new Date(uinfo.lastModification).toLocaleString(undefined, Wiklo.timeFormat) + (' | ' + uinfo.name) + (uinfo.author ? (' | ' + uinfo.author) : '')
-        a.href = './?' + uid
-        a.addEventListener('click', (e)=>{
-            e.preventDefault()
-            if (location.pathname == '/edit') return
-            Wiklo.loadUUIDPage(uid).then(()=>{window.history.pushState(null, null, './?' + Wiklo.PAGEUUID); updateButtons(); document.title = Wiklo.PAGENAME + ' - ' + Wiklo.title})
-            document.querySelectorAll('.wiklo-popup-layer').forEach(v=>{v.remove()})
-        })
+        if (Wiklo.PAGEUUID != uid) {
+            a.href = './?' + uid
+            a.addEventListener('click', (e)=>{
+                e.preventDefault()
+                if (location.pathname == '/edit') return
+                Wiklo.loadUUIDPage(uid).then(()=>{window.history.pushState(null, null, './?' + Wiklo.PAGEUUID); updateButtons(); document.title = Wiklo.PAGENAME + ' - ' + Wiklo.title})
+                document.querySelectorAll('.wiklo-popup-layer').forEach(v=>{v.remove()})
+            })
+        } else rev.classList.add('current')
         rev.appendChild(a)
         v.appendChild(rev)
     })
