@@ -151,7 +151,7 @@
                     reloadCategoryList()
                 }
             })
-            const author = decodeURIComponent(document.cookie).split(';').map(v=>v.trim()).find(v=>v.startsWith('author='))?.slice(7)
+            let author = decodeURIComponent(document.cookie).split(';').map(v=>v.trim()).find(v=>v.startsWith('author='))?.slice(7)
             if (author) form.querySelector('input#author').value = author
             form.querySelector('input#authorcookie').addEventListener('click', ()=>{
                 author = form.querySelector('input#author').value
