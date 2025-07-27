@@ -1,0 +1,37 @@
+{{Infobox
+|bodystyle=
+float: right;
+clear: right;
+|title=  サナ・ポアネット
+|above=  Sana Poanet
+|image=  {{nest|chara_sana2.jpg}}
+|label1= Voice (OG)
+|data1=  [[Sono Sachika]]
+|label2= Voice (DX)
+|data2=  [[Ueda Kana]]
+}}
+[[Sana Poanet]] is one of the three protagonists in [[Fortune Summoners]]. She lives in the [[Town of Tonkiness]].
+
+== Abilities ==
+{{aligned table|cols=3
+|Name|Requirement|Command/Cost
+|Staff Smack|None|{{fs key|x}} (Forward)<br>{{fs key|left+x}} (Backward)
+|Water Shoot|None|{{fs key|down+x}} (Normal)<br>{{fs key|right+x}} (Long)<br>{{fs key|up+x}} (Air Shot)
+|Leap Back|Level 8|{{fs key|down-left}} (Normal)<br>{{fs key|down-right}} (Flip)
+|Diamond Dust|None|3 MP
+|Heal Water|None|3 MP
+|Shield|Level 3|2 MP
+|Sleep Mist|Level 4|3 MP
+|Splash|Level 5|2 MP
+|Mermaid Robe|Level 6|2 MP
+|Turbid Squall|Level 7|3 MP
+|Heal Water II|Level 9|6 MP
+|Force Field|Level 11|5 MP
+|Antidote|Level 13|4 MP
+|Diamond Dust II|Level 14|6 MP
+|Shield II|Level 15|5 MP
+|Mirror Image|Level 17|5 MP
+|Teleportation|Level 19|6 MP
+|Water Blow|Level 21|8 MP
+|Heal Mist|Level 23|12 MP
+}}

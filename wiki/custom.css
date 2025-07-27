@@ -90,3 +90,9 @@ footer {
         text-decoration-line: underline;
     }
 }
+
+.fskey {
+    inline-size: 24px;
+    object-fit: scale-down;
+    height: 18px;
+}
