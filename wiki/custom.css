@@ -96,3 +96,7 @@ footer {
     object-fit: scale-down;
     height: 18px;
 }
+
+details > summary {
+    cursor: pointer;
+}
