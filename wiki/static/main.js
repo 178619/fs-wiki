@@ -37,6 +37,16 @@ Wiklo.alert = (v, t='INFO', l=4000) => {
     setTimeout(()=>{if (d) d.style.right = '-16384px'}, l)
     setTimeout(()=>{if (d) d.remove()}, l+2000)
 }
+Wiklo._searchEngineReferrers = [
+    'https://www.google.com/',
+    'https://duckduckgo.com/',
+    'https://www.bing.com/',
+    'https://search.yahoo.co.jp/',
+    'https://search.yahoo.com/',
+    'https://yandex.com/',
+    'https://search.naver.com/',
+    'https://search.brave.com/'
+]
 Wiklo._supportedObjectTypes = [
     'application/pdf',
     // 'application/xml',
@@ -623,9 +633,18 @@ Wiklo.loadUUIDData = async (uuid) => {
     const data = await fetch('./data/'+uuid)
     return data
 }
-Wiklo.loadUUIDPage = async (uuid, hash=null) => {
+Wiklo.loadUUIDPage = async (uuid, hash=null, forceLatestVersion=false) => {
     const metadata = await Wiklo.getMetadata()
     if (!metadata.hasOwnProperty(uuid)) return
+    if (forceLatestVersion && metadata[uuid].revised) {
+        const [nuid] = Object.entries(await Wiklo.getMetadata()).find(([k, v])=>!v.revised&&v.revisions?.includes(uuid)) || [null, null]
+        if (nuid) Wiklo.loadUUIDPage(nuid, hash).then(()=>{
+            window.history.replaceState(null, null, './?' + Wiklo.PAGEUUID + (hash || ''))
+            document.title = Wiklo.PAGENAME + ' - ' + Wiklo.title
+            Wiklo.alert(`Redirected to the latest revision. <a href="?${uuid}">Go back</a>`)
+        })
+        return
+    }
     Wiklo.PAGENAME = metadata[uuid].name
     Wiklo.PAGEUUID = uuid
     document.querySelectorAll('article').forEach(v=>{v.remove()})
@@ -740,14 +759,14 @@ Wiklo.loadArticleList = async (key) => {
     , {name: 'Search: ' + key}))
     return true
 }
-Wiklo.loadFromSearch = () => {
+Wiklo.loadFromSearch = (forceLatestVersion=false) => {
     updateButtons()
     if (location.pathname == '/edit') return
     if (location.search && location.search.match(/^\?[0-9a-f]{32}$/) && location.search.slice(1) == Wiklo.PAGEUUID) {
         if (location.hash) document.getElementById(decodeURIComponent(location.hash.slice(1)))?.scrollIntoView()
         return
     }
-    if (location.search && location.search.match(/^\?[0-9a-f]{32}$/)) Wiklo.loadUUIDPage(location.search.slice(1), location.hash).then(()=>{document.title = Wiklo.PAGENAME + ' - ' + Wiklo.title})
+    if (location.search && location.search.match(/^\?[0-9a-f]{32}$/)) Wiklo.loadUUIDPage(location.search.slice(1), location.hash, forceLatestVersion).then(()=>{document.title = Wiklo.PAGENAME + ' - ' + Wiklo.title})
     else if (location.search) Wiklo.loadPageFromName(decodeURIComponent(location.search.slice(1)), [], location.hash).then(()=>{window.history.replaceState(null, null, './?' + Wiklo.PAGEUUID + location.hash); updateButtons(); document.title = Wiklo.PAGENAME + ' - ' + Wiklo.title})
     else Wiklo.loadHome()
 }
@@ -876,7 +895,7 @@ window.addEventListener('load', () => {
         }
     })
     document.body.onpopstate = Wiklo.loadFromSearch
-    Wiklo.loadFromSearch()
+    Wiklo.loadFromSearch(Wiklo._searchEngineReferrers.includes(document.referrer))
     document.querySelector('#article_search').addEventListener('keydown', (e) => {
         if (e.key == 'Enter') {
             if (e.target.value.match(/^[0-9a-f]{32}$/)) Wiklo.loadUUIDPage(e.target.value).then(()=>{
