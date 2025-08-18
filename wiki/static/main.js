@@ -638,12 +638,14 @@ Wiklo.loadUUIDPage = async (uuid, hash=null, forceLatestVersion=false) => {
     if (!metadata.hasOwnProperty(uuid)) return
     if (forceLatestVersion && metadata[uuid].revised) {
         const [nuid] = Object.entries(await Wiklo.getMetadata()).find(([k, v])=>!v.revised&&v.revisions?.includes(uuid)) || [null, null]
-        if (nuid) Wiklo.loadUUIDPage(nuid, hash).then(()=>{
-            window.history.replaceState(null, null, './?' + Wiklo.PAGEUUID + (hash || ''))
-            document.title = Wiklo.PAGENAME + ' - ' + Wiklo.title
-            Wiklo.alert(`Redirected to the latest revision. <a href="?${uuid}">Go back</a>`)
-        })
-        return
+        if (nuid) {
+            Wiklo.loadUUIDPage(nuid, hash).then(()=>{
+                window.history.replaceState(null, null, './?' + Wiklo.PAGEUUID + (hash || ''))
+                document.title = Wiklo.PAGENAME + ' - ' + Wiklo.title
+                Wiklo.alert(`Redirected to the latest revision. <a href="?${uuid}">Go back</a>`)
+            })
+            return
+        }
     }
     Wiklo.PAGENAME = metadata[uuid].name
     Wiklo.PAGEUUID = uuid
