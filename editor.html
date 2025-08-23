@@ -11,6 +11,8 @@
             <input id="authorcookie" type="button" value="Save Author Name to Cookie" style="display: none;">
             <ol id="categorylist"></ol>
             <hr>
+            <input id="description" type="text" placeholder="Short Description">
+            <hr>
             <textarea id="content" name="content" spellcheck="false"></textarea>
             <hr>
             <label><input id="file" name="file" type="file"><div class="label-file"></div><input id="resetFile" type="button" value="X"></label>
@@ -25,6 +27,7 @@
                 document.querySelector('form input#uuid').value = uuid
                 Wiklo.getMetadata().then((metadata)=>{
                     document.querySelector('form input#name').value = metadata[uuid].name
+                    document.querySelector('form input#description').value = metadata[uuid].description
                     document.querySelector('form input#iscategory').checked = metadata[uuid].categories.includes(true)
                     document.querySelector('form input#isdisambiguation').checked = metadata[uuid].categories.includes(false)
                     if (metadata[uuid].MIMEType.startsWith('text')) Wiklo.loadUUIDData(uuid).then(data=>data.text()).then((data)=>{
@@ -60,6 +63,7 @@
                 let uuid = form.querySelector('input#uuid').value
                 let name = form.querySelector('input#name').value
                 let author = form.querySelector('input#author').value
+                let description = form.querySelector('input#description').value
                 const fileInput = form.querySelector('input#file')
                 if (!name && fileInput.files.length) name = fileInput.files[0].name
                 if (!name) return Wiklo.alert('Client Error: Title is not present', 'error')
@@ -71,6 +75,7 @@
                 if (fileInput.files.length && fileInput.files[0].type) data.append('type', fileInput.files[0].type)
                 else if (!fileInput.files.length) data.append('type', 'text/wkl')
                 if (author && author.length) data.append('author', author)
+                if (description && description.length) data.append('description', description)
                 let queries = new URLSearchParams(data)
                 fetch('/?'+queries, {
                     method: "PUT",

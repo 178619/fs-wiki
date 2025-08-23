@@ -422,9 +422,12 @@ article {
         font-weight: 700;
     }
 
-    div.refhover {
-        display: none;
-        position: absolute;
+    sup:has(a + div.refhover) {
+        user-select: none;
+    }
+
+    div.refhover, div.linkhover {
+        display: inline-block;
         margin-right: 8px;
         background: var(--background-color);
         color: var(--text-color);
@@ -434,15 +437,41 @@ article {
         opacity: 0;
         transition: opacity 125ms;
         font-size: initial;
+        font-weight: 400;
+        font-style: initial;
+        pointer-events: none;
+        user-select: none;
+        z-index: 250;
+        h1 {
+            margin: 0;
+            font-size: large;
+        }
+    }
+
+    div.refhover {
+        position: absolute;
+    }
+    
+    div.linkhover {
+        position: fixed;
     }
 
     a:hover + div.refhover, div.refhover:hover, div.refhover:focus {
-        display: inline-block;
+        pointer-events: all;
+        user-select: text;
+        opacity: 1;
+    }
+
+    a:hover + div.linkhover {
         opacity: 1;
     }
 
     img, audio, video {
         vertical-align: middle;
+    }
+
+    ruby rt {
+        user-select: none;
     }
 }
 
@@ -536,6 +565,9 @@ form {
     }
     input[type=text]#name {
         width: 240px;
+    }
+    input[type=text]#description {
+        width: 800px;
     }
     textarea#content {
         width: 800px;

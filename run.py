@@ -166,7 +166,8 @@ class Server(BaseHTTPRequestHandler):
         if params.get('isdisambiguation') == 'true':
             newData['categories'].append(False)
         newData['MIMEType'] = (params.get('type') or self.headers.get('content-type') or 'application/octet-stream').split(';')[0]
-        newData['encrypted'] = False
+        # newData['encrypted'] = False
+        if params.get('description'): newData['description'] = params.get('description')
         uid = uuid.uuid4().hex
         if params.get('uuid'):
             metadata[params.get('uuid')]['revised'] = True
