@@ -47,22 +47,39 @@ Wiklo._searchEngineReferrers = [
     'https://search.naver.com/',
     'https://search.brave.com/'
 ]
+Wiklo._supportedCustomTypes = {}
+Wiklo._supportedCustomTypes['application/json'] = Wiklo._supportedCustomTypes['text/json'] = (value) => {
+    try {
+        value = JSON.parse(value)
+    } catch (e) {
+        return value
+    }
+    value = JSON.stringify(value, null, 4).replaceAll('<', '&#x3C;').replaceAll('>', '&#x3E;')
+    if (value.match(/^"([^\n]*?[^\\])"$/gs)) return '<span class="string">' + value + '</span>'
+    if (value.match(/^-?\d+(\.\d+)?([eE][-+]?\d+)?$/gs)) return '<span class="number">' + value + '</span>'
+    if (value.match(/^(true|false)$/gs)) return '<span class="boolean">' + value + '</span>'
+    if (value == 'null') return '<span class="null">null</span>'
+    value = value.replace(/^(\s+)"(.*?[^\\])":/gm, (v) => `<span class="key">${v.slice(0, -1)}</span>:`)
+    value = value.replace(/(>:\s)"((?:[^"\\]|\\.)*)"/gm, (v) => v.slice(0, 3) + '<span class="string">' + v.slice(3) + '</span>')
+    value = value.replace(/(>:\s)(true|false)/gm, (v) => v.slice(0, 3) + '<span class="boolean">' + v.slice(3) + '</span>')
+    value = value.replace(/(>:\s)(null)/gm, (v) => v.slice(0, 3) + '<span class="null">' + v.slice(3) + '</span>')
+    value = value.replace(/(>:\s)(-?\d+(\.\d+)?([eE][-+]?\d+)?)/gm, (v) => v.slice(0, 3) + '<span class="number">' + v.slice(3) + '</span>')
+    value = value.replace(/^\s+"(.*?[^\\])"/gm, (v) => `<span class="string">${v}</span>`)
+    value = value.replace(/^\s+(-?\d+(\.\d+)?([eE][-+]?\d+)?)/gm, (v) => `<span class="number">${v}</span>`)
+    value = value.replace(/^\s+(true|false)/gm, (v) => '<span class="boolean">' + v + '</span>')
+    value = value.replace(/^\s+(null)/gm, (v) => '<span class="null">' + v + '</span>')
+    return '<code lang="json">' + value + '</code>'
+}
 Wiklo._supportedObjectTypes = [
-    'application/pdf',
-    // 'application/xml',
-    // 'text/xml',
-    // 'application/json',
-    // 'text/json'
+    'application/pdf'
 ]
 Wiklo._supportedCodeTypes = [
     'text/html',
     'text/javascript',
     'text/css',
-    'text/json',
     'text/xml',
     'text/x-python',
     'application/x-javascript',
-    'application/json',
     'application/xml'
 ]
 Wiklo._super = {
@@ -593,7 +610,7 @@ Wiklo.textToPage = (text, pageinfo=null) => {
             ( '<div class="page-header">'
                 + '<h1 class="page-title">'+(pageinfo.name.replace('<', '&#x3C;').replace('>', '&#x3E;').replace('"', '&#x22;')||'')+'</h1>'
                 + '<div class="page-info">'
-                    // + (pageinfo.author ? '<div>Author: '+pageinfo.author+'</div>' : '')
+                    // + (pageinfo.author ? '<div>Author: '+pageinfo.author.replace('<', '&#x3C;').replace('>', '&#x3E;').replace('"', '&#x22;')+'</div>' : '')
                     // + (pageinfo.creation ? '<div>Creation: <span class="date" value='+pageinfo.creation+'>'+new Date(pageinfo.creation).toLocaleString(undefined, Wiklo.timeFormat)+'</span></div>' : '')
                     + (pageinfo.lastModification ? '<div>Last Edit: <span class="date" value='+pageinfo.lastModification+'>'+new Date(pageinfo.lastModification).toLocaleString(undefined, Wiklo.timeFormat)+'</span></div>' : '')
                 + '</div>'
@@ -618,7 +635,7 @@ Wiklo.textToPageRaw = (text, pageinfo=null) => {
             ( '<div class="page-header">'
                 + '<h1 class="page-title">'+(pageinfo.name.replace('<', '&#x3C;').replace('>', '&#x3E;').replace('"', '&#x22;')||'')+'</h1>'
                 + '<div class="page-info">'
-                    + (pageinfo.author ? '<div>Author: '+pageinfo.author.replace('<', '&#x3C;').replace('>', '&#x3E;').replace('"', '&#x22;')+'</div>' : '')
+                    // + (pageinfo.author ? '<div>Author: '+pageinfo.author.replace('<', '&#x3C;').replace('>', '&#x3E;').replace('"', '&#x22;')+'</div>' : '')
                     // + (pageinfo.creation ? '<div>Creation: <span class="date" value='+pageinfo.creation+'>'+new Date(pageinfo.creation).toLocaleString()+'</span></div>' : '')
                     + (pageinfo.lastModification ? '<div>Last Modification: <span class="date" value='+pageinfo.lastModification+'>'+new Date(pageinfo.lastModification).toLocaleString()+'</span></div>' : '')
                 + '</div>'
@@ -681,6 +698,9 @@ Wiklo.loadUUIDPage = async (uuid, hash=null, forceLatestVersion=false) => {
         document.querySelector('section').append(Wiklo.textToPage('{{nestvideo|'+uuid+'}}<hr>'+(metadata[uuid]?.description ? (metadata[uuid]?.description + '<hr>') : '')+'This is a video file uploaded to this website. ('+metadata[uuid].MIMEType+') <a href="./data/'+uuid+'" download="'+safepagename+'">Download</a>', metadata[uuid]))
     } else if (Wiklo._supportedObjectTypes.includes(metadata[uuid].MIMEType)) {
         document.querySelector('section').append(Wiklo.textToPage('{{nestobject|'+uuid+'|type='+metadata[uuid].MIMEType+'|width=100%|height=400}}<hr>'+(metadata[uuid]?.description ? (metadata[uuid]?.description + '<hr>') : '')+'This is an object file uploaded to this website. ('+metadata[uuid].MIMEType+') <a href="./data/'+uuid+'" download="'+safepagename+'">Download</a>', metadata[uuid]))
+    } else if (Wiklo._supportedCustomTypes.hasOwnProperty(metadata[uuid].MIMEType)) {
+        const data = await (await Wiklo.loadUUIDData(uuid)).text() || ''
+        document.querySelector('section').append(Wiklo.textToPageRaw(Wiklo._supportedCustomTypes[metadata[uuid].MIMEType](data) + '<hr>'+(metadata[uuid]?.description ? (metadata[uuid]?.description + '<hr>') : '')+'This is a text file uploaded to this website. ('+metadata[uuid].MIMEType+') <a href="./data/'+uuid+'" download="'+safepagename+'">Download</a>', metadata[uuid]))
     } else if (Wiklo._supportedCodeTypes.includes(metadata[uuid].MIMEType)) {
         const data = await (await Wiklo.loadUUIDData(uuid)).text() || ''
         document.querySelector('section').append(Wiklo.textToPageRaw('<code>' + data.replaceAll('<', '&#x3C;').replaceAll('>', '&#x3E;') + '</code><hr>'+(metadata[uuid]?.description ? (metadata[uuid]?.description + '<hr>') : '')+'This is a text file uploaded to this website. ('+metadata[uuid].MIMEType+') <a href="./data/'+uuid+'" download="'+safepagename+'">Download</a>', metadata[uuid]))

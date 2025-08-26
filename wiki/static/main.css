@@ -643,3 +643,25 @@ form {
         display: none;
     }
 }
+
+/*
+    CODE
+*/
+
+code[lang="json"] {
+    .key {
+        color: #FF7FBF;
+    }
+    .string {
+        color: #00FF00;
+    }
+    .number {
+        color: #FF7F00;
+    }
+    .boolean {
+        color: #3FBFFF;
+    }
+    .null {
+        color: #9F9F9F;
+    }
+}
