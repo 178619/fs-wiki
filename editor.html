@@ -27,7 +27,7 @@
                 document.querySelector('form input#uuid').value = uuid
                 Wiklo.getMetadata().then((metadata)=>{
                     document.querySelector('form input#name').value = metadata[uuid].name
-                    document.querySelector('form input#description').value = metadata[uuid].description
+                    document.querySelector('form input#description').value = metadata[uuid].description || ''
                     document.querySelector('form input#iscategory').checked = metadata[uuid].categories.includes(true)
                     document.querySelector('form input#isdisambiguation').checked = metadata[uuid].categories.includes(false)
                     if (metadata[uuid].MIMEType.startsWith('text')) Wiklo.loadUUIDData(uuid).then(data=>data.text()).then((data)=>{

@@ -454,6 +454,9 @@ article {
     
     div.linkhover {
         position: fixed;
+        a {
+            color: inherit;
+        }
     }
 
     a:hover + div.refhover, div.refhover:hover, div.refhover:focus {
