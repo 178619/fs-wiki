@@ -15,8 +15,8 @@
         "categories": [
             true,
             "5f9baa46d118473393f6a131e154ba00",
-            "0c4bc92c74b74a9984b366fa969ae053",
-            "1d5ea0074a4f438d809b07fd538a1a6c"
+            "1d5ea0074a4f438d809b07fd538a1a6c",
+            "644fab97b499426dbaa77a5ec956f9c4"
         ],
         "MIMEType": "text/wkl",
         "revised": true
@@ -71,7 +71,7 @@
         "lastModification": 1741500533780,
         "creation": 1741360551936,
         "categories": [
-            "0c4bc92c74b74a9984b366fa969ae053"
+            "644fab97b499426dbaa77a5ec956f9c4"
         ],
         "MIMEType": "text/wkl",
         "revised": true
@@ -82,7 +82,7 @@
         "lastModification": 1741500642834,
         "creation": 1741360617878,
         "categories": [
-            "0c4bc92c74b74a9984b366fa969ae053"
+            "644fab97b499426dbaa77a5ec956f9c4"
         ],
         "MIMEType": "text/wkl",
         "revised": true
@@ -93,7 +93,7 @@
         "lastModification": 1741500657330,
         "creation": 1741361663550,
         "categories": [
-            "0c4bc92c74b74a9984b366fa969ae053"
+            "644fab97b499426dbaa77a5ec956f9c4"
         ],
         "MIMEType": "text/wkl",
         "revised": true
@@ -148,7 +148,7 @@
         "lastModification": 1741500949391,
         "creation": 1741500932374,
         "categories": [
-            "0c4bc92c74b74a9984b366fa969ae053"
+            "644fab97b499426dbaa77a5ec956f9c4"
         ],
         "MIMEType": "text/wkl",
         "revised": true
@@ -261,7 +261,7 @@
         "lastModification": 1747140378551,
         "creation": 1747140378551,
         "categories": [
-            "0c4bc92c74b74a9984b366fa969ae053"
+            "644fab97b499426dbaa77a5ec956f9c4"
         ],
         "MIMEType": "audio/mpeg"
     },
@@ -271,7 +271,7 @@
         "lastModification": 1747140402541,
         "creation": 1747140402541,
         "categories": [
-            "0c4bc92c74b74a9984b366fa969ae053"
+            "644fab97b499426dbaa77a5ec956f9c4"
         ],
         "MIMEType": "audio/mpeg"
     },
@@ -281,7 +281,7 @@
         "lastModification": 1747140420884,
         "creation": 1747140420884,
         "categories": [
-            "0c4bc92c74b74a9984b366fa969ae053"
+            "644fab97b499426dbaa77a5ec956f9c4"
         ],
         "MIMEType": "audio/mpeg"
     },
@@ -844,7 +844,7 @@
         "lastModification": 1753625545183,
         "creation": 1741360551936,
         "categories": [
-            "0c4bc92c74b74a9984b366fa969ae053"
+            "644fab97b499426dbaa77a5ec956f9c4"
         ],
         "MIMEType": "text/wkl",
         "revisions": [
@@ -857,7 +857,7 @@
         "lastModification": 1753626736853,
         "creation": 1741360617878,
         "categories": [
-            "0c4bc92c74b74a9984b366fa969ae053"
+            "644fab97b499426dbaa77a5ec956f9c4"
         ],
         "MIMEType": "text/wkl",
         "revisions": [
@@ -870,7 +870,7 @@
         "lastModification": 1753627858266,
         "creation": 1741361663550,
         "categories": [
-            "0c4bc92c74b74a9984b366fa969ae053"
+            "644fab97b499426dbaa77a5ec956f9c4"
         ],
         "MIMEType": "text/wkl",
         "revised": true
@@ -881,7 +881,7 @@
         "lastModification": 1753628346078,
         "creation": 1741500932374,
         "categories": [
-            "0c4bc92c74b74a9984b366fa969ae053"
+            "644fab97b499426dbaa77a5ec956f9c4"
         ],
         "MIMEType": "text/wkl",
         "revisions": [
@@ -896,8 +896,8 @@
         "categories": [
             "5f9baa46d118473393f6a131e154ba00",
             true,
-            "0c4bc92c74b74a9984b366fa969ae053",
-            "1d5ea0074a4f438d809b07fd538a1a6c"
+            "1d5ea0074a4f438d809b07fd538a1a6c",
+            "644fab97b499426dbaa77a5ec956f9c4"
         ],
         "MIMEType": "text/wkl",
         "revised": true
@@ -910,14 +910,11 @@
         "categories": [
             "5f9baa46d118473393f6a131e154ba00",
             true,
-            "0c4bc92c74b74a9984b366fa969ae053",
-            "1d5ea0074a4f438d809b07fd538a1a6c"
+            "1d5ea0074a4f438d809b07fd538a1a6c",
+            "644fab97b499426dbaa77a5ec956f9c4"
         ],
         "MIMEType": "text/wkl",
-        "revisions": [
-            "3adabf227432490c81183a5e424c46eb",
-            "125375ee6cad418a9a544d9dd842d47e"
-        ]
+        "revised": true
     },
     "7b1440ff6c5142419d05b80dcfbb4b1d": {
         "name": "Fortune Summoners Plus -Arche's Wondrous Labyrinth-",
@@ -1084,9 +1081,7 @@
             "fd4b3e96eea142a993124535e213573e"
         ],
         "MIMEType": "text/wkl",
-        "revisions": [
-            "41bf13817a364c58b994e120307900e9"
-        ]
+        "revised": true
     },
     "2a5725bc22e349b4b97f592dc044e99d": {
         "name": "Pokora of the Mysterious Forest",
@@ -1169,7 +1164,7 @@
         "lastModification": 1755528953887,
         "creation": 1741361663550,
         "categories": [
-            "0c4bc92c74b74a9984b366fa969ae053"
+            "644fab97b499426dbaa77a5ec956f9c4"
         ],
         "MIMEType": "text/wkl",
         "revisions": [
@@ -1250,6 +1245,65 @@
             "27c2805f4bd6449594c8a91bd04c5277",
             "1df660c05af64496a669f3412d06a236",
             "8d3553ddbbfa4904b3c5ae24e22273a3"
+        ]
+    },
+    "3be99ed271f544abae7da694daef4bca": {
+        "name": "fs2020.re.mp4",
+        "author": "Fryze",
+        "lastModification": 1756315776704,
+        "creation": 1756315776704,
+        "categories": [
+            "fd4b3e96eea142a993124535e213573e",
+            "3adabf227432490c81183a5e424c46eb"
+        ],
+        "MIMEType": "video/mp4",
+        "description": "A promotional video for [[Fortune Summoners]]. Re-encoded to reduce filesize. Source: [[http://lizsoft.jp/fs/img/fs2020.mp4]]"
+    },
+    "bf73bb2f9c43462d983df4760ef99d49": {
+        "name": "adc58307.re.mp4",
+        "author": "Fryze",
+        "lastModification": 1756315849722,
+        "creation": 1756315849722,
+        "categories": [
+            "fd4b3e96eea142a993124535e213573e",
+            "3adabf227432490c81183a5e424c46eb"
+        ],
+        "MIMEType": "video/mp4",
+        "description": "A promotional video for [[Fortune Summoners Deluxe]]. Re-encoded to reduce filesize. Source: [[https://web.archive.org/web/20140716062809/http://www.samootz.com/0002/JQ87636560/__movie/adc58307.flv]]"
+    },
+    "644fab97b499426dbaa77a5ec956f9c4": {
+        "name": "Fortune Summoners",
+        "author": "Fryze",
+        "lastModification": 1756323061558,
+        "creation": 1741355324698,
+        "categories": [
+            "5f9baa46d118473393f6a131e154ba00",
+            "1d5ea0074a4f438d809b07fd538a1a6c",
+            true,
+            "644fab97b499426dbaa77a5ec956f9c4"
+        ],
+        "MIMEType": "text/wkl",
+        "description": "An action game developed by [[Lizsoft]]",
+        "revisions": [
+            "3adabf227432490c81183a5e424c46eb",
+            "125375ee6cad418a9a544d9dd842d47e",
+            "0c4bc92c74b74a9984b366fa969ae053"
+        ]
+    },
+    "bef79b3edefd4a6ab204bebc96e25420": {
+        "name": "Fortune Summoners Deluxe",
+        "author": "Fryze",
+        "lastModification": 1756323591236,
+        "creation": 1753650821326,
+        "categories": [
+            "3adabf227432490c81183a5e424c46eb",
+            "fd4b3e96eea142a993124535e213573e"
+        ],
+        "MIMEType": "text/wkl",
+        "description": "A physical release of the game [[Fortune Summoners]]",
+        "revisions": [
+            "41bf13817a364c58b994e120307900e9",
+            "977a196c2be4443d9a3fcde6b6a5e150"
         ]
     }
 }
