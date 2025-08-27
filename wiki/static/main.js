@@ -395,7 +395,7 @@ Wiklo.media = (element) => {
     })
     mediamodule.querySelector('.info').addEventListener('click', ()=>{
         if (location.pathname == '/edit') return
-        if (!element.currentSrc.startsWith(location.origin)) return
+        if (!element.currentSrc.startsWith(location.origin)) location.href = element.currentSrc
         if (element.currentSrc.endsWith(Wiklo.PAGEUUID)) return
         Wiklo.loadUUIDPage(decodeURIComponent(element.currentSrc.split('#')[0].slice(-32))).then(()=>{window.history.pushState(null, null, './?' + Wiklo.PAGEUUID); updateButtons(); document.title = Wiklo.PAGENAME + ' - ' + Wiklo.title})
     })
@@ -745,7 +745,7 @@ Wiklo.linkToHTML = (v) => {
         if (category) categories.push(category)
     }
     const article = args[0].match(/^[0-9a-f]{32}$/) && entries.find(([k,v])=>(args[0]==k)) || entries.find(([k,v])=>(args[0]==v.name)&&v.categories.some(t=>categories.includes(t))) || entries.find(([k,v])=>args[0]==v.name&&v.categories.includes(false)) || entries.find(([k,v])=>args[0]==v.name) || entries.find(([k,v])=>args[0].toLocaleLowerCase()==v.name.toLocaleLowerCase()) || null
-    return `<a href="./?${article ? article[0] : args[0]}${hash ? ('#'+hash) : ''}" title="${kwargs.title || args[0]}"${!article ? ' class="no-article"' : (Wiklo.PAGEUUID == article[0] && !hash ? ' class="self-link"' : '')} target="${kwargs.target || '_self'}">${args[1] || (hash ? (args[0] + ' &#xA7; ' + hash) : args[0])}</a><div class="linkhover">${article ? ('<h1>'+article[1].name.replace('<', '&#x3C;').replace('>', '&#x3E;').replace('"', '&#x22;')+'</h1><hr>'+(article[1].description ? Wiklo.modulesHandler(article[1].description) : 'This page does not have a description.')) : ('<h1>'+args[0].replace('<', '&#x3C;').replace('>', '&#x3E;').replace('"', '&#x22;')+'</h1><hr>This page could not be found.')}</div>`
+    return `<a href="./?${article ? article[0] : args[0]}${hash ? ('#'+hash) : ''}" title="${kwargs.title || args[0]}"${!article ? ' class="no-article"' : (Wiklo.PAGEUUID == article[0] && !hash ? ' class="self-link"' : '')} target="${kwargs.target || '_self'}">${args[1] || (hash ? (args[0] + ' &#xA7; ' + hash) : args[0])}</a><div class="linkhover">${article ? ('<h1>'+article[1].name.replace('<', '&#x3C;').replace('>', '&#x3E;').replace('"', '&#x22;')+'</h1>'+(article[1].description ? Wiklo.modulesHandler(article[1].description) : 'This page does not have a description.')) : ('<h1>'+args[0].replace('<', '&#x3C;').replace('>', '&#x3E;').replace('"', '&#x22;')+'</h1>This page could not be found.')}</div>`
 }
 Wiklo.textToHTML = (v) => {
     return Wiklo.modulesHandler(
