@@ -194,7 +194,7 @@ Wiklo.moduleHandlers = {
     },
     'nestaudio': (args, kwargs) => {
         if (!args.length) return '<audio></audio>'
-        return '<audio controls>' + args.map((v)=>{
+        return '<div class="mediamodule"><button class="play-pause"></button><button class="loop"></button><input class="seeker" type="range" value="0" min="0" max="0"><div class="current">00:00/00:00</div><button class="volume-icon"></button><input class="volume" type="range" value="0" min="0" max="1" step="0.000001"><button class="info"></button><audio preload="metadata" onloadedmetadata="Wiklo.media(this)">' + args.map((v)=>{
             let source = ''
             if (v.match(/^[0-9a-f]{32}$/)) source = './data/' + v
             if (v.startsWith('http://') || v.startsWith('https://')) source = v
@@ -203,11 +203,11 @@ Wiklo.moduleHandlers = {
                 if (uuid) source = './data/' + uuid
             }
             return source ? `<source src=${source}>` : ''
-        }).join('') + '</audio>'
+        }).join('') + '</audio></div>'
     },
     'nestvideo': (args, kwargs) => {
         if (!args.length) return '<video></video>'
-        return '<video controls>' + args.map((v)=>{
+        return '<div class="mediamodule"><div class="videomask shown"><input class="seeker" type="range" value="0" min="0" max="0"><div class="controls"><div><button class="play-pause"></button><button class="loop"></button><div class="current">00:00/00:00</div><button class="volume-icon"></button><input class="volume" type="range" value="0" min="0" max="1" step="0.000001"></div><div><button class="info"></button><button class="fullscreen"></button></div></div></div><video preload="auto" onloadedmetadata="Wiklo.media(this)"' + (kwargs.width ? ` width="${kwargs.width}"` : '') + (kwargs.height ? ` height="${kwargs.height}"` : '') + '>' + args.map((v)=>{
             let source = ''
             if (v.match(/^[0-9a-f]{32}$/)) source = './data/' + v
             if (v.startsWith('http://') || v.startsWith('https://')) source = v
@@ -216,7 +216,7 @@ Wiklo.moduleHandlers = {
                 if (uuid) source = './data/' + uuid
             }
             return source ? `<source src=${source}>` : ''
-        }).join('') + '</video>'
+        }).join('') + '</video></div>'
     },
     'nestobject': (args, kwargs) => {
         if (!args.length) return '<object data="">'
@@ -233,6 +233,172 @@ Wiklo.moduleHandlers = {
     },
     'currentunixtime': () => Math.floor(new Date().valueOf() / 1000)+'',
     'revisionunixtime': () => (Wiklo.PAGEINFO?.lastModification || 0)+''
+}
+Wiklo.media = (element) => {
+    const getTimeString = (v) => {
+        if (!v) return '00:00'
+        if (isNaN(v) || v == Infinity) return '--:--'
+        return (v >= 3600 ? Math.floor(v / 3600) + ':' : '')
+        + (((Math.floor(v % 3600 / 60) < 10 ? '0' : '') + Math.floor(v % 3600 / 60)) || '00') + ':'
+        + (((Math.floor(v % 60) < 10 ? '0' : '') + Math.floor(v % 60)) || '00')
+    }
+    const mediamodule = element.parentElement
+    if (!mediamodule.className.includes('mediamodule')) return
+    const mask = mediamodule.querySelector('.videomask')
+    if (mask) {
+        const rect = element.getBoundingClientRect()
+        mask.style.width = element.clientWidth + 'px'
+        mask.style.height = element.clientHeight + 'px'
+        mask.style.top = rect.top + 'px'
+        mask.style.left = rect.left + 'px'
+        mask.pointerWaitTime = 0
+        setInterval(()=>{mask.pointerWaitTime -= 100}, 100)
+        const hideMask = () => {setTimeout(()=>{if (mask.pointerWaitTime <= 0) mask.classList.remove('shown'); else hideMask()}, 100)}
+        const showMask = () => {
+            mask.classList.add('shown')
+            mask.pointerWaitTime = 3000
+            hideMask()
+        }
+
+        mask.addEventListener('mouseenter', (e) => {
+            if (!mask.className.includes('shown')) {
+                mask.classList.add('shown')
+            }
+        })
+        mask.addEventListener('mouseleave', (e) => {
+            if (mask.classList.value.includes('shown')) {
+                mask.classList.remove('shown')
+            }
+        })
+        mask.addEventListener('pointerdown', (e) => {
+            if (e.target != mask || e.pointerType == 'mouse' && e.button != 0) return
+            if (e.pointerType == 'touch') {
+                if (mask.classList.value.includes('shown')) {
+                    mask.classList.remove('shown')
+                } else {
+                    mask.classList.add('shown')
+                }
+            } else {
+                if (!!(element.currentTime > 0 && !element.paused && !element.ended && element.readyState > 2)) {
+                    element.pause()
+                } else {
+                    element.play()
+                }
+            }
+        })
+        mask.addEventListener('pointermove', (e) => {
+            if (e.pointerType == "touch") return
+            showMask()
+        })
+        mask.addEventListener('dblclick', (e) => {
+            if (e.target != mask) return
+            if (document.fullscreenElement) {
+                document.exitFullscreen()
+            } else {
+                mediamodule.requestFullscreen()
+            }
+        })
+        const relocate = () => {
+            const rect = element.getBoundingClientRect()
+            mask.style.width = element.clientWidth + 'px'
+            mask.style.height = element.clientHeight + 'px'
+            mask.style.top = rect.top + 'px'
+            mask.style.left = rect.left + 'px'
+        }
+        window.addEventListener('resize', relocate)
+        window.addEventListener('scroll', relocate)
+    }
+    const seeker = mediamodule.querySelector('.seeker')
+    const volume = mediamodule.querySelector('.volume')
+    const volumeIcon = mediamodule.querySelector('.volume-icon')
+    mediamodule.querySelector('.current').textContent = getTimeString(element.currentTime) + ' / ' + getTimeString(element.duration)
+    mediamodule.querySelector('.play-pause').addEventListener('click', ()=>{
+        if (!!(element.currentTime > 0 && !element.paused && !element.ended && element.readyState > 2)) {
+            element.pause()
+        } else {
+            element.play()
+        }
+    })
+    const updateVolumeIcon = () => {
+        if (element.muted) {
+            volumeIcon.style.backgroundImage = 'url(/static/icons/volume-off.svg)'
+        } else if (element.volume >= 0.75) {
+            volumeIcon.style.backgroundImage = 'url(/static/icons/volume-4.svg)'
+        } else if (element.volume >= 0.5) {
+            volumeIcon.style.backgroundImage = 'url(/static/icons/volume-3.svg)'
+        } else if (element.volume >= 0.25) {
+            volumeIcon.style.backgroundImage = 'url(/static/icons/volume-2.svg)'
+        } else if (element.volume) {
+            volumeIcon.style.backgroundImage = 'url(/static/icons/volume-1.svg)'
+        } else {
+            volumeIcon.style.backgroundImage = 'url(/static/icons/volume-0.svg)'
+        }
+    }
+    const updatePlaying = () => {
+        if (!!(element.currentTime > 0 && !element.paused && !element.ended && element.readyState > 2)) {
+            mediamodule.querySelector('.play-pause').style.backgroundImage = 'url(/static/icons/pause.svg)'
+        } else {
+            mediamodule.querySelector('.play-pause').style.backgroundImage = 'url(/static/icons/play.svg)'
+        }
+    }
+    const updateVolume = () => {
+        volume.value = element.volume
+        volume.style.backgroundImage = `linear-gradient(to right, rgba(0,0,0,0) 6px, var(--text-color) 6px, var(--text-color) calc(6px + ${element.volume * 100}% - 12px * ${element.volume}), var(--date-color) calc(6px + ${element.volume * 100}% - 12px * ${element.volume}), var(--date-color) calc(100% - 6px), rgba(0,0,0,0) calc(100% - 6px))`
+        mediamodule.querySelector('.current').textContent = getTimeString(element.currentTime) + ' / ' + getTimeString(element.duration)
+    }
+    updateVolume()
+    element.addEventListener('play', updatePlaying)
+    element.addEventListener('playing', updatePlaying)
+    element.addEventListener('pause', updatePlaying)
+    element.addEventListener('timeupdate', ()=>{
+        updatePlaying()
+        seeker.max = element.duration * 1000
+        seeker.value = element.currentTime * 1000
+        const ct = element.currentTime / element.duration
+        let bt
+        if (element.buffered) for (let i=0; i<element.buffered.length; i++) {
+            if (element.buffered.start(i) < element.currentTime && element.currentTime < element.buffered.end(i)) {
+                bt = element.buffered.end(i) / element.duration
+                break
+            }
+        }
+        if (!bt) bt = ct
+        seeker.style.backgroundImage = `linear-gradient(to right, rgba(0,0,0,0) 6px, var(--text-color) 6px, var(--text-color) calc(6px + ${ct * 100}% - 12px * ${ct}), var(--date-color) calc(6px + ${ct * 100}% - 12px * ${ct}), var(--date-color) calc(6px + ${bt * 100}% - 12px * ${bt}), var(--layer-color) calc(6px + ${bt * 100}% - 12px * ${bt}), var(--layer-color) calc(100% - 6px), rgba(0,0,0,0) calc(100% - 6px))`
+        mediamodule.querySelector('.current').textContent = getTimeString(element.currentTime) + ' / ' + getTimeString(element.duration)
+    })
+    element.addEventListener('volumechange', updateVolume)
+    seeker.addEventListener('input', ()=>{
+        element.currentTime = seeker.value / 1000
+    })
+    volume.addEventListener('input', ()=>{
+        element.volume = volume.value
+        updateVolumeIcon()
+    })
+    mediamodule.querySelector('.loop').addEventListener('click', ()=>{
+        if (element.loop) {
+            mediamodule.querySelector('.loop').style.backgroundImage = 'url(/static/icons/loop-off.svg)'
+        } else {
+            mediamodule.querySelector('.loop').style.backgroundImage = 'url(/static/icons/loop-one.svg)'
+        }
+        element.loop = !element.loop
+    })
+    volumeIcon.addEventListener('click', ()=>{
+        element.muted = !element.muted
+        updateVolumeIcon()
+    })
+    mediamodule.querySelector('.fullscreen')?.addEventListener('click', ()=>{
+        if (document.fullscreenElement) {
+            document.exitFullscreen()
+        } else {
+            mediamodule.requestFullscreen()
+        }
+    })
+    mediamodule.querySelector('.info').addEventListener('click', ()=>{
+        if (location.pathname == '/edit') return
+        if (!element.currentSrc.startsWith(location.origin)) return
+        if (element.currentSrc.endsWith(Wiklo.PAGEUUID)) return
+        Wiklo.loadUUIDPage(decodeURIComponent(element.currentSrc.split('#')[0].slice(-32))).then(()=>{window.history.pushState(null, null, './?' + Wiklo.PAGEUUID); updateButtons(); document.title = Wiklo.PAGENAME + ' - ' + Wiklo.title})
+    })
 }
 Wiklo.tryHead = (t) => {
     let q = 0
@@ -700,7 +866,7 @@ Wiklo.loadUUIDPage = async (uuid, hash=null, forceLatestVersion=false) => {
         document.querySelector('section').append(Wiklo.textToPage('{{nestobject|'+uuid+'|type='+metadata[uuid].MIMEType+'|width=100%|height=400}}<hr>'+(metadata[uuid]?.description ? (metadata[uuid]?.description + '<hr>') : '')+'This is an object file uploaded to this website. ('+metadata[uuid].MIMEType+') <a href="./data/'+uuid+'" download="'+safepagename+'">Download</a>', metadata[uuid]))
     } else if (Wiklo._supportedCustomTypes.hasOwnProperty(metadata[uuid].MIMEType)) {
         const data = await (await Wiklo.loadUUIDData(uuid)).text() || ''
-        document.querySelector('section').append(Wiklo.textToPageRaw(Wiklo._supportedCustomTypes[metadata[uuid].MIMEType](data) + '<hr>'+(metadata[uuid]?.description ? (metadata[uuid]?.description + '<hr>') : '')+'This is a text file uploaded to this website. ('+metadata[uuid].MIMEType+') <a href="./data/'+uuid+'" download="'+safepagename+'">Download</a>', metadata[uuid]))
+        document.querySelector('section').append(Wiklo.textToPageRaw(Wiklo._supportedCustomTypes[metadata[uuid].MIMEType](data) + '<hr>'+(metadata[uuid]?.description ? (metadata[uuid]?.description + '<hr>') : '')+'This is a text file uploaded to this website. ('+metadata[uuid].MIMEType+') <a href="./data/'+uuid+'" download="'+safepagename+'">Download</a> <a href="./data/'+uuid+'">Raw</a>', metadata[uuid]))
     } else if (Wiklo._supportedCodeTypes.includes(metadata[uuid].MIMEType)) {
         const data = await (await Wiklo.loadUUIDData(uuid)).text() || ''
         document.querySelector('section').append(Wiklo.textToPageRaw('<code>' + data.replaceAll('<', '&#x3C;').replaceAll('>', '&#x3E;') + '</code><hr>'+(metadata[uuid]?.description ? (metadata[uuid]?.description + '<hr>') : '')+'This is a text file uploaded to this website. ('+metadata[uuid].MIMEType+') <a href="./data/'+uuid+'" download="'+safepagename+'">Download</a>', metadata[uuid]))
@@ -919,7 +1085,7 @@ window.addEventListener('load', () => {
     document.querySelector('section').addEventListener('mousemove', (e) => {
         document.querySelectorAll('a:hover + div.linkhover').forEach((v)=>{
             v.style.left = Math.min(Math.max(4, e.clientX - v.clientWidth / 2), window.innerWidth - v.clientWidth - 4) + 'px'
-            v.style.bottom = Math.min(Math.max(4, window.innerHeight - e.clientY + 12), window.innerHeight - v.clientHeight - 4) + 'px'
+            v.style.bottom = Math.min(window.innerHeight - e.clientY - window.scrollY + 12, window.innerHeight - v.clientHeight - window.scrollY - 4) + 'px'
         })
     })
     document.body.onpopstate = Wiklo.loadFromSearch
