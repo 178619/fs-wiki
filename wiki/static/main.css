@@ -448,6 +448,7 @@ article {
             margin-bottom: 4px;
             font-size: large;
         }
+        left: 0;
     }
 
     div.refhover {
@@ -630,13 +631,13 @@ article {
         vertical-align: middle;
         .videomask {
             position: fixed;
-            z-index: 1002;
+            z-index: 102;
             .seeker {
                 position: absolute;
                 width: calc(100% - 12px);
                 left: 6px;
                 bottom: 32px;
-                z-index: 1003;
+                z-index: 103;
             }
             .controls {
                 display: flex;
@@ -829,9 +830,13 @@ form {
 */
 
 @media print {
+    body {
+        print-color-adjust: exact;
+        -webkit-print-color-adjust: exact; 
+    }
+
     article {
         max-width: unset;
-    
         a:visited {
             color: var(--link-color);
         }
@@ -839,6 +844,14 @@ form {
 
     header, header nav, footer {
         display: none;
+    }
+
+    .videomask {
+        display: none;
+    }
+
+    video {
+        visibility: hidden;
     }
 }
 
