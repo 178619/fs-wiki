@@ -581,23 +581,23 @@ article {
         }
 
         .play-pause {
-            background-image: url('/static/icons/play.svg');
+            background-image: url('./icons/play.svg');
         }
 
         .loop {
-            background-image: url('/static/icons/loop-off.svg');
+            background-image: url('./icons/loop-off.svg');
         }
 
         .volume-icon {
-            background-image: url('/static/icons/volume-4.svg');
+            background-image: url('./icons/volume-4.svg');
         }
 
         .info {
-            background-image: url('/static/icons/info.svg');
+            background-image: url('./icons/info.svg');
         }
 
         .fullscreen {
-            background-image: url('/static/icons/fullscreen-enable.svg');
+            background-image: url('./icons/fullscreen-enable.svg');
         }
 
         .current {
@@ -671,7 +671,7 @@ article {
             height: 100%;
         }
         button.fullscreen {
-            background-image: url('/static/icons/fullscreen-disable.svg');
+            background-image: url('./icons/fullscreen-disable.svg');
         }
     }
 }

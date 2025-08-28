@@ -321,24 +321,24 @@ Wiklo.media = (element) => {
     })
     const updateVolumeIcon = () => {
         if (element.muted) {
-            volumeIcon.style.backgroundImage = 'url(/static/icons/volume-off.svg)'
+            volumeIcon.style.backgroundImage = 'url(./static/icons/volume-off.svg)'
         } else if (element.volume >= 0.75) {
-            volumeIcon.style.backgroundImage = 'url(/static/icons/volume-4.svg)'
+            volumeIcon.style.backgroundImage = 'url(./static/icons/volume-4.svg)'
         } else if (element.volume >= 0.5) {
-            volumeIcon.style.backgroundImage = 'url(/static/icons/volume-3.svg)'
+            volumeIcon.style.backgroundImage = 'url(./static/icons/volume-3.svg)'
         } else if (element.volume >= 0.25) {
-            volumeIcon.style.backgroundImage = 'url(/static/icons/volume-2.svg)'
+            volumeIcon.style.backgroundImage = 'url(./static/icons/volume-2.svg)'
         } else if (element.volume) {
-            volumeIcon.style.backgroundImage = 'url(/static/icons/volume-1.svg)'
+            volumeIcon.style.backgroundImage = 'url(./static/icons/volume-1.svg)'
         } else {
-            volumeIcon.style.backgroundImage = 'url(/static/icons/volume-0.svg)'
+            volumeIcon.style.backgroundImage = 'url(./static/icons/volume-0.svg)'
         }
     }
     const updatePlaying = () => {
         if (!!(element.currentTime > 0 && !element.paused && !element.ended && element.readyState > 2)) {
-            mediamodule.querySelector('.play-pause').style.backgroundImage = 'url(/static/icons/pause.svg)'
+            mediamodule.querySelector('.play-pause').style.backgroundImage = 'url(./static/icons/pause.svg)'
         } else {
-            mediamodule.querySelector('.play-pause').style.backgroundImage = 'url(/static/icons/play.svg)'
+            mediamodule.querySelector('.play-pause').style.backgroundImage = 'url(./static/icons/play.svg)'
         }
     }
     const updateVolume = () => {
@@ -376,9 +376,9 @@ Wiklo.media = (element) => {
     })
     mediamodule.querySelector('.loop').addEventListener('click', ()=>{
         if (element.loop) {
-            mediamodule.querySelector('.loop').style.backgroundImage = 'url(/static/icons/loop-off.svg)'
+            mediamodule.querySelector('.loop').style.backgroundImage = 'url(./static/icons/loop-off.svg)'
         } else {
-            mediamodule.querySelector('.loop').style.backgroundImage = 'url(/static/icons/loop-one.svg)'
+            mediamodule.querySelector('.loop').style.backgroundImage = 'url(./static/icons/loop-one.svg)'
         }
         element.loop = !element.loop
     })
