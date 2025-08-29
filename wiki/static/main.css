@@ -448,7 +448,6 @@ article {
             margin-bottom: 4px;
             font-size: large;
         }
-        left: 0;
     }
 
     div.refhover {
@@ -460,6 +459,7 @@ article {
         a {
             color: inherit;
         }
+        left: 0;
     }
 
     a:hover + div.refhover, div.refhover:hover, div.refhover:focus {
@@ -658,6 +658,9 @@ article {
         }
         .videomask:not(.shown) * {
             display: none;
+        }
+        video {
+            max-width: 100%;
         }
     }
     div.mediamodule:fullscreen {
