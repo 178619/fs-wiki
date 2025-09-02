@@ -194,7 +194,7 @@ Wiklo.moduleHandlers = {
     },
     'nestaudio': (args, kwargs) => {
         if (!args.length) return '<audio></audio>'
-        return '<div class="mediamodule"><button class="play-pause"></button><button class="loop"></button><input class="seeker" type="range" value="0" min="0" max="0"><div class="current">00:00/00:00</div><button class="volume-icon"></button><input class="volume" type="range" value="0" min="0" max="1" step="0.000001"><button class="info"></button><audio preload="metadata" onloadedmetadata="Wiklo.media(this)">' + args.map((v)=>{
+        return '<div class="mediamodule"><button class="play-pause"></button><button class="loop"></button><input class="seeker" type="range" value="0" min="0" max="0"><div class="current">--:-- / --:--</div><button class="volume-icon"></button><input class="volume" type="range" value="0" min="0" max="1" step="0.000001"><button class="info"></button><audio preload="metadata" onloadedmetadata="Wiklo.media(this)">' + args.map((v)=>{
             let source = ''
             if (v.match(/^[0-9a-f]{32}$/)) source = './data/' + v
             if (v.startsWith('http://') || v.startsWith('https://')) source = v
@@ -207,7 +207,7 @@ Wiklo.moduleHandlers = {
     },
     'nestvideo': (args, kwargs) => {
         if (!args.length) return '<video></video>'
-        return '<div class="mediamodule"><div class="videomask shown"><input class="seeker" type="range" value="0" min="0" max="0"><div class="controls"><div><button class="play-pause"></button><button class="loop"></button><div class="current">00:00/00:00</div><button class="volume-icon"></button><input class="volume" type="range" value="0" min="0" max="1" step="0.000001"></div><div><button class="info"></button><button class="fullscreen"></button></div></div></div><video preload="auto" onloadedmetadata="Wiklo.media(this)"' + (kwargs.width ? ` width="${kwargs.width}"` : '') + (kwargs.height ? ` height="${kwargs.height}"` : '') + '>' + args.map((v)=>{
+        return '<div class="mediamodule"><div class="videomask shown"><input class="seeker" type="range" value="0" min="0" max="0"><div class="controls"><div><button class="play-pause"></button><button class="loop"></button><div class="current">--:-- / --:--</div><button class="volume-icon"></button><input class="volume" type="range" value="0" min="0" max="1" step="0.000001"></div><div><button class="info"></button><button class="fullscreen"></button></div></div></div><video preload="auto" onloadedmetadata="Wiklo.media(this)"' + (kwargs.width ? ` width="${kwargs.width}"` : '') + (kwargs.height ? ` height="${kwargs.height}"` : '') + '>' + args.map((v)=>{
             let source = ''
             if (v.match(/^[0-9a-f]{32}$/)) source = './data/' + v
             if (v.startsWith('http://') || v.startsWith('https://')) source = v
