@@ -194,7 +194,8 @@ Wiklo.moduleHandlers = {
     },
     'nestaudio': (args, kwargs) => {
         if (!args.length) return '<audio></audio>'
-        return '<div class="mediamodule"><button class="play-pause"></button><button class="loop"></button><input class="seeker" type="range" value="0" min="0" max="0"><div class="current">--:-- / --:--</div><button class="volume-icon"></button><input class="volume" type="range" value="0" min="0" max="1" step="0.000001"><button class="info"></button><audio preload="metadata" onloadedmetadata="Wiklo.media(this)">' + args.map((v)=>{
+        const native = Wiklo.getTrue(kwargs.native)
+        const tag = `<audio preload="metadata" onloadedmetadata="Wiklo.media(this)"${native ? ' controls' : ''}>${args.map((v)=>{
             let source = ''
             if (v.match(/^[0-9a-f]{32}$/)) source = './data/' + v
             if (v.startsWith('http://') || v.startsWith('https://')) source = v
@@ -203,11 +204,14 @@ Wiklo.moduleHandlers = {
                 if (uuid) source = './data/' + uuid
             }
             return source ? `<source src=${source}>` : ''
-        }).join('') + '</audio></div>'
+        }).join('')}</audio>`
+        if (native) return tag
+        return '<div class="mediamodule"><button class="play-pause"></button><button class="loop"></button><input class="seeker" type="range" value="0" min="0" max="0"><div class="current">--:-- / --:--</div><button class="volume-icon"></button><input class="volume" type="range" value="0" min="0" max="1" step="0.000001"><button class="info"></button>' + tag + '</div>'
     },
     'nestvideo': (args, kwargs) => {
         if (!args.length) return '<video></video>'
-        return '<div class="mediamodule"><div class="videomask shown"><input class="seeker" type="range" value="0" min="0" max="0"><div class="controls"><div><button class="play-pause"></button><button class="loop"></button><div class="current">--:-- / --:--</div><button class="volume-icon"></button><input class="volume" type="range" value="0" min="0" max="1" step="0.000001"></div><div><button class="info"></button><button class="fullscreen"></button></div></div></div><video preload="auto" onloadedmetadata="Wiklo.media(this)"' + (kwargs.width ? ` width="${kwargs.width}"` : '') + (kwargs.height ? ` height="${kwargs.height}"` : '') + '>' + args.map((v)=>{
+        const native = Wiklo.getTrue(kwargs.native)
+        const tag = `<video preload="auto" onloadedmetadata="Wiklo.media(this)"${native ? ' controls' : ''}${kwargs.width ? ` width="${kwargs.width}"` : ''}${kwargs.height ? ` height="${kwargs.height}"` : ''}>${args.map((v)=>{
             let source = ''
             if (v.match(/^[0-9a-f]{32}$/)) source = './data/' + v
             if (v.startsWith('http://') || v.startsWith('https://')) source = v
@@ -216,7 +220,9 @@ Wiklo.moduleHandlers = {
                 if (uuid) source = './data/' + uuid
             }
             return source ? `<source src=${source}>` : ''
-        }).join('') + '</video></div>'
+        }).join('')} + '</video>`
+        if (native) return tag
+        return '<div class="mediamodule"><div class="videomask shown"><input class="seeker" type="range" value="0" min="0" max="0"><div class="controls"><div><button class="play-pause"></button><button class="loop"></button><div class="current">--:-- / --:--</div><button class="volume-icon"></button><input class="volume" type="range" value="0" min="0" max="1" step="0.000001"></div><div><button class="info"></button><button class="fullscreen"></button></div></div></div>' + tag + '</div>'
     },
     'nestobject': (args, kwargs) => {
         if (!args.length) return '<object data="">'
