@@ -23,15 +23,17 @@ Object.defineProperty(Wiklo, 'PAGEINFO', {
         return Wiklo.getMetadataUnsafe()[Wiklo.PAGEUUID]
     }
 })
-Wiklo.alert = (v, t='INFO', l=4000) => {
+Wiklo.alert = (v, t='INFO', l=4000, k=null) => {
     if (!document.querySelector('#wiklo-alert-container')) {
         const c = document.createElement('div')
         c.id = 'wiklo-alert-container'
         document.body.appendChild(c)
     }
+    if (k && document.querySelector('#wiklo-alert-container > #wiklo-alert-' + k)) return
     const d = document.createElement('div')
     d.innerHTML = v
     if (t) d.classList.add(t.toUpperCase())
+    if (k) d.id = '#wiklo-alert-' + k
     document.querySelector('#wiklo-alert-container').appendChild(d)
     d.style.opacity = 1
     setTimeout(()=>{if (d) d.style.right = '-16384px'}, l)
@@ -349,7 +351,7 @@ Wiklo.media = (element) => {
     }
     const updateVolume = () => {
         volume.value = element.volume
-        volume.style.backgroundImage = `linear-gradient(to right, rgba(0,0,0,0) 6px, var(--text-color) 6px, var(--text-color) calc(6px + ${element.volume * 100}% - 12px * ${element.volume}), var(--date-color) calc(6px + ${element.volume * 100}% - 12px * ${element.volume}), var(--date-color) calc(100% - 6px), rgba(0,0,0,0) calc(100% - 6px))`
+        volume.style.backgroundImage = `linear-gradient(to right, rgba(0,0,0,0) 6px, var(--text-color) 6px calc(6px + ${element.volume * 100}% - 12px * ${element.volume}), var(--date-color) calc(6px + ${element.volume * 100}% - 12px * ${element.volume}) calc(100% - 6px), rgba(0,0,0,0) calc(100% - 6px))`
         mediamodule.querySelector('.current').textContent = getTimeString(element.currentTime) + ' / ' + getTimeString(element.duration)
     }
     updateVolume()
@@ -369,7 +371,7 @@ Wiklo.media = (element) => {
             }
         }
         if (!bt) bt = ct
-        seeker.style.backgroundImage = `linear-gradient(to right, rgba(0,0,0,0) 6px, var(--text-color) 6px, var(--text-color) calc(6px + ${ct * 100}% - 12px * ${ct}), var(--date-color) calc(6px + ${ct * 100}% - 12px * ${ct}), var(--date-color) calc(6px + ${bt * 100}% - 12px * ${bt}), var(--layer-color) calc(6px + ${bt * 100}% - 12px * ${bt}), var(--layer-color) calc(100% - 6px), rgba(0,0,0,0) calc(100% - 6px))`
+        seeker.style.backgroundImage = `linear-gradient(to right, rgba(0,0,0,0) 6px, var(--text-color) 6px calc(6px + ${ct * 100}% - 12px * ${ct}), var(--date-color) calc(6px + ${ct * 100}% - 12px * ${ct}) calc(6px + ${bt * 100}% - 12px * ${bt}), var(--layer-color) calc(6px + ${bt * 100}% - 12px * ${bt}) calc(100% - 6px), rgba(0,0,0,0) calc(100% - 6px))`
         mediamodule.querySelector('.current').textContent = getTimeString(element.currentTime) + ' / ' + getTimeString(element.duration)
     })
     element.addEventListener('volumechange', updateVolume)
