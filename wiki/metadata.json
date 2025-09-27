@@ -847,9 +847,7 @@
             "644fab97b499426dbaa77a5ec956f9c4"
         ],
         "MIMEType": "text/wkl",
-        "revisions": [
-            "6c32c463249040b7b7b1a7599f6bc66b"
-        ]
+        "revised": true
     },
     "9842c51ea1ea402fbb4cc8d13ded293c": {
         "name": "Sana Poanet",
@@ -860,9 +858,7 @@
             "644fab97b499426dbaa77a5ec956f9c4"
         ],
         "MIMEType": "text/wkl",
-        "revisions": [
-            "cb255406db534c2d9e02262d2b2cb780"
-        ]
+        "revised": true
     },
     "c5a3a52cc7fd4391ba609c87b791342a": {
         "name": "Stella Mayberk",
@@ -1167,10 +1163,7 @@
             "644fab97b499426dbaa77a5ec956f9c4"
         ],
         "MIMEType": "text/wkl",
-        "revisions": [
-            "da43965f316942b0bef27116ac2d775c",
-            "c5a3a52cc7fd4391ba609c87b791342a"
-        ]
+        "revised": true
     },
     "1d5ea0074a4f438d809b07fd538a1a6c": {
         "name": "Lizsoft",
@@ -1241,11 +1234,7 @@
             "47d21a65e84e45258ccd9b77ec2f52f0"
         ],
         "MIMEType": "text/wkl",
-        "revisions": [
-            "27c2805f4bd6449594c8a91bd04c5277",
-            "1df660c05af64496a669f3412d06a236",
-            "8d3553ddbbfa4904b3c5ae24e22273a3"
-        ]
+        "revised": true
     },
     "3be99ed271f544abae7da694daef4bca": {
         "name": "fs2020.re.mp4",
@@ -1304,6 +1293,114 @@
         "revisions": [
             "41bf13817a364c58b994e120307900e9",
             "977a196c2be4443d9a3fcde6b6a5e150"
+        ]
+    },
+    "60cf7c83230d46fc99d27809f807d531": {
+        "name": "kao.jpg",
+        "author": "Fryze",
+        "lastModification": 1758933487518,
+        "creation": 1758933487518,
+        "categories": [],
+        "MIMEType": "image/jpeg",
+        "description": "A profile picture used by [[Kaori Aihara]]. Source: [[https://web.archive.org/web/20110923090554/http://fancy.freespace.jp/kaorin/kao.jpg]]"
+    },
+    "1af17c2ce68b45efa4fda39047535241": {
+        "name": "Kaori Aihara",
+        "author": "Fryze",
+        "lastModification": 1758935750787,
+        "creation": 1753181961101,
+        "categories": [
+            "47d21a65e84e45258ccd9b77ec2f52f0"
+        ],
+        "MIMEType": "text/wkl",
+        "description": "A Japanese [[voice actress]]",
+        "revisions": [
+            "27c2805f4bd6449594c8a91bd04c5277",
+            "1df660c05af64496a669f3412d06a236",
+            "8d3553ddbbfa4904b3c5ae24e22273a3",
+            "7eaed4f82a1f412ea794a4431a607726"
+        ]
+    },
+    "cb4477782f0e4f56b0e5437f1458ae66": {
+        "name": "msd_b.jpg",
+        "author": "Fryze",
+        "lastModification": 1758936152530,
+        "creation": 1758936152530,
+        "categories": [],
+        "MIMEType": "image/jpeg",
+        "description": "An old banner of [[Marckensoft]]. Source: [[https://web.archive.org/web/20061031061048/http://www.interq.or.jp/cool/msd/fwr/bnr/msd_b.jpg]]"
+    },
+    "dad6b36ccd1c4639b947dfa1c29c7d14": {
+        "name": "voice_arche.mp3",
+        "author": "Fryze",
+        "lastModification": 1758936294537,
+        "creation": 1758936294537,
+        "categories": [],
+        "MIMEType": "audio/mpeg",
+        "description": "A voice sample of [[Arche Plumfield]]. Voice by [[Kaori Aihara]]. Source: [[https://web.archive.org/web/20061118053859/http://www.interq.or.jp/cool/msd/fs/media/voice_arche.mp3]]"
+    },
+    "91f86cafae864c0996385ea0a8b1e3c0": {
+        "name": "voice_sana.mp3",
+        "author": "Fryze",
+        "lastModification": 1758936349920,
+        "creation": 1758936349920,
+        "categories": [],
+        "MIMEType": "audio/mpeg",
+        "description": "A voice sample of [[Sana Poanet]]. Voice by [[Sono Sachika]]. Source: [[https://web.archive.org/web/20061118052630/http://www.interq.or.jp/cool/msd/fs/media/voice_sana.mp3]]"
+    },
+    "37b681e451c4446fa3d3de2a5689cc70": {
+        "name": "voice_stella.mp3",
+        "author": "Fryze",
+        "lastModification": 1758936407159,
+        "creation": 1758936407159,
+        "categories": [],
+        "MIMEType": "audio/mpeg",
+        "description": "A voice sample of [[Stella Mayberk]]. Voice by [[Ruou Ryouki]]. Source: [[https://web.archive.org/web/20061118061128/http://www.interq.or.jp/cool/msd/fs/media/voice_stella.mp3]]"
+    },
+    "ca141d71549c48ccb0143415065f29c9": {
+        "name": "Arche Plumfield",
+        "author": "Fryze",
+        "lastModification": 1758937540071,
+        "creation": 1741360551936,
+        "categories": [
+            "644fab97b499426dbaa77a5ec956f9c4"
+        ],
+        "MIMEType": "text/wkl",
+        "description": "A main character of [[Fortune Summoners]]",
+        "revisions": [
+            "6c32c463249040b7b7b1a7599f6bc66b",
+            "ca7a2f13f7874e0c87dc36f7c7217702"
+        ]
+    },
+    "b997c49c9d9741ffa20fef84f2f5d8aa": {
+        "name": "Sana Poanet",
+        "author": "Fryze",
+        "lastModification": 1758938120227,
+        "creation": 1741360617878,
+        "categories": [
+            "644fab97b499426dbaa77a5ec956f9c4"
+        ],
+        "MIMEType": "text/wkl",
+        "description": "A main character of [[Fortune Summoners]]",
+        "revisions": [
+            "cb255406db534c2d9e02262d2b2cb780",
+            "9842c51ea1ea402fbb4cc8d13ded293c"
+        ]
+    },
+    "82171c4f9e2d4b2ebea87ee2b92ab2dd": {
+        "name": "Stella Mayberk",
+        "author": "Fryze",
+        "lastModification": 1758939077178,
+        "creation": 1741361663550,
+        "categories": [
+            "644fab97b499426dbaa77a5ec956f9c4"
+        ],
+        "MIMEType": "text/wkl",
+        "description": "A main character of [[Fortune Summoners]]",
+        "revisions": [
+            "da43965f316942b0bef27116ac2d775c",
+            "c5a3a52cc7fd4391ba609c87b791342a",
+            "9fb4078fec6448d9898b1393a94deea8"
         ]
     }
 }

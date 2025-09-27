@@ -1,0 +1,43 @@
+{{Infobox
+|bodystyle=
+float: right;
+clear: right;
+|title=  アルチェ・プラムフィールド
+|above=  Arche Plumfield
+|image=  {{nest|chara_arche2.jpg}}
+|label1= Voice (OG)
+|data1=  [[Kaori Aihara]]
+|label2= Voice (DX)
+|data2=  [[Yukari Tamura]]
+}}
+[[Arche Plumfield]] is one of the three protagonists in [[Fortune Summoners]]. She moves to the [[Town of Tonkiness]] as the story of the game begins.
+
+She is obsessed with sword skills and always carry a huge sword, however she also has a great interest in magic.
+
+== Voice Sample ==
+* {{nest|voice_arche.mp3}}
+
+== Abilities ==
+{{aligned table|cols=3
+|Name|Requirement|Command/Cost
+|Slash|None|{{fs key|x}}
+|Thrust|None|{{fs key|down+x}}
+|Roll|None|{{fs key|down-right}}
+|Cartwheel|None|{{fs key|down-left}}
+|Wide Slash|None|{{fs key|right+x}}
+|Snap Thrust|None|{{fs key|left+x}}
+|Jumpkick|None|{{fs key|right-up-x}}
+|Arcing Slash|None|{{fs key|up+x}}
+|Downstab|Level 2|{{fs key|down+x}} While Falling
+|Combo Slash|Level 3|{{fs key|up+x}} After a Slash
+|Wheel Slash|Level 5|{{fs key|right-down-x}}
+|Combo Wide Slash|Level 7|{{fs key|right+x}} After a Slash
+|Snap Slash|Level 9|{{fs key|left-x}}
+|Knight's Thrust|Level 10|{{fs key|down+x}} While Running
+|Leaping Slash|Level 12|{{fs key|up-right-x}}
+|Twirling Slash|Level 14|{{fs key|left-down-x}}
+|The Full Moon|Level 17|{{fs key|up+x}} While Jumping
+|Unison|[[Elemental Stone]] '[[Silpheed]]'|10 MP
+|Wind Thrust|During Unison|None
+|Buster Tornado|Level 20<br>During Unison|3 MP
+}}

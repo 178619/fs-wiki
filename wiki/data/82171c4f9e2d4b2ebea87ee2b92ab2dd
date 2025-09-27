@@ -1,0 +1,39 @@
+{{Infobox
+|bodystyle=
+float: right;
+clear: right;
+|title=  ステラ・メイベルク
+|above=  Stella Mayberk
+|image=  {{nest|chara_stella2.jpg}}
+|label1= Voice (OG)
+|data1=  [[Ruou Ryouki]]
+|label2= Voice (DX)
+|data2=  [[Fujimura Ayumi]]
+}}
+[[Stella Mayberk]] is one of the three protagonists in [[Fortune Summoners]]. Unlike the other two, she lives in [[Chartreux City]].
+
+She is a daughter of the president of [[Mayberk Concern]], primarily known for producing [[elemental stone|elemental stones]]. Her exceptional skills and the [[elemental stone]] '[[Royal Scarlet]]' in her bracelet allows her to use powerful fire magic.
+
+== Voice Sample ==
+* {{nest|voice_stella.mp3}}
+
+== Abilities ==
+{{aligned table|cols=3
+|Name|Requirement|Command/Cost
+|Stab|None|{{fs key|x}} (Forward)<br>{{fs key|left+x}} (Backward)
+|Fire Handling|None|{{fs key|down+x}} (Ground)<br>{{fs key|right+x}} (Firebolt)<br>{{fs key|up+x}} (Air)
+|Leap Back|None|{{fs key|down-left}} (Normal)<br>{{fs key|down-right}} (Flip)
+|Fire Wall|None|3 MP
+|Chaser|Level 4|4 MP
+|Phoenix|Level 7|4 MP
+|Disintegrate|Level 9|3 MP
+|Blade|Level 11|3 MP
+|Inferno|Level 12|5 MP
+|Life Force|Level 14|4 MP
+|Interceptor|Level 16|5 MP
+|Fire Wall II|Level 17|6 MP
+|Phoenix II|Level 19|7 MP
+|Chaser II|Level 20|8 MP
+|Explosion|Level 21|9 MP
+|Cerberus|Level 23|11 MP
+}}
