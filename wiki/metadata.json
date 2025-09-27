@@ -255,36 +255,6 @@
         "categories": [],
         "MIMEType": "image/svg+xml"
     },
-    "eb06140e212f47cc915f6a711695f05f": {
-        "name": "voice_arche.mp3",
-        "author": "Fryze",
-        "lastModification": 1747140378551,
-        "creation": 1747140378551,
-        "categories": [
-            "644fab97b499426dbaa77a5ec956f9c4"
-        ],
-        "MIMEType": "audio/mpeg"
-    },
-    "923121ed187b47fd8944dceb4c26d1ae": {
-        "name": "voice_sana.mp3",
-        "author": "Fryze",
-        "lastModification": 1747140402541,
-        "creation": 1747140402541,
-        "categories": [
-            "644fab97b499426dbaa77a5ec956f9c4"
-        ],
-        "MIMEType": "audio/mpeg"
-    },
-    "28f891f5e15042c88c2740941981dce0": {
-        "name": "voice_stella.mp3",
-        "author": "Fryze",
-        "lastModification": 1747140420884,
-        "creation": 1747140420884,
-        "categories": [
-            "644fab97b499426dbaa77a5ec956f9c4"
-        ],
-        "MIMEType": "audio/mpeg"
-    },
     "17a9ebddc6d24eb7b00a504efbc49b9a": {
         "name": "natsumi_talk.mp3",
         "author": "Fryze",
