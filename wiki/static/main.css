@@ -435,7 +435,8 @@ article {
         border-radius: 2px;
         box-shadow: 0px 0px 4px 2px var(--date-color);
         opacity: 0;
-        transition: opacity 125ms;
+        visibility: hidden;
+        transition: opacity 125ms, visibility 0ms 125ms;
         font-size: initial;
         font-weight: 400;
         font-style: initial;
@@ -456,20 +457,22 @@ article {
     
     div.linkhover {
         position: absolute;
+        left: 0;
+        max-width: 100%;
         a {
             color: inherit;
         }
-        left: 0;
     }
 
     a:hover + div.refhover, div.refhover:hover, div.refhover:focus {
         pointer-events: all;
         user-select: text;
-        opacity: 1;
     }
 
-    a:hover + div.linkhover {
+    a:hover + div.refhover, div.refhover:hover, div.refhover:focus, a:hover + div.linkhover {
         opacity: 1;
+        visibility: visible;
+        transition-delay: 0s;
     }
 
     img, audio, video {
