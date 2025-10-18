@@ -959,12 +959,7 @@
             "8125693cead64892bcc77e71cd61fb3a"
         ],
         "MIMEType": "text/wkl",
-        "revisions": [
-            "0f6dc02823ed4f46a8d9bf73e397efc7",
-            "49e49c833697482cbc593045525cabc7",
-            "00b870ab69de4865970cc63f4c943c4b",
-            "c7731df6bb4146e298f99ff7f09bc12b"
-        ]
+        "revised": true
     },
     "577c18c347254d7ebd22706f40a7cb7b": {
         "name": "MEL",
@@ -974,7 +969,8 @@
         "categories": [
             "fd4b3e96eea142a993124535e213573e"
         ],
-        "MIMEType": "text/wkl"
+        "MIMEType": "text/wkl",
+        "revised": true
     },
     "61d99ab40a6940889f6ffd0e0797d02c": {
         "name": "Lizsoft Music Collection",
@@ -1412,6 +1408,56 @@
             "2b8bafc5242041ef854cf6f214364c8b",
             "1d5ea0074a4f438d809b07fd538a1a6c",
             "d289eef9893a4817a7b0e9bde7778085"
+        ]
+    },
+    "66e040d622c8479080d1e553a5720842": {
+        "name": "MEL_Picture.png",
+        "author": "Fryze",
+        "lastModification": 1760801738621,
+        "creation": 1760801738621,
+        "categories": [],
+        "MIMEType": "image/png",
+        "description": "A picture of [[MEL]]. Converted for correcting a color profile. Source: [[Lizsoft Music Collection]], 印刷用/音楽集_印刷.pdf"
+    },
+    "96732cb2ef9f4ab89995fcabee41773b": {
+        "name": "MEL",
+        "author": "Fryze",
+        "lastModification": 1760803502232,
+        "creation": 1753652931652,
+        "categories": [
+            "fd4b3e96eea142a993124535e213573e"
+        ],
+        "MIMEType": "text/wkl",
+        "description": "The founder of [[Lizsoft]]",
+        "revisions": [
+            "577c18c347254d7ebd22706f40a7cb7b"
+        ]
+    },
+    "8a6838e3d5874b99b6c048189803d765": {
+        "name": "avatar_3530fa75bed6_512.jpg",
+        "author": "Fryze",
+        "lastModification": 1760804179346,
+        "creation": 1760804179346,
+        "categories": [],
+        "MIMEType": "image/jpeg",
+        "description": "A profile picture of [[Takeda Mika]]. Source: [[https://64.media.tumblr.com/avatar_3530fa75bed6_512.png]]"
+    },
+    "2032d14ca1174ebe97ed7de21df1812b": {
+        "name": "Takeda Mika",
+        "author": "Fryze",
+        "lastModification": 1760804755962,
+        "creation": 1747060525635,
+        "categories": [
+            "8125693cead64892bcc77e71cd61fb3a"
+        ],
+        "MIMEType": "text/wkl",
+        "description": "A Japanese illustrator",
+        "revisions": [
+            "0f6dc02823ed4f46a8d9bf73e397efc7",
+            "49e49c833697482cbc593045525cabc7",
+            "00b870ab69de4865970cc63f4c943c4b",
+            "c7731df6bb4146e298f99ff7f09bc12b",
+            "1e14a595bea94931ae39fed0975ca430"
         ]
     }
 }
