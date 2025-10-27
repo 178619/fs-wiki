@@ -134,6 +134,7 @@ const mediawiki = {
         return `<a href="${link}">NASA Astronomy Picture of the Day: ${kwargs.title} (${kwargs.date})</a>`
     },
     'asterisk': () => '&#x2A;',
+    'black': (args, kwargs) => `<span style="color: black;">${args[0]}</span>`,
     'blockquote': (args, kwargs) => {
         const text = kwargs.text || kwargs.quote || args[0]
         if (!kwargs.text && !args[0]) return ''
@@ -184,6 +185,13 @@ const mediawiki = {
         if (args[0] == 'right') return '<div style="clear:right;"></div>'
         return '<div style="clear:both;"></div>'
     },
+    'color': (args, kwargs) => `<span style="color: ${args[0]};">${args[1]}</span>`,
+    'colored link': (args, kwargs) => `[[${args[1]}|<span style="color: ${args[0]};">${args[2] || args[1]}</span>]]`,
+    'composition bar': (args, kwargs) => {
+        return `<div style="width: ${kwargs.width || '100px'}";>${args[0]} / ${args[1]}${kwargs.per == '1' ? ('('+Math.round(args[0]/args[1] )+'%)') : ''}<div style="width: 100%; height: 1em; background-image: linear-gradient(to right, ${kwargs.hex || args[2] || 'var(--date-color)'} ${args[0] / args[1] * 100}%, ${kwargs['background-color'] || 'transparent'} ${args[0] / args[1] * 100}%); border: solid 1px ${kwargs['border-color'] || kwargs.border || 'var(--date-color)'}"></div></div>`
+    },
+    'decrease': (args, kwargs) => '<span title="'+(args[0] || 'Decrease')+'" style="color: var(--decrease-color); font-size:' + (kwargs.size || '87.5%') + '; vertical-align: text-top; text-decoration: inherit;">▼</span>',
+    'decreasepositive': (args, kwargs) => '<span title="'+(args[0] || 'Decrease')+'" style="color: var(--increase-color); font-size:' + (kwargs.size || '87.5%') + '; vertical-align: text-top; text-decoration: inherit;">▼</span>',
     'distinguish': (args, kwargs) => {
         let text = kwargs.text
         if (!text) {
@@ -198,6 +206,7 @@ const mediawiki = {
     'div col': (args, kwargs) => '<div style="column-width:' + (kwargs.colwidth || '30em') + '">',
     'div col end': () => '</div>',
     'efn': (args, kwargs) => `<ref group="${kwargs.group || 'lower-alpha'}"${kwargs.name ? (' name="' + kwargs.name + '"') : ''}>${kwargs.content || kwargs.text || kwargs.reference || args[0]}</ref>`,
+    'eliminated': (args, kwargs) => `style="background-color: ${kwargs.color || '#FFBFBF'}; color: #000000; text-align: center;${kwargs.style || ''}" | ${args[0] || 'Eliminated'}`,
     'em dash': () => '&#x2014;',
     'en dash': () => '&#x2013;',
     'for': (args, kwargs) => toOtherDocument('For '+args[0]+', see ', '.', args.slice(1), kwargs),
@@ -206,6 +215,8 @@ const mediawiki = {
     'further': (args, kwargs) => toOtherDocument('Further information'+(kwargs.topic ? ('on '+kwargs.topic) : '')+': ', '', args, kwargs),
     'hatnote': (args, kwargs) => hatnote(args[0], kwargs),
     'huge': (args, kwargs) => mediawiki.resize(['180%', ...args], kwargs),
+    'increase': (args, kwargs) => '<span title="'+(args[0] || 'Increase')+'" style="color: var(--increase-color); font-size:' + (kwargs.size || '87.5%') + '; vertical-align: text-top; text-decoration: inherit;">▲</span>',
+    'increasenegative': (args, kwargs) => '<span title="'+(args[0] || 'Increase')+'" style="color: var(--decrease-color); font-size:' + (kwargs.size || '87.5%') + '; vertical-align: text-top; text-decoration: inherit;">▲</span>',
     'infobox': (args, kwargs) => {
         //WIP
         const table = document.createElement('table')
@@ -283,7 +294,7 @@ const mediawiki = {
     'lang': (args, kwargs) => `<span lang="${args[0]}">${args[1]}</span>`, // WIP
     'langx': (args, kwargs) => `${args[0]}: <span lang="${args[0]}">${args[1]}</span>`, // WIP
     'large': (args, kwargs) => mediawiki.resize(['120%', ...args], kwargs),
-    'lua': (args, kwargs) => `<div style="border:1px solid black;float:right;clear:right;"><div>This template uses Lua:</div><ul>${args.map((v,i)=>`<li>[[${v}]]</li>`).join('')}</ul></div>`,
+    'lua': (args, kwargs) => `<div style="border:1px solid var(--text-color);float:right;clear:right;"><div>This template uses Lua:</div><ul>${args.map((v,i)=>`<li>[[${v}]]</li>`).join('')}</ul></div>`,
     'main': (args, kwargs) => toOtherDocument('Main article'+(args.length>1?'s':'')+': ', '', args, kwargs),
     'main list': (args, kwargs) => toOtherDocument('For a more comprehensive list, see ', '.', args, kwargs),
     'nihongo': (args, kwargs) => {
@@ -296,10 +307,19 @@ const mediawiki = {
         }
     },
     'nobots': () => '', // WIP
+    'no': (args, kwargs) => `style="background-color: ${kwargs.color || '#FFBFBF'}; color: #000000; text-align: center;${kwargs.style || ''}" | ${args[0] || 'No'}`,
+    'no2': (args, kwargs) => `style="background-color: ${kwargs.color || '#FFDFDF'}; color: #000000; text-align: center;${kwargs.style || ''}" | ${args[0] || ''}`,
     'not a typo': (args, kwargs) => args[0] || '',
     'notelist': (args, kwargs) => '<div class="reflist" id="reflist-'+(kwargs.group || 'lower-alpha')+'"' + (args[0] ? (' style="column-width:' + (args[0] || '30em')) : '') + '"><ol type="a"></ol></div>',
     'nowrap': (args, kwargs) => '<span style="white-space: nowrap;">'+args[0]+'</span>',
     'number sign': () => '&#x23;',
+    'ordered list': (args, kwargs) => {
+        let text = ''
+        for (let i=0;i<args.length;i++) {
+            text += `<li>${args[i]}</li>`
+        }
+        return `<ol>${text}</ol>`
+    }, // WIP
     'other uses': (args, kwargs) => {
         args[0] = args[0] || `${Wiklo.PAGENAME} (disambiguation)`
         let innerHTML = `For other uses, see [[${args[0]}]]`
@@ -308,11 +328,14 @@ const mediawiki = {
         innerHTML += '.'
         return innerHTML
     },
+    'partial': (args, kwargs) => `style="background-color: ${kwargs.color || '#FFFFBF'}; color: #000000; text-align: center;${kwargs.style || ''}" | ${args[0] || 'Partial'}`,
+    'party color': () => 'var(--text-color)',
     'pipe': () => '&#x7C;',
-    'plainlist': (args, kwargs) => '<ul>'+(args[0] ? args[0].split('\n').map((v)=>{
+    'plainlist': (args, kwargs) => '<ul class="plainlist">'+(args[0] ? args[0].split('\n').map((v)=>{
         if (v.startsWith('* ')) return '<li>'+v.slice(2)+'</li>'
         return v
-    }).join('') : '')+'</ul>',
+    }).join('') : '')+'</ul>', // WIP
+    'red': (args, kwargs) => `<span style="color: red;">${args[0]}</span>`,
     'redirect': (args, kwargs) => toOtherDocumentMulti('"'+args[0]+'" redirects here. ', '', args.slice(1), kwargs),
     'redirect2': (args, kwargs) => toOtherDocumentMulti('"'+args[0]+'" and "'+args[1]+'" redirect here. ', '', args.slice(2), kwargs),
     'reflist': (args, kwargs) => '<div class="reflist"'+ (kwargs.group ? ' id="reflist-'+kwargs.group+'"' : '') + (args[0] ? (' style="column-width:' + (args[0] || '30em')) : '') + '"><ol></ol></div>',
@@ -334,15 +357,29 @@ const mediawiki = {
     'small': (args, kwargs) => mediawiki.resize(['85%', ...args], kwargs),
     'spaced en dash': () => '&#xA0;&#x2013;',
     'spaces': () => '&#xA0;', // WIP
+    'steady': (args, kwargs) => '<span title="'+(args[0] || 'Steady')+'" style="color: var(--steady-color); font-size:' + (kwargs.size || '87.5%') + '; vertical-align: text-top; text-decoration: inherit;">▬</span>',
     // 'template' templates WIP
     'template shortcut': (args, kwargs) => `<div style="border:1px solid var(--text-color);${kwargs.float ? ('float:'+kwargs.float+';') : 'float:right;'}${kwargs.clear ? ('clear:'+kwargs.clear+';') : ''}"><div>Shortcut</div><ul>${args.map((v,i)=>`<li>&#x7B;&#x7B;${kwargs.pre || ''}${kwargs['pre'+(i+1)] || ''}[[${v}]]&#x7D;&#x7D;</li>`).join('')}</ul></div>`,
     'template journal inline': (args, kwargs) => `<code style="border:1px solid var(--text-color);">&#x5B;&#x5B;[[${args[0]}]]${args.slice(1).map(v=>v?('&#x7C;'+'<span style="font-style:italic;color:#993333;">'+v+'</span>'):'').join('')}&#x5D;&#x5D;</code>`,
     'template link': (args, kwargs) => `&#x7B;&#x7B;[[${args[0]}]]&#x7D;&#x7D;`,
     'template link code': (args, kwargs) => mediawiki['template link general'](args, {...kwargs, code: true, nolink: true}),
     'template link expanded': (args, kwargs) => mediawiki['template link general'](args, {...kwargs, code: true}),
-    'template link general': (args, kwargs) => `${Wiklo.getTrue(kwargs.code) ? '<code style="border:1px solid black;">' : ''}&#x7B;&#x7B;${Wiklo.getTrue(kwargs.nolink) ? args[0] : `[[${args[0]}]]`}${args.slice(1).map(v=>v?('&#x7C;'+v):'').join('')}&#x7D;&#x7D;${Wiklo.getTrue(kwargs.code) ? '</code>' : ''}`,
+    'template link general': (args, kwargs) => `${Wiklo.getTrue(kwargs.code) ? '<code style="border:1px solid var(--text-color);">' : ''}&#x7B;&#x7B;${Wiklo.getTrue(kwargs.nolink) ? args[0] : `[[${args[0]}]]`}${args.slice(1).map(v=>v?('&#x7C;'+v):'').join('')}&#x7D;&#x7D;${Wiklo.getTrue(kwargs.code) ? '</code>' : ''}`,
     'toc limit': (args, kwargs) => ``, // WIP
     'transliteration': (args, kwargs) => `<span lang="${args[0]}">${args[1]}</span>`, // WIP
+    'unbulleted list': (args, kwargs) => {
+        let text = ''
+        for (let i=0;i<args.length;i++) {
+            text += `<li>${args[i]}</li>`
+        }
+        return `<ul class="plainlist">${text}</ul>`
+    }, // WIP
+    'url': (args, kwargs) => {
+        if (kwargs['1']) args[0] = kwargs['1']
+        if (args[0].startsWith('//')) args[0] = window.location.protocol + args[0]
+        if (!args[0].includes('://')) args[0] = 'http://' + args[0]
+        return `<a href="${args[0]}" title="${args[0]}" target="_blank">${args[1] || args[0]}</a><div class="linkhover">${args[0]}</div>`
+    }, 
     'use dmy dates': () => '',
     'val': (args, kwargs) => {
         let num = args[0]
@@ -372,47 +409,67 @@ const mediawiki = {
         if (kwargs.up) kwargs.up = kwargs.up.replaceAll('.', '⋅')
         return '<span style="white-space:nowrap;">'+(kwargs.p||'')+num+(dec ? ('.' + dec) : '')+(args[1] ? ('±' + args[1]) : '')+(note||'')+(kwargs.u ? (' ' + ((kwargs.up && (kwargs.u.includes('⋅') || kwargs.u.includes('/'))) ? ('(' + kwargs.u + ')') : kwargs.u)) : '')+(kwargs.up ? ('/' + ((kwargs.up.includes('⋅') || kwargs.up.includes('/')) ? ('(' + kwargs.up + ')') : kwargs.up)) : '')+(kwargs.s||'')+'</span>'
     },
-    'western name order': (args, kwargs) => hatnote(`The native form of this [[personal name]] is ${args[0]}. This article uses [[Personal name#Western Name order|Western name order]] when mentioning individuals.`, kwargs)
+    'western name order': (args, kwargs) => hatnote(`The native form of this [[personal name]] is ${args[0]}. This article uses [[Personal name#Western Name order|Western name order]] when mentioning individuals.`, kwargs),
+    'white': (args, kwargs) => `<span style="color: white;">${args[0]}</span>`,
+    'yes': (args, kwargs) => `style="background-color: ${kwargs.color || '#9FFF9F'}; color: #000000; text-align: center;${kwargs.style || ''}" | ${args[0] || 'Yes'}`,
+    'yes2': (args, kwargs) => `style="background-color: ${kwargs.color || '#BFFFDF'}; color: #000000; text-align: center;${kwargs.style || ''}" | ${args[0] || ''}`,
 }
 const mediawikiRedirects = {
     ',': '·',
     '--': 'em dash',
     '*': '•',
     'as written': 'not a typo',
+    'blist': 'bulleted list',
     'bull': '•',
     'bullet': '•',
+    'bulleted': 'bulleted list',
+    'bulletless list': 'plainlist',
     'chem name': 'not a typo',
-    'confuse': 'distinguish',
+    'colour': 'color',
+    'coloured link': 'colored link',
+    'colored text': 'color',
     'confused': 'distinguish',
     'dash': 'spaced en dash',
     'dist': 'distinguish',
+    'decreasenegative': 'decrease',
     'dot': '·',
+    'down': 'decrease',
     'eastern name order': 'western name order',
     'emdash': 'em dash',
     'endash': 'en dash',
+    'fgcolor': 'color',
+    'gain': 'increase',
     'hash': 'number sign',
     'hungarian name': 'western name order',
     'ititle': 'italic title',
+    'increasepositive': 'increase',
+    'loss': 'decrease',
     'mdash': 'em dash',
     'middot': '·',
     'misspelling': 'distinguish',
     'nat': 'not a typo',
     'nbsp': 'spaces',
     'ndash': 'en dash',
+    'nochange': 'steady',
     'not typo': 'not a typo',
     'nottobeconfusedwith': 'distinguish',
     'nsndns': 'en dash',
     'ntbcw': 'distinguish',
+    'olist': 'ordered list',
     'other': 'other uses',
     'ou': 'other uses',
     'pl': 'plainlist',
+    'plain list': 'plainlist',
+    'profit': 'increase',
     'proper name': 'not a typo',
     'quote': 'blockquote',
+    'same': 'steady',
     'snd': 'spaced en dash',
     'sndash': 'spaced en dash',
     'space': 'spaces',
     'spnd': 'spaced en dash',
     'spndash': 'spaced en dash',
+    'startplainlist': 'plainlist',
     'tji': 'template journal inline',
     'tl': 'template link',
     'tlc': 'template link code',
@@ -420,6 +477,13 @@ const mediawikiRedirects = {
     'tlx': 'template link expanded',
     'tsh': 'template shortcut',
     'typo': 'not a typo',
+    'ubl': 'unbulleted list',
+    'ublist': 'unbulleted list',
+    'ubt': 'unbulleted list',
+    'ulist': 'bulleted list',
+    'unbullet': 'unbulleted list',
+    'unordered list': 'bulleted list',
+    'up': 'increase',
     'vbar': 'pipe',
     'verti-bar': 'pipe',
     'vertical bar': 'pipe',

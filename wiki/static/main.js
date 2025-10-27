@@ -477,7 +477,7 @@ Wiklo.getRefname = (index, group=' ') => {
         if (group.startsWith('lower-')) return result.toLowerCase()
         return result
     }
-    return ((group && group != ' ') ? (group.replace('<', '&#x3C;').replace('>', '&#x3E;').replace('"', '&#x22;').trim() + ' ') : '') + index.toString()
+    return ((group && group != ' ') ? (group.replaceAll('<', '&#x3C;').replaceAll('>', '&#x3E;').replaceAll('"', '&#x22;').trim() + ' ') : '') + index.toString()
 }
 Wiklo.tagsHandlerMethods = {
     'ref': (v) => {
@@ -494,13 +494,13 @@ Wiklo.tagsHandlerMethods = {
                 if (!refgroups[tagList[i].options.group]) refgroups[tagList[i].options.group] = []
                 if (!tagList[i].options.name || !refgroups[tagList[i].options.group].find(ref=>ref.id==tagList[i].options.name)) {
                     let id = tagList[i].options.name || (tagList[i].options.group.trim() + (refgroups[tagList[i].options.group].length+1))
-                    v[tagList[i].index] = '<sup><a id="reflink1-'+id.replace('<', '&#x3C;').replace('>', '&#x3E;').replace('"', '&#x22;')+'" href="#ref-'+id.replace('<', '&#x3C;').replace('>', '&#x3E;').replace('"', '&#x22;')+'">[' + Wiklo.getRefname(refgroups[tagList[i].options.group].length, tagList[i].options.group) + ']</a><div class="refhover">'+innerHTML+'</div></sup>'
+                    v[tagList[i].index] = '<sup><a id="reflink1-'+id.replaceAll('<', '&#x3C;').replaceAll('>', '&#x3E;').replaceAll('"', '&#x22;')+'" href="#ref-'+id.replaceAll('<', '&#x3C;').replaceAll('>', '&#x3E;').replaceAll('"', '&#x22;')+'">[' + Wiklo.getRefname(refgroups[tagList[i].options.group].length, tagList[i].options.group) + ']</a><div class="refhover">'+innerHTML+'</div></sup>'
                     refgroups[tagList[i].options.group].push({id, name: tagList[i].options.name, value: innerHTML, number: 1})
                 } else {
                     let ref = refgroups[tagList[i].options.group].find(ref=>ref.name==tagList[i].options.name)
                     ref.number += 1
                     if (innerHTML && !ref.value) ref.value = innerHTML
-                    v[tagList[i].index] = '<sup><a id="reflink'+ref.number+'-'+ref.name.replace('<', '&#x3C;').replace('>', '&#x3E;').replace('"', '&#x22;')+'" href="#ref-' + ref.name.replace('<', '&#x3C;').replace('>', '&#x3E;').replace('"', '&#x22;') + '">[' + Wiklo.getRefname(refgroups[tagList[i].options.group].findIndex(ref=>ref.name==tagList[i].options.name), tagList[i].options.group) + ']</a><div class="refhover">'+ref.value+'</div></sup>'
+                    v[tagList[i].index] = '<sup><a id="reflink'+ref.number+'-'+ref.name.replaceAll('<', '&#x3C;').replaceAll('>', '&#x3E;').replaceAll('"', '&#x22;')+'" href="#ref-' + ref.name.replaceAll('<', '&#x3C;').replaceAll('>', '&#x3E;').replaceAll('"', '&#x22;') + '">[' + Wiklo.getRefname(refgroups[tagList[i].options.group].findIndex(ref=>ref.name==tagList[i].options.name), tagList[i].options.group) + ']</a><div class="refhover">'+ref.value+'</div></sup>'
                 }
             } else {
                 v[tagList[i].index] = ''
@@ -646,11 +646,11 @@ Wiklo.tagsHandlerDeprecated = (v) => {
                     let id = tagList[i].options.name || (tagList[i].options.group.trim() + (refgroups[tagList[i].options.group].length+1))
                     node.innerHTML = '<a href="#reflink-'+id+'">*</a> ' + innerHTML.trim()
                     node.id = 'ref-' + id
-                    v[tagList[i].index] = '<sup><a id="reflink-'+id.replace('<', '&#x3C;').replace('>', '&#x3E;').replace('"', '&#x22;')+'" href="#ref-' + id.replace('<', '&#x3C;').replace('>', '&#x3E;').replace('"', '&#x22;') + '">[' + (tagList[i].options.group.replace('<', '&#x3C;').replace('>', '&#x3E;').replace('"', '&#x22;').trim() + (refgroups[tagList[i].options.group].length+1)) + ']</a><div class="refhover">'+innerHTML.trim()+'</div></sup>'
+                    v[tagList[i].index] = '<sup><a id="reflink-'+id.replaceAll('<', '&#x3C;').replaceAll('>', '&#x3E;').replaceAll('"', '&#x22;')+'" href="#ref-' + id.replaceAll('<', '&#x3C;').replaceAll('>', '&#x3E;').replaceAll('"', '&#x22;') + '">[' + (tagList[i].options.group.replaceAll('<', '&#x3C;').replaceAll('>', '&#x3E;').replaceAll('"', '&#x22;').trim() + (refgroups[tagList[i].options.group].length+1)) + ']</a><div class="refhover">'+innerHTML.trim()+'</div></sup>'
                     refgroups[tagList[i].options.group].push(tagList[i].options.name || ' ')
                     v.push(node.outerHTML)
                 } else {
-                    v[tagList[i].index] = '<sup><a href="#ref-' + tagList[i].options.name.replace('<', '&#x3C;').replace('>', '&#x3E;').replace('"', '&#x22;') + '">[' + (tagList[i].options.group.replace('<', '&#x3C;').replace('>', '&#x3E;').replace('"', '&#x22;').trim() + (refgroups[tagList[i].options.group].indexOf(tagList[i].options.name)+1)) + ']</a><div class="refhover">'+innerHTML.trim()+'</div></sup>'
+                    v[tagList[i].index] = '<sup><a href="#ref-' + tagList[i].options.name.replaceAll('<', '&#x3C;').replaceAll('>', '&#x3E;').replaceAll('"', '&#x22;') + '">[' + (tagList[i].options.group.replaceAll('<', '&#x3C;').replaceAll('>', '&#x3E;').replaceAll('"', '&#x22;').trim() + (refgroups[tagList[i].options.group].indexOf(tagList[i].options.name)+1)) + ']</a><div class="refhover">'+innerHTML.trim()+'</div></sup>'
                 }
                 delete node
             } else if (tagList[i].name == 'gallery') {
@@ -686,7 +686,7 @@ Wiklo.modulesHandler = (v) => {
         if (!k.startsWith('{{{')) return k
         if (k.includes('|')) return k.slice(3,-3).split('|')[1]
         return ''
-    }).join('').split(/(\{\{|\}\}|\[\[|\]\])/g)
+    }).join('').split(/(\{\{|\}\}|\[\[|\]\]|\{\||\|\})/g)
     let tagLevel = 0
     let tagList = []
     for (let i = 0; i < v.length; i++) {
@@ -698,8 +698,6 @@ Wiklo.modulesHandler = (v) => {
             v[i] = ''
             tagList.push({tagLevel, type:'module', index:i})
             tagLevel--
-        } else if (v[i] == '}}' && tagLevel == 0) {
-            v[i] = ''
         } else if (v[i] == '[[') {
             v[i] = ''
             tagLevel++
@@ -708,7 +706,15 @@ Wiklo.modulesHandler = (v) => {
             v[i] = ''
             tagList.push({tagLevel, type:'link', index:i})
             tagLevel--
-        } else if (v[i] == ']]' && tagLevel == 0) {
+        } else if (v[i] == '{|') {
+            v[i] = ''
+            tagLevel++
+            tagList.push({tagLevel, type:'table', index:i})
+        } else if (v[i] == '|}' && tagLevel != 0) {
+            v[i] = ''
+            tagList.push({tagLevel, type:'table', index:i})
+            tagLevel--
+        } else if ((v[i] == '}}' || v[i] == ']]' || v[i] == '|}') && tagLevel == 0) {
             v[i] = ''
         }
     }
@@ -717,6 +723,7 @@ Wiklo.modulesHandler = (v) => {
         if (tagList[i+1]) {
             if (tagList[i].type == 'module') v[tagList[i].index] = Wiklo.moduleToHTML(v.slice(tagList[i].index+1, tagList[i+1].index).join(''))
             if (tagList[i].type == 'link') v[tagList[i].index] = Wiklo.linkToHTML(v.slice(tagList[i].index+1, tagList[i+1].index).join(''))
+            if (tagList[i].type == 'table') v[tagList[i].index] = Wiklo.tableToHTML(v.slice(tagList[i].index+1, tagList[i+1].index).join(''))
             for (let j = tagList[i].index+1; j <= tagList[i+1].index; j += 1) v[j] = ''
         } else {
             v[tagList[i].index] = ''
@@ -766,7 +773,46 @@ Wiklo.linkToHTML = (v) => {
         if (category) categories.push(category)
     }
     const article = args[0].match(/^[0-9a-f]{32}$/) && entries.find(([k,v])=>(args[0]==k)) || entries.find(([k,v])=>(args[0]==v.name)&&v.categories.some(t=>categories.includes(t))) || entries.find(([k,v])=>args[0]==v.name&&v.categories.includes(false)) || entries.find(([k,v])=>args[0]==v.name) || entries.find(([k,v])=>args[0].toLocaleLowerCase()==v.name.toLocaleLowerCase()) || null
-    return `<a href="./?${article ? article[0] : args[0]}${hash ? ('#'+hash) : ''}" title="${kwargs.title || args[0]}"${!article ? ' class="no-article"' : (Wiklo.PAGEUUID == article[0] && !hash ? ' class="self-link"' : '')} target="${kwargs.target || '_self'}">${args[1] || (hash ? (args[0] + ' &#xA7; ' + hash) : args[0])}</a><div class="linkhover">${article ? ('<h1>'+article[1].name.replace('<', '&#x3C;').replace('>', '&#x3E;').replace('"', '&#x22;')+'</h1>'+(article[1].description ? Wiklo.modulesHandler(article[1].description) : 'This page does not have a description.')) : ('<h1>'+args[0].replace('<', '&#x3C;').replace('>', '&#x3E;').replace('"', '&#x22;')+'</h1>This page could not be found.')}</div>`
+    return `<a href="./?${article ? article[0] : args[0]}${hash ? ('#'+hash) : ''}" title="${kwargs.title || args[0]}"${!article ? ' class="no-article"' : (Wiklo.PAGEUUID == article[0] && !hash ? ' class="self-link"' : '')} target="${kwargs.target || '_self'}">${args[1] || (hash ? (args[0] + ' &#xA7; ' + hash) : args[0])}</a><div class="linkhover">${article ? ('<h1>'+article[1].name.replaceAll('<', '&#x3C;').replaceAll('>', '&#x3E;').replaceAll('"', '&#x22;')+'</h1>'+(article[1].description ? Wiklo.modulesHandler(article[1].description) : 'This page does not have a description.')) : ('<h1>'+args[0].replaceAll('<', '&#x3C;').replaceAll('>', '&#x3E;').replaceAll('"', '&#x22;')+'</h1>This page could not be found.')}</div>`
+}
+Wiklo.tableToHTML = (v) => {
+    let caption, tableoptions
+    let trs = v.split('|-')
+    trs[0] = trs[0].split('\n').map(trr=>{
+        if (!trr.startsWith('!') && !trr.startsWith('|') && !tableoptions) {
+            tableoptions = trr
+            /* trr.trim().replace(/\s+\=\s?(?=([^"]*"[^"]*")*[^"]*$)/g, '=').replace(/\s+(?=([^"]*"[^"]*")*[^"]*$)/g, '\n').split('\n').forEach(k=>{
+                if (k == '') return
+                if (k.includes('=')) {
+                    let key = k.split('=')[0].trim().toLowerCase()
+                    let value = k.split('=').slice(1).join('').trim()
+                    if (value.startsWith('"') && value.endsWith('"')) value = value.slice(1, -1)
+                    options[key] = value
+                } else {
+                    if (k.trim()) options[k.trim()] = ''
+                }
+            }) */
+            return ''
+        }
+        if (trr.startsWith('|+') && !caption) {
+            caption = trr.slice(2).trim()
+            caption = caption.includes('|') ? ('<caption ' + caption.split('|')[0].trim() + '>' + caption.split('|').slice(1).join('|').trim() + '</caption>') : ('<caption>' + caption.trim() + '</caption>')
+            return ''
+        }
+        return trr
+    }).join('\n')
+    if (!trs[0].trim()) trs = trs.slice(1)
+    return '<table'+(tableoptions ? (' ' + tableoptions.replaceAll('<', '&#x3C;').replaceAll('>', '&#x3E;')) : '')+'>'+(caption || '')+'<tbody>'+trs.map(tr=>{
+        console.log(tr)
+        const cells = tr.split(/(\n(?:\<\!--.*?--\>)*?\!|\!\!|\n(?:\<\!--.*?--\>)*?\||\|\|)/g)
+        cells[0] = cells[0].trim()
+        for (let i = 1; i < cells.length; i += 2) {
+            const node = cells[i].endsWith('!') ? 'th' : 'td'
+            cells[i+1] = cells[i+1].includes('|') ? ('<' + node + ' ' + cells[i+1].split('|')[0].replaceAll('<', '&#x3C;').replaceAll('>', '&#x3E;').trim() + '>' + cells[i+1].split('|').slice(1).join('|').trim() + '</' + node + '>') : ('<' + node + '>' + cells[i+1].trim() + '</' + node + '>')
+            cells[i] = ''
+        }
+        return cells[0] ? ('<tr ' + cells[0].replaceAll('<', '&#x3C;').replaceAll('>', '&#x3E;') + '>' + cells.slice(1).join('') + '</tr>') : ('<tr>' + cells.slice(1).join('') + '</tr>')
+    }).join('')+'</tbody></table>'
 }
 Wiklo.textToHTML = (v) => {
     return Wiklo.tagsHandler(Wiklo.modulesHandler(
@@ -782,11 +828,14 @@ Wiklo.textToHTML = (v) => {
         .replace(/^:.+?$/gm, (v)=>'<blockquote>'+v.slice(1)+'</blockquote>')
         .replace(/'''.*?'''/g, (v)=>'<b>'+v.slice(3, -3)+'</b>')
         .replace(/''.*?''/g, (v)=>'<i>'+v.slice(2, -2)+'</i>')
-        .replace(/^\}\}\n/gm, (v)=>v.slice(0, -1))
+        .replace(/^\}\}\n(?:[^\!\|])/gm, (v)=>'}}'+v.slice(-1))
         .replace(/^(\{\{[^\{\}]*?\}\})+\n/gm, (v)=>v.slice(0, -1))
         .replace(/^<[^<>]*?>\n/gm, (v)=>v.slice(0, -1))
         .replace(/\n<!--.*?-->\n/gs, (v)=>v.slice(1))
-    ))
+    )).replace(/\[https?:\/\/[^\]]+?\..+?\]/gm, (v)=>{
+        v = v.slice(1, -1).split(' ')
+        return `<a href="${v[0]}" title="${v[0]}" target="_blank">${v.length == 1 ? v[0] : v.slice(1).join(' ')}</a><div class="linkhover">${v[0]}</div>`
+    })
 }
 Wiklo.timeFormat = {timeZoneName:'short', hour12: false}
 Wiklo.textToPage = (text, pageinfo=null) => {
@@ -795,9 +844,9 @@ Wiklo.textToPage = (text, pageinfo=null) => {
         (
             pageinfo ? 
             ( '<div class="page-header">'
-                + '<h1 class="page-title">'+(pageinfo.name.replace('<', '&#x3C;').replace('>', '&#x3E;').replace('"', '&#x22;')||'')+'</h1>'
+                + '<h1 class="page-title">'+(pageinfo.name.replaceAll('<', '&#x3C;').replaceAll('>', '&#x3E;').replaceAll('"', '&#x22;')||'')+'</h1>'
                 + '<div class="page-info">'
-                    // + (pageinfo.author ? '<div>Author: '+pageinfo.author.replace('<', '&#x3C;').replace('>', '&#x3E;').replace('"', '&#x22;')+'</div>' : '')
+                    // + (pageinfo.author ? '<div>Author: '+pageinfo.author.replaceAll('<', '&#x3C;').replaceAll('>', '&#x3E;').replaceAll('"', '&#x22;')+'</div>' : '')
                     // + (pageinfo.creation ? '<div>Creation: <span class="date" value='+pageinfo.creation+'>'+new Date(pageinfo.creation).toLocaleString(undefined, Wiklo.timeFormat)+'</span></div>' : '')
                     + (pageinfo.lastModification ? '<div>Last Edit: <span class="date" value='+pageinfo.lastModification+'>'+new Date(pageinfo.lastModification).toLocaleString(undefined, Wiklo.timeFormat)+'</span></div>' : '')
                 + '</div>'
@@ -825,9 +874,9 @@ Wiklo.textToPageRaw = (text, pageinfo=null) => {
         (
             pageinfo ? 
             ( '<div class="page-header">'
-                + '<h1 class="page-title">'+(pageinfo.name.replace('<', '&#x3C;').replace('>', '&#x3E;').replace('"', '&#x22;')||'')+'</h1>'
+                + '<h1 class="page-title">'+(pageinfo.name.replaceAll('<', '&#x3C;').replaceAll('>', '&#x3E;').replaceAll('"', '&#x22;')||'')+'</h1>'
                 + '<div class="page-info">'
-                    // + (pageinfo.author ? '<div>Author: '+pageinfo.author.replace('<', '&#x3C;').replace('>', '&#x3E;').replace('"', '&#x22;')+'</div>' : '')
+                    // + (pageinfo.author ? '<div>Author: '+pageinfo.author.replaceAll('<', '&#x3C;').replaceAll('>', '&#x3E;').replaceAll('"', '&#x22;')+'</div>' : '')
                     // + (pageinfo.creation ? '<div>Creation: <span class="date" value='+pageinfo.creation+'>'+new Date(pageinfo.creation).toLocaleString()+'</span></div>' : '')
                     + (pageinfo.lastModification ? '<div>Last Modification: <span class="date" value='+pageinfo.lastModification+'>'+new Date(pageinfo.lastModification).toLocaleString()+'</span></div>' : '')
                 + '</div>'
@@ -859,7 +908,7 @@ Wiklo.loadUUIDPage = async (uuid, hash=null, forceLatestVersion=false) => {
     Wiklo.PAGENAME = metadata[uuid].name
     Wiklo.PAGEUUID = uuid
     document.querySelectorAll('article').forEach(v=>{v.remove()})
-    const safepagename = metadata[uuid].name.replace('<', '&#x3C;').replace('>', '&#x3E;').replace('"', '&#x22;')
+    const safepagename = metadata[uuid].name.replaceAll('<', '&#x3C;').replaceAll('>', '&#x3E;').replaceAll('"', '&#x22;')
     if (metadata[uuid].MIMEType == 'text/wkl') {
         const data = await (await Wiklo.loadUUIDData(uuid)).text() || ''
         if (data.startsWith('#redirect ') && hash != '#no-redirect-1') {

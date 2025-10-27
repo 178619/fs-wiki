@@ -3,6 +3,7 @@
 */
 
 :root {
+    color-scheme: light dark;
     --text-color: #DFDFDF;
     --date-color: #7F7F7F;
     --background-color: #171717;
@@ -10,6 +11,9 @@
     --header-background-color: #3F3F5F;
     --header-button-hover-color: #3F3F9F;
     --layer-color: rgba(127,127,127,0.25);
+    --increase-color: #00BF00;
+    --decrease-color: #BF0000;
+    --steady-color: #007FBF;
 }
 
 @media (prefers-color-scheme: light) {
@@ -23,6 +27,7 @@
         --link-color: #003FBF;
         --visited-link-color: #7F00BF;
         --error-text-color: #BF0000;
+        --increase-color: #007F00;
     }
 }
 
@@ -37,6 +42,7 @@
         --link-color: #7FBFFF;
         --visited-link-color: #BF9FFF;
         --error-text-color: #FF7F7F;
+        --steady-color: #009FFF;
     }
     
     header a:visited {
@@ -464,6 +470,7 @@ article {
         font-family: var(--font-sans-serif);
         pointer-events: none;
         user-select: none;
+        text-align: initial;
         z-index: 250;
         h1 {
             display: block;
@@ -706,6 +713,35 @@ article {
     }
     *:not(ul):not(ol) > li {
         margin-left: 40px;
+    }
+    
+    .plainlist {
+	      margin: 0;
+	      padding: 0;
+	      list-style: none;
+	      > ul:only-child {
+	          margin: 0;
+	          padding: 0;
+	          list-style: none;
+	      }
+    }
+    
+    .wikitable {
+        border: 1px solid var(--date-color);
+        border-collapse: collapse;
+        th {
+            background-color: var(--layer-color);
+        }
+        th, td {
+            border: 1px solid var(--date-color);
+            padding: 0.25em 0.5em;
+        }
+        [bgcolor], [style*="background"] {
+            color: #000000;
+            --link-color: #003FBF;
+            --visited-link-color: #7F00BF;
+            --error-text-color: #BF0000;
+        }
     }
 }
 
