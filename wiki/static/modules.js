@@ -108,7 +108,7 @@ const mediawiki = {
     '·': () => `&#xA0;<b>&#xB7;</b>`,
     '•': () => '&#xA0;&#x2022;',
     '\\': () => '&#xA0;&#x2F;',
-    'ambox': (args, kwargs) => `<div style="margin:0 10%;border: 1px solid silver;border: 1px solid silver;border-left:8px solid silver;border-radius:4px 2px 2px 4px;background-color:whitesmoke;padding:2px 8px;">${kwargs.text}</div>`,
+    'ambox': (args, kwargs) => `<div style="margin:0 10%;border: 1px solid var(--date-color);border-left:8px solid var(--date-color);border-radius:4px 2px 2px 4px;background-color:var(--background-color);padding:2px 8px;">${kwargs.text}</div>`,
     'about': (args, kwargs) => toOtherDocumentMulti((args[0] ? `This ${Wiklo.getTrue(kwargs.section) ? 'section' : 'article'} is about ${args[0]}. ` : ''), '', args.slice(1), kwargs),
     'align': (args, kwargs) => {
         if (args[0] == 'center') return `<div style="width:100%;text-align:center;${kwargs.style || ''}">${args[1] || ''}</div>`
@@ -126,6 +126,7 @@ const mediawiki = {
         }
         return `<table><tbody>${innerHTML}</tbody></table>`
     },
+    'anchor': (args, kwargs) => '[['+args[0]+']]',
     'annotated link': (args, kwargs) => '[['+args[0]+']]',
     'apod': (args, kwargs) => {
         const date = new Date(kwargs.date + ' UTC').toISOString()
@@ -133,7 +134,22 @@ const mediawiki = {
         return `<a href="${link}">NASA Astronomy Picture of the Day: ${kwargs.title} (${kwargs.date})</a>`
     },
     'asterisk': () => '&#x2A;',
+    'blockquote': (args, kwargs) => {
+        const text = kwargs.text || kwargs.quote || args[0]
+        if (!kwargs.text && !args[0]) return ''
+        const author = kwargs.author || kwargs.cite || kwargs.sign || args[1]
+        const title = kwargs.title || args[2]
+        const source = kwargs.source || args[3]
+        return `<blockquote>${text}${author ? ('<hr>― ' + author + (title ? (', ' + title) : '') + (source ? (', ' + source) : '')) : ''}</blockquote>`
+    }, // WIP
     'bots': () => '', // WIP
+    'bulleted list': (args, kwargs) => {
+        let text = ''
+        for (let i=0;i<args.length;i++) {
+            text += `<li>${args[i]}</li>`
+        }
+        return `<ul>${text}</ul>`
+    }, // WIP
     'circa': (args, kwargs) => '<span style="white-space: nowrap;">' + (Wiklo.getTrue(kwargs.lk) ? '<a href="https://en.wiktionary.org/wiki/circa">c.</a>' : '<span title="circa">c.</span>') + (args[0] ? (' '+args[0]) : '') + (args[1] ? (' &#x2013; c. '+args[1]) : '') + '</span>',
     'citation needed': (args, kwargs) => '<sup style="white-space: nowrap;">[<i><span title="' + (kwargs.reason || 'This claim needs references to reliable sources.') + (kwargs.date ? (' (' + kwargs.date + ')') : '') + '">citation needed</span></i>]</sup>',
     'cite arxiv': (args, kwargs) => {
@@ -168,9 +184,20 @@ const mediawiki = {
         if (args[0] == 'right') return '<div style="clear:right;"></div>'
         return '<div style="clear:both;"></div>'
     },
+    'distinguish': (args, kwargs) => {
+        let text = kwargs.text
+        if (!text) {
+            if (!args[0]) return ''
+            args = args.map(arg=>arg.replace('&#x7C;', '|'))
+            text = '[[' + args[0] + ']]'
+            if (args[1]) text += `${args[2] ? ',' : ' or'} [[${args[1]}]]`
+            for (let i=2;i<args.length;i++) text += `,${args[i+1] ? '' : ' or'} [[${args[i]}]]`
+        }
+        return hatnote('Not to be confused with ' + text + '.', kwargs)
+    }, // Alternative Separator
     'div col': (args, kwargs) => '<div style="column-width:' + (kwargs.colwidth || '30em') + '">',
     'div col end': () => '</div>',
-    'efn': () => '<sup>[REF]</sup>', // WIP
+    'efn': (args, kwargs) => `<ref group="${kwargs.group || 'lower-alpha'}"${kwargs.name ? (' name="' + kwargs.name + '"') : ''}>${kwargs.content || kwargs.text || kwargs.reference || args[0]}</ref>`,
     'em dash': () => '&#x2014;',
     'en dash': () => '&#x2013;',
     'for': (args, kwargs) => toOtherDocument('For '+args[0]+', see ', '.', args.slice(1), kwargs),
@@ -252,14 +279,25 @@ const mediawiki = {
         return table.outerHTML
     },
     'ipa': (args, kwargs) => args[1] ? `Pronunciation: [<span lang="${args[0]}">${args[1]}</span>]` : `<span title=Representation in the International Phonetic Alphabet (IPA)">${args[0]}</span>`, // WIP
+    'italic title': () => '',
     'lang': (args, kwargs) => `<span lang="${args[0]}">${args[1]}</span>`, // WIP
     'langx': (args, kwargs) => `${args[0]}: <span lang="${args[0]}">${args[1]}</span>`, // WIP
     'large': (args, kwargs) => mediawiki.resize(['120%', ...args], kwargs),
     'lua': (args, kwargs) => `<div style="border:1px solid black;float:right;clear:right;"><div>This template uses Lua:</div><ul>${args.map((v,i)=>`<li>[[${v}]]</li>`).join('')}</ul></div>`,
     'main': (args, kwargs) => toOtherDocument('Main article'+(args.length>1?'s':'')+': ', '', args, kwargs),
     'main list': (args, kwargs) => toOtherDocument('For a more comprehensive list, see ', '.', args, kwargs),
+    'nihongo': (args, kwargs) => {
+        const extra = kwargs.extra || args[3]
+        const extra2 = kwargs.extra2 || args[4]
+        if (args[0]) {
+            return `${args[0]} (${kwargs.lead=='yes' ? 'Japanese: ' : ''}${args[1]}${args[2] ? ((kwargs.lead=='yes' ? 'Hepburn: ' : '') + ', <i>' + args[2] + '</i>') : ''}${extra ? ('; ' + extra) : ''})${extra2 ? (' ' + extra2) : ''}`
+        } else {
+            return `${args[2]} (${kwargs.lead=='yes' ? 'Japanese: ' : ''}${args[1]}${extra ? ('; ' + extra) : ''})${extra2 ? (' ' + extra2) : ''}`
+        }
+    },
     'nobots': () => '', // WIP
-    'not a typo': (args, kwargs) => args[0],
+    'not a typo': (args, kwargs) => args[0] || '',
+    'notelist': (args, kwargs) => '<div class="reflist" id="reflist-'+(kwargs.group || 'lower-alpha')+'"' + (args[0] ? (' style="column-width:' + (args[0] || '30em')) : '') + '"><ol type="a"></ol></div>',
     'nowrap': (args, kwargs) => '<span style="white-space: nowrap;">'+args[0]+'</span>',
     'number sign': () => '&#x23;',
     'other uses': (args, kwargs) => {
@@ -270,11 +308,13 @@ const mediawiki = {
         innerHTML += '.'
         return innerHTML
     },
+    'pipe': () => '&#x7C;',
     'plainlist': (args, kwargs) => '<ul>'+(args[0] ? args[0].split('\n').map((v)=>{
         if (v.startsWith('* ')) return '<li>'+v.slice(2)+'</li>'
         return v
     }).join('') : '')+'</ul>',
     'redirect': (args, kwargs) => toOtherDocumentMulti('"'+args[0]+'" redirects here. ', '', args.slice(1), kwargs),
+    'redirect2': (args, kwargs) => toOtherDocumentMulti('"'+args[0]+'" and "'+args[1]+'" redirect here. ', '', args.slice(2), kwargs),
     'reflist': (args, kwargs) => '<div class="reflist"'+ (kwargs.group ? ' id="reflist-'+kwargs.group+'"' : '') + (args[0] ? (' style="column-width:' + (args[0] || '30em')) : '') + '"><ol></ol></div>',
     'replace': (args, kwargs) => {
         if (kwargs.count) {
@@ -295,8 +335,8 @@ const mediawiki = {
     'spaced en dash': () => '&#xA0;&#x2013;',
     'spaces': () => '&#xA0;', // WIP
     // 'template' templates WIP
-    'template shortcut': (args, kwargs) => `<div style="border:1px solid black;${kwargs.float ? ('float:'+kwargs.float+';') : 'float:right;'}${kwargs.clear ? ('clear:'+kwargs.clear+';') : ''}"><div>Shortcut</div><ul>${args.map((v,i)=>`<li>&#x7B;&#x7B;${kwargs.pre || ''}${kwargs['pre'+(i+1)] || ''}[[${v}]]&#x7D;&#x7D;</li>`).join('')}</ul></div>`,
-    'template journal inline': (args, kwargs) => `<code style="border:1px solid black;">&#x5B;&#x5B;[[${args[0]}]]${args.slice(1).map(v=>v?('&#x7C;'+'<span style="font-style:italic;color:#993333;">'+v+'</span>'):'').join('')}&#x5D;&#x5D;</code>`,
+    'template shortcut': (args, kwargs) => `<div style="border:1px solid var(--text-color);${kwargs.float ? ('float:'+kwargs.float+';') : 'float:right;'}${kwargs.clear ? ('clear:'+kwargs.clear+';') : ''}"><div>Shortcut</div><ul>${args.map((v,i)=>`<li>&#x7B;&#x7B;${kwargs.pre || ''}${kwargs['pre'+(i+1)] || ''}[[${v}]]&#x7D;&#x7D;</li>`).join('')}</ul></div>`,
+    'template journal inline': (args, kwargs) => `<code style="border:1px solid var(--text-color);">&#x5B;&#x5B;[[${args[0]}]]${args.slice(1).map(v=>v?('&#x7C;'+'<span style="font-style:italic;color:#993333;">'+v+'</span>'):'').join('')}&#x5D;&#x5D;</code>`,
     'template link': (args, kwargs) => `&#x7B;&#x7B;[[${args[0]}]]&#x7D;&#x7D;`,
     'template link code': (args, kwargs) => mediawiki['template link general'](args, {...kwargs, code: true, nolink: true}),
     'template link expanded': (args, kwargs) => mediawiki['template link general'](args, {...kwargs, code: true}),
@@ -342,21 +382,32 @@ const mediawikiRedirects = {
     'bull': '•',
     'bullet': '•',
     'chem name': 'not a typo',
+    'confuse': 'distinguish',
+    'confused': 'distinguish',
     'dash': 'spaced en dash',
+    'dist': 'distinguish',
     'dot': '·',
     'eastern name order': 'western name order',
     'emdash': 'em dash',
     'endash': 'en dash',
     'hash': 'number sign',
     'hungarian name': 'western name order',
+    'ititle': 'italic title',
     'mdash': 'em dash',
     'middot': '·',
+    'misspelling': 'distinguish',
     'nat': 'not a typo',
+    'nbsp': 'spaces',
     'ndash': 'en dash',
     'not typo': 'not a typo',
+    'nottobeconfusedwith': 'distinguish',
     'nsndns': 'en dash',
+    'ntbcw': 'distinguish',
+    'other': 'other uses',
+    'ou': 'other uses',
     'pl': 'plainlist',
     'proper name': 'not a typo',
+    'quote': 'blockquote',
     'snd': 'spaced en dash',
     'sndash': 'spaced en dash',
     'space': 'spaces',
@@ -368,7 +419,12 @@ const mediawikiRedirects = {
     'tlg': 'template link general',
     'tlx': 'template link expanded',
     'tsh': 'template shortcut',
-    'typo': 'not a typo'
+    'typo': 'not a typo',
+    'vbar': 'pipe',
+    'verti-bar': 'pipe',
+    'vertical bar': 'pipe',
+    'vertical line': 'pipe',
+    'vertical slash': 'pipe'
 }
 
 const moduleHandlers = {

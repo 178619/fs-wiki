@@ -130,8 +130,8 @@ Wiklo._digital = {
     '8': '🯸',
     '9': '🯹'
 }
-Wiklo.toSuper = (v) => v.split('').map(k=>Wiklo._super[k]||k).join('')
-Wiklo.toSub = (v) => v.split('').map(k=>Wiklo._sub[k]||k).join('')
+Wiklo.toSuper = (v) => v.toString().split('').map(k=>Wiklo._super[k]||k).join('')
+Wiklo.toSub = (v) => v.toString().split('').map(k=>Wiklo._sub[k]||k).join('')
 Wiklo.retryImage = async (e, v) => {
     const metadata = await Wiklo.getMetadata()
     if (metadata[v] && metadata[v].MIMEType == 'image/svg+xml') {
@@ -466,6 +466,19 @@ Wiklo.tagsHandlerGetVal = (v) => {
     })
     return {name, options}
 }
+Wiklo.getRefname = (index, group=' ') => {
+    index++
+    if (group == 'lower-alpha' || group == 'upper-alpha') {
+        let result = ''
+        while (index > 0) {
+            result = String.fromCharCode(0x41 + (index - 1) % 26) + result
+            index = Math.floor((index - 1) / 26)
+        }
+        if (group.startsWith('lower-')) return result.toLowerCase()
+        return result
+    }
+    return ((group && group != ' ') ? (group.replace('<', '&#x3C;').replace('>', '&#x3E;').replace('"', '&#x22;').trim() + ' ') : '') + index.toString()
+}
 Wiklo.tagsHandlerMethods = {
     'ref': (v) => {
         v = v.split(/(<ref\s+.*?>|<ref>|<\/ref>)/g)
@@ -481,27 +494,27 @@ Wiklo.tagsHandlerMethods = {
                 if (!refgroups[tagList[i].options.group]) refgroups[tagList[i].options.group] = []
                 if (!tagList[i].options.name || !refgroups[tagList[i].options.group].find(ref=>ref.id==tagList[i].options.name)) {
                     let id = tagList[i].options.name || (tagList[i].options.group.trim() + (refgroups[tagList[i].options.group].length+1))
-                    v[tagList[i].index] = '<sup><a id="reflink1-'+id.replace('<', '&#x3C;').replace('>', '&#x3E;').replace('"', '&#x22;')+'" href="#ref-'+id.replace('<', '&#x3C;').replace('>', '&#x3E;').replace('"', '&#x22;')+'">[' + (tagList[i].options.group.replace('<', '&#x3C;').replace('>', '&#x3E;').replace('"', '&#x22;').trim() + (refgroups[tagList[i].options.group].length+1)) + ']</a><div class="refhover">'+innerHTML+'</div></sup>'
+                    v[tagList[i].index] = '<sup><a id="reflink1-'+id.replace('<', '&#x3C;').replace('>', '&#x3E;').replace('"', '&#x22;')+'" href="#ref-'+id.replace('<', '&#x3C;').replace('>', '&#x3E;').replace('"', '&#x22;')+'">[' + Wiklo.getRefname(refgroups[tagList[i].options.group].length, tagList[i].options.group) + ']</a><div class="refhover">'+innerHTML+'</div></sup>'
                     refgroups[tagList[i].options.group].push({id, name: tagList[i].options.name, value: innerHTML, number: 1})
                 } else {
                     let ref = refgroups[tagList[i].options.group].find(ref=>ref.name==tagList[i].options.name)
                     ref.number += 1
                     if (innerHTML && !ref.value) ref.value = innerHTML
-                    v[tagList[i].index] = '<sup><a id="reflink'+ref.number+'-'+ref.name.replace('<', '&#x3C;').replace('>', '&#x3E;').replace('"', '&#x22;')+'" href="#ref-' + ref.name.replace('<', '&#x3C;').replace('>', '&#x3E;').replace('"', '&#x22;') + '">[' + (tagList[i].options.group.trim() + (refgroups[tagList[i].options.group].findIndex(ref=>ref.name==tagList[i].options.name)+1)) + ']</a><div class="refhover">'+ref.value+'</div></sup>'
+                    v[tagList[i].index] = '<sup><a id="reflink'+ref.number+'-'+ref.name.replace('<', '&#x3C;').replace('>', '&#x3E;').replace('"', '&#x22;')+'" href="#ref-' + ref.name.replace('<', '&#x3C;').replace('>', '&#x3E;').replace('"', '&#x22;') + '">[' + Wiklo.getRefname(refgroups[tagList[i].options.group].findIndex(ref=>ref.name==tagList[i].options.name), tagList[i].options.group) + ']</a><div class="refhover">'+ref.value+'</div></sup>'
                 }
             } else {
                 v[tagList[i].index] = ''
             }
         }
-        Object.entries(refgroups).forEach(([group,list])=>list.forEach(ref=>{
+        Object.entries(refgroups).forEach(([group, list])=>list.forEach(ref=>{
             let node = document.createElement('li')
             node.classList.add('reflist-li')
             node.setAttribute('group', group)
             node.innerHTML = ''
-            for (let i=0;i<ref.number; i++) node.innerHTML += '<a href="#reflink'+(i+1)+'-'+ref.id+'">'+(i+1+'').split('').map(k=>Wiklo._super[k])+'</a> '
+            for (let i=0;i<ref.number; i++) node.innerHTML += '<a href="#reflink'+(i+1)+'-'+ref.id+'">'+Wiklo.toSuper(i+1)+'</a> '
             node.innerHTML += ref.value
             node.id = 'ref-' + ref.id
-            v.push(node.outerHTML)
+            v.push(node.outerHTML + '\n')
             delete node
         }))
         return v.join('')
@@ -756,7 +769,7 @@ Wiklo.linkToHTML = (v) => {
     return `<a href="./?${article ? article[0] : args[0]}${hash ? ('#'+hash) : ''}" title="${kwargs.title || args[0]}"${!article ? ' class="no-article"' : (Wiklo.PAGEUUID == article[0] && !hash ? ' class="self-link"' : '')} target="${kwargs.target || '_self'}">${args[1] || (hash ? (args[0] + ' &#xA7; ' + hash) : args[0])}</a><div class="linkhover">${article ? ('<h1>'+article[1].name.replace('<', '&#x3C;').replace('>', '&#x3E;').replace('"', '&#x22;')+'</h1>'+(article[1].description ? Wiklo.modulesHandler(article[1].description) : 'This page does not have a description.')) : ('<h1>'+args[0].replace('<', '&#x3C;').replace('>', '&#x3E;').replace('"', '&#x22;')+'</h1>This page could not be found.')}</div>`
 }
 Wiklo.textToHTML = (v) => {
-    return Wiklo.modulesHandler(
+    return Wiklo.tagsHandler(Wiklo.modulesHandler(
         Wiklo.tagsHandler(v)
         .replace(/^\n/gs, '')
         .replace(/^=[^\n]*=\s*?\n/gs, (v)=>((Wiklo.tryHead(v.slice(0, -1).trim())?.outerHTML)||v.slice(0, -1))+'\n')
@@ -773,7 +786,7 @@ Wiklo.textToHTML = (v) => {
         .replace(/^(\{\{[^\{\}]*?\}\})+\n/gm, (v)=>v.slice(0, -1))
         .replace(/^<[^<>]*?>\n/gm, (v)=>v.slice(0, -1))
         .replace(/\n<!--.*?-->\n/gs, (v)=>v.slice(1))
-    )
+    ))
 }
 Wiklo.timeFormat = {timeZoneName:'short', hour12: false}
 Wiklo.textToPage = (text, pageinfo=null) => {
@@ -791,6 +804,11 @@ Wiklo.textToPage = (text, pageinfo=null) => {
             + '</div><hr>' ) : ''
         )
         + Wiklo.textToHTML(text.replaceAll('\r\n','\n').replaceAll('\r','\n'))
+    page.querySelectorAll('sup:has(> a[href^="#ref-"]:first-child + div.refhover:last-child)').forEach((v)=>{
+        const reflink = v.querySelector('a[href^="#ref-"]')
+        const refhover = v.querySelector('a[href^="#ref-"] + div.refhover')
+        if (!refhover.innerHTML) refhover.innerHTML = Array.from(page.querySelectorAll('sup > a[href="'+decodeURIComponent(reflink.hash)+'"] + div.refhover')).slice(-1)[0]?.innerHTML
+    })
     if (page.querySelector('.reflist > ol')) page.querySelectorAll('.reflist-li').forEach((v)=>{
         let group = v.getAttribute('group')
         let reflist = group != ' ' ? page.querySelector('.reflist#reflist-'+group+' > ol') : page.querySelector('.reflist:not([id]) > ol')

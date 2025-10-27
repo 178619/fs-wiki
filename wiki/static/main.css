@@ -422,6 +422,10 @@ article {
         text-decoration-line: underline;
         cursor: help;
     }
+    
+    blockquote {
+        width: fit-content;
+    }
 
     cite {
         font-style: inherit;
@@ -457,6 +461,7 @@ article {
         font-size: initial;
         font-weight: 400;
         font-style: initial;
+        font-family: var(--font-sans-serif);
         pointer-events: none;
         user-select: none;
         z-index: 250;
@@ -698,6 +703,9 @@ article {
         button.fullscreen {
             background-image: url('./icons/fullscreen-disable.svg');
         }
+    }
+    *:not(ul):not(ol) > li {
+        margin-left: 40px;
     }
 }
 
