@@ -807,7 +807,6 @@ Wiklo.tableToHTML = (v) => {
     }).join('\n')
     if (!trs[0].trim()) trs = trs.slice(1)
     return '<table'+(tableoptions ? (' ' + tableoptions.replaceAll('<', '&#x3C;').replaceAll('>', '&#x3E;')) : '')+'>'+(caption || '')+'<tbody>'+trs.map(tr=>{
-        console.log(tr)
         const cells = tr.split(/(\n(?:\<\!--.*?--\>)*?\!|\!\!|\n(?:\<\!--.*?--\>)*?\||\|\|)/g)
         cells[0] = cells[0].trim()
         for (let i = 1; i < cells.length; i += 2) {
@@ -836,10 +835,10 @@ Wiklo.textToHTML = (v) => {
         .replace(/^(\{\{[^\{\}]*?\}\})+\n/gm, (v)=>v.slice(0, -1))
         .replace(/^<[^<>]*?>\n/gm, (v)=>v.slice(0, -1))
         .replace(/\n<!--.*?-->\n/gs, (v)=>v.slice(1))
-    )).replace(/\[https?:\/\/[^\]]+?\..+?\]/gm, (v)=>{
+    ).replace(/\[https?:\/\/[^\]]+?\..+?\]/gm, (v)=>{
         v = v.slice(1, -1).split(' ')
         return `<a href="${v[0]}" title="${v[0]}" target="_blank">${v.length == 1 ? v[0] : v.slice(1).join(' ')}</a><div class="linkhover">${v[0]}</div>`
-    })
+    }))
 }
 Wiklo.timeFormat = {timeZoneName:'short', hour12: false}
 Wiklo.textToPage = (text, pageinfo=null) => {

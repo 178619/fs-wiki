@@ -38,13 +38,13 @@ const getCiteAuthors = (kwargs) => {
     kwargs.last = kwargs.last1 || kwargs.surname1 || kwargs.last || kwargs.surname
     kwargs.author = kwargs.author1 || kwargs.author
     kwargs['author-link'] = kwargs['author-link1'] || kwargs['author-link']
-    let t = `${kwargs['author-link'] ? '<a href="./?'+kwargs['author-link']+'" title="'+kwargs['author-link']+'">' : ''}${kwargs.author || ''}${kwargs.last ? kwargs.last+(kwargs.first ? '' : ' ') : ''}${kwargs.first ? ((kwargs.last || kwargs.author) ? ', ' : '')+kwargs.first : ''}${kwargs['author-link'] ? '</a>' : ''}`
+    let t = `${kwargs['author-link'] ? '[['+kwargs['author-link'].replaceAll('=', '&#x3D;')+'|' : ''}${kwargs.author || ''}${kwargs.last ? kwargs.last+(kwargs.first ? '' : ' ') : ''}${kwargs.first ? ((kwargs.last || kwargs.author) ? ', ' : '')+kwargs.first : ''}${kwargs['author-link'] ? ']]' : ''}`
     for (let i=2; i<255; i++) {
         kwargs['first'+i] = kwargs['first'+i] || kwargs['given'+i]
         kwargs['last'+i] = kwargs['last'+i] || kwargs['surname'+i]
         if (!(kwargs['first'+i] || kwargs['last'+i] || kwargs['author'+i])) break
         kwargs['author-link'+i] = kwargs['author-link'+i] || kwargs['author'+i+'-link']
-        t += `; ${kwargs['author-link'+i] ? '<a href="./?'+kwargs['author-link'+i]+'" title="'+kwargs['author-link'+i]+'">' : ''}${kwargs['author'+i] || ''}${kwargs['last'+i] ? kwargs['last'+i]+(kwargs['first'+i] ? '' : ' ') : ''}${kwargs['first'+i] ? ((kwargs['last'+i] || kwargs['author'+i]) ? ', ' : '')+kwargs['first'+i] : ''}${kwargs['author-link'+i] ? '</a>' : ''}`
+        t += `; ${kwargs['author-link'+i] ? '[['+kwargs['author-link'+i].replaceAll('=', '&#x3D;')+'|' : ''}${kwargs['author'+i] || ''}${kwargs['last'+i] ? kwargs['last'+i]+(kwargs['first'+i] ? '' : ' ') : ''}${kwargs['first'+i] ? ((kwargs['last'+i] || kwargs['author'+i]) ? ', ' : '')+kwargs['first'+i] : ''}${kwargs['author-link'+i] ? ']]' : ''}`
     }
     return t
 }
@@ -92,9 +92,9 @@ const mediawiki = {
     '=': () => '&#x3D;',
     '!!': () => '&#x7C;&#x7C;',
     '!(': () => '&#x5B;',
-    '!)': () => '&#x5D;',
+    ')!': () => '&#x5D;',
     '!((': () => '&#x5B;&#x5B;',
-    '!))': () => '&#x5D;&#x5D;',
+    '))!': () => '&#x5D;&#x5D;',
     '(': () => '&#x7B;',
     ')': () => '&#x7D;',
     '((': () => '&#x7B;&#x7B;',
@@ -128,11 +128,11 @@ const mediawiki = {
         return `<table${kwargs.class ? (' class="' + kwargs.class + '"') : ''}${kwargs.style ? (' style="' + kwargs.style + '"') : ''}>${kwargs.title ? ('<caption>' + kwargs.title + '</caption>') : ''}<tbody>${innerHTML}</tbody></table>`
     },
     'anchor': (args, kwargs) => '[['+args[0]+']]',
-    'annotated link': (args, kwargs) => '[['+args[0]+']]',
+    'annotated link': (args, kwargs) => '[['+args[0].replaceAll('=', '&#x3D;')+']]',
     'apod': (args, kwargs) => {
         const date = new Date(kwargs.date + ' UTC').toISOString()
         const link = 'https://apod.nasa.gov/apod/ap' + date.slice(2,4) + date.slice(5,7) + date.slice(8,10) + '.html'
-        return `<a href="${link}">NASA Astronomy Picture of the Day: ${kwargs.title} (${kwargs.date})</a>`
+        return `[[${link}|NASA Astronomy Picture of the Day: ${kwargs.title} (${kwargs.date})]]`
     },
     'asterisk': () => '&#x2A;',
     'black': (args, kwargs) => `<span style="color: black;">${args[0]}</span>`,
@@ -152,34 +152,34 @@ const mediawiki = {
         }
         return `<ul>${text}</ul>`
     }, // WIP
-    'circa': (args, kwargs) => '<span style="white-space: nowrap;">' + (Wiklo.getTrue(kwargs.lk) ? '<a href="https://en.wiktionary.org/wiki/circa">c.</a>' : '<span title="circa">c.</span>') + (args[0] ? (' '+args[0]) : '') + (args[1] ? (' &#x2013; c. '+args[1]) : '') + '</span>',
+    'circa': (args, kwargs) => '<span style="white-space: nowrap;">' + (Wiklo.getTrue(kwargs.lk) ? '[[https://en.wiktionary.org/wiki/circa"|c.]]' : '<span title="circa">c.</span>') + (args[0] ? (' '+args[0]) : '') + (args[1] ? (' &#x2013; c. '+args[1]) : '') + '</span>',
     'citation needed': (args, kwargs) => '<sup style="white-space: nowrap;">[<i><span title="' + (kwargs.reason || 'This claim needs references to reliable sources.') + (kwargs.date ? (' (' + kwargs.date + ')') : '') + '">citation needed</span></i>]</sup>',
     'cite arxiv': (args, kwargs) => {
         let authors = getCiteAuthors(kwargs)
         kwargs.date = kwargs.date || kwargs.year
         kwargs.arxiv = kwargs.arxiv || kwargs.eprint
-        return `<cite>${authors}${kwargs.date && authors ? ' ('+kwargs.date+')' : ''}${authors ? '. ' : ''}${kwargs.url ? '<a href="'+kwargs.url+'">' : ''}${kwargs.title ? '"'+kwargs.title+'"' : ''}${kwargs.url ? '</a>' : ''}.${kwargs.journal ? ' <i>'+kwargs.journal+'</i>.' : ''}${kwargs.arxiv ? ' arXiv:<a href="https://arxiv.org/abs/'+kwargs.arxiv+'">'+kwargs.arxiv+'</a>.' : ''}${kwargs.date && !authors ? ' '+kwargs.date+'.' : ''}</cite>`
+        return `<cite>${authors}${kwargs.date && authors ? ' ('+kwargs.date+')' : ''}${authors ? '. ' : ''}${kwargs.url ? ('[['+kwargs.url.replaceAll('=', '&#x3D;')+'|') : ''}${kwargs.title ? '"'+kwargs.title+'"' : ''}${kwargs.url ? ']]' : ''}.${kwargs.journal ? ' <i>'+kwargs.journal+'</i>.' : ''}${kwargs.arxiv ? ' arXiv:[[https://arxiv.org/abs/'+kwargs.arxiv+'|'+kwargs.arxiv+']].' : ''}${kwargs.date && !authors ? ' '+kwargs.date+'.' : ''}</cite>`
     },
     'cite book': (args, kwargs) => {
         let authors = getCiteAuthors(kwargs)
         kwargs.date = kwargs.date || kwargs.year
-        return `<cite>${authors}${kwargs.date && authors ? ' ('+kwargs.date+')' : ''}${authors ? '. ' : ''}${kwargs.url ? '<a href="'+kwargs.url+'">' : ''}${kwargs.title ? '<i>'+kwargs.title+'</i>' : ''}${kwargs.url ? '</a>' : ''}${kwargs.edition ? ' ('+kwargs.edition+' ed.)' : ''}.${kwargs.date && !authors ? ' '+kwargs.date+'.' : ''}${kwargs.publisher ? ' '+kwargs.publisher+'.' : ''}${kwargs.pages ? ' pp. '+kwargs.pages+'.' : ''}${kwargs.isbn ? ' ISBN '+kwargs.isbn+'.' : ''}${kwargs['access-date'] ? ' Retrieved '+kwargs['access-date']+'.' : ''}</cite>`
+        return `<cite>${authors}${kwargs.date && authors ? ' ('+kwargs.date+')' : ''}${authors ? '. ' : ''}${kwargs.url ? ('[['+kwargs.url.replaceAll('=', '&#x3D;')+'|') : ''}${kwargs.title ? '<i>'+kwargs.title+'</i>' : ''}${kwargs.url ? ']]' : ''}${kwargs.edition ? ' ('+kwargs.edition+' ed.)' : ''}.${kwargs.date && !authors ? ' '+kwargs.date+'.' : ''}${kwargs.publisher ? ' '+kwargs.publisher+'.' : ''}${kwargs.pages ? ' pp. '+kwargs.pages+'.' : ''}${kwargs.isbn ? ' ISBN '+kwargs.isbn+'.' : ''}${kwargs['access-date'] ? ' Retrieved '+kwargs['access-date']+'.' : ''}</cite>`
     },
     'cite journal': (args, kwargs) => {
         let authors = getCiteAuthors(kwargs) || kwargs.vauthors
         kwargs.date = kwargs.date || kwargs.year
         kwargs.arxiv = kwargs.arxiv || kwargs.eprint
-        return `<cite>${authors}${kwargs.date && authors ? ' ('+kwargs.date+')' : ''}${authors ? '. ' : ''}${kwargs.url ? '<a href="'+kwargs.url+'">' : ''}${kwargs.title ? '"'+kwargs.title+'"' : ''}${kwargs.url ? '</a>' : ''}.${kwargs.journal ? ' <i>'+kwargs.journal+'</i>.' : ''}${kwargs.volume ? ' <b>'+kwargs.volume+'</b>'+(kwargs.issue ? ' ('+kwargs.issue+')' : '')+':' : ''}${kwargs.pages ? ' '+kwargs.pages+'.' : ''}${kwargs.arxiv ? ' arXiv:<a href="https://arxiv.org/abs/'+kwargs.arxiv+'">'+kwargs.arxiv+'</a>.' : ''}${kwargs.doi ? ' doi:<a href="https://doi.org/'+kwargs.doi+'">'+kwargs.doi+'</a>.' : ''}${kwargs.pmc ? ' PMC '+kwargs.pmc+'.' : ''}${kwargs.pmid ? ' PMID:'+kwargs.pmid+'.' : ''}${kwargs.date && !authors ? ' '+kwargs.date+'.' : ''}${kwargs['access-date'] ? ' Retrieved '+kwargs['access-date']+'.' : ''}</cite>`
+        return `<cite>${authors}${kwargs.date && authors ? ' ('+kwargs.date+')' : ''}${authors ? '. ' : ''}${kwargs.url ? ('[['+kwargs.url.replaceAll('=', '&#x3D;')+'|') : ''}${kwargs.title ? '"'+kwargs.title+'"' : ''}${kwargs.url ? ']]' : ''}.${kwargs.journal ? ' <i>'+kwargs.journal+'</i>.' : ''}${kwargs.volume ? ' <b>'+kwargs.volume+'</b>'+(kwargs.issue ? ' ('+kwargs.issue+')' : '')+':' : ''}${kwargs.pages ? ' '+kwargs.pages+'.' : ''}${kwargs.arxiv ? ' arXiv:[[https://arxiv.org/abs/'+kwargs.arxiv+'|'+kwargs.arxiv+']].' : ''}${kwargs.doi ? ' doi:[[https://doi.org/'+kwargs.doi+'|'+kwargs.doi+']].' : ''}${kwargs.pmc ? ' PMC '+kwargs.pmc+'.' : ''}${kwargs.pmid ? ' PMID:'+kwargs.pmid+'.' : ''}${kwargs.date && !authors ? ' '+kwargs.date+'.' : ''}${kwargs['access-date'] ? ' Retrieved '+kwargs['access-date']+'.' : ''}</cite>`
     },
     'cite news': (args, kwargs) => {
         let authors = getCiteAuthors(kwargs)
         kwargs.date = kwargs.date || kwargs.year
-        return `<cite>${authors}${kwargs.date && authors ? ' ('+kwargs.date+')' : ''}${authors ? '. ' : ''}${kwargs.url ? '<a href="'+kwargs.url+'">' : ''}${kwargs.title || ''}${kwargs.url ? '</a>' : ''}.${kwargs.website ? ' <i>'+kwargs.website+'</i>.' : ''}${kwargs.date && !authors ? ' '+kwargs.date+'.' : ''}${kwargs.publisher ? ' '+kwargs.publisher+'.' : ''}${kwargs['access-date'] ? ' Retrieved '+kwargs['access-date']+'.' : ''}</cite>`
+        return `<cite>${authors}${kwargs.date && authors ? ' ('+kwargs.date+')' : ''}${authors ? '. ' : ''}${kwargs.url ? ('[['+kwargs.url.replaceAll('=', '&#x3D;')+'|') : ''}${kwargs.title || ''}${kwargs.url ? ']]' : ''}.${kwargs.website ? ' <i>'+kwargs.website+'</i>.' : ''}${kwargs.date && !authors ? ' '+kwargs.date+'.' : ''}${kwargs.publisher ? ' '+kwargs.publisher+'.' : ''}${kwargs['access-date'] ? ' Retrieved '+kwargs['access-date']+'.' : ''}</cite>`
     },
     'cite web': (args, kwargs) => {
         let authors = getCiteAuthors(kwargs)
         kwargs.date = kwargs.date || kwargs.year
-        return `<cite>${authors}${kwargs.date && authors ? ' ('+kwargs.date+')' : ''}${authors ? '. ' : ''}${kwargs.url ? '<a href="'+kwargs.url+'">' : ''}${kwargs.title || ''}${kwargs.url ? '</a>' : ''}.${kwargs.website ? ' <i>'+kwargs.website+'</i>.' : ''}${kwargs.date && !authors ? ' '+kwargs.date+'.' : ''}${kwargs.publisher ? ' '+kwargs.publisher+'.' : ''}${kwargs['access-date'] ? ' Retrieved '+kwargs['access-date']+'.' : ''}</cite>`
+        return `<cite>${authors}${kwargs.date && authors ? ' ('+kwargs.date+')' : ''}${authors ? '. ' : ''}${kwargs.url ? ('[['+kwargs.url.replaceAll('=', '&#x3D;')+'|') : ''}${kwargs.title || ''}${kwargs.url ? ']]' : ''}.${kwargs.website ? ' <i>'+kwargs.website+'</i>.' : ''}${kwargs.date && !authors ? ' '+kwargs.date+'.' : ''}${kwargs.publisher ? ' '+kwargs.publisher+'.' : ''}${kwargs['access-date'] ? ' Retrieved '+kwargs['access-date']+'.' : ''}</cite>`
     },
     'clear': (args, kwargs) => {
         if (args[0] == 'left') return '<div style="clear:left;"></div>'
@@ -187,7 +187,7 @@ const mediawiki = {
         return '<div style="clear:both;"></div>'
     },
     'color': (args, kwargs) => `<span style="color: ${args[0]};">${args[1]}</span>`,
-    'colored link': (args, kwargs) => `[[${args[1]}|<span style="color: ${args[0]};">${args[2] || args[1]}</span>]]`,
+    'colored link': (args, kwargs) => `[[${args[1].replaceAll('=', '&#x3D;')}|<span style="color: ${args[0]};">${args[2] || args[1]}</span>]]`,
     'composition bar': (args, kwargs) => {
         return `<div style="width: ${kwargs.width || '100px'}";>${args[0]} / ${args[1]}${kwargs.per == '1' ? ('('+Math.round(args[0]/args[1] )+'%)') : ''}<div style="width: 100%; height: 1em; background-image: linear-gradient(to right, ${kwargs.hex || args[2] || 'var(--date-color)'} ${args[0] / args[1] * 100}%, ${kwargs['background-color'] || 'transparent'} ${args[0] / args[1] * 100}%); border: solid 1px ${kwargs['border-color'] || kwargs.border || 'var(--date-color)'}"></div></div>`
     },
@@ -377,9 +377,10 @@ const mediawiki = {
     }, // WIP
     'url': (args, kwargs) => {
         if (kwargs['1']) args[0] = kwargs['1']
+        if (!args[0]) return ''
         if (args[0].startsWith('//')) args[0] = window.location.protocol + args[0]
         if (!args[0].includes('://')) args[0] = 'http://' + args[0]
-        return `<a href="${args[0]}" title="${args[0]}" target="_blank">${args[1] || args[0]}</a><div class="linkhover">${args[0]}</div>`
+        return `[[${args[0]}|${args[1] || args[0]}]]`
     }, 
     'use dmy dates': () => '',
     'val': (args, kwargs) => {
@@ -416,6 +417,7 @@ const mediawiki = {
     'yes2': (args, kwargs) => `style="background-color: ${kwargs.color || '#BFFFDF'}; color: #000000; text-align: center;${kwargs.style || ''}" | ${args[0] || ''}`,
 }
 const mediawikiRedirects = {
+    '!))': '))!',
     ',': '·',
     '--': 'em dash',
     '*': '•',
