@@ -682,11 +682,11 @@ Wiklo.tagsHandlerDeprecated = (v) => {
     return v.join('')
 }
 Wiklo.modulesHandler = (v) => {
-    v = v.split(/(\{\{\{[^\{]*?\}\}\})/g).map(k=>{
+    v = v.split(/(\{\{\{[^\{]*?\}\}\})/gs).map(k=>{
         if (!k.startsWith('{{{')) return k
         if (k.includes('|')) return k.slice(3,-3).split('|')[1]
         return ''
-    }).join('').split(/(\{\{|\}\}|\[\[|\]\]|\{\||\|\})/g)
+    }).join('').replace(/\|\}\}(?:[^\}]|$)/gs, '| }}').split(/(\{\{|\}\}|\[\[|\]\]|\{\||\|\})/g)
     let tagLevel = 0
     let tagList = []
     for (let i = 0; i < v.length; i++) {
@@ -717,6 +717,10 @@ Wiklo.modulesHandler = (v) => {
         } else if ((v[i] == '}}' || v[i] == ']]' || v[i] == '|}') && tagLevel == 0) {
             v[i] = ''
         }
+    }
+    for (let i = 0; i < tagLevel; i++) {
+        tagList.push({tagLevel: tagLevel-i, index:v.length + i})
+        v.push('')
     }
     tagList.sort((a,b)=>{return b.tagLevel - a.tagLevel})
     for (let i = 0; i < tagList.length; i += 2) {

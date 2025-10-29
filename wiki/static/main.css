@@ -838,6 +838,7 @@ form {
     }
     input[type=text]#description {
         width: 800px;
+        max-width: calc(100% - 6px);
     }
     textarea#content {
         width: 800px;
@@ -890,6 +891,32 @@ form {
         margin: 2px;
         border-radius: 4px;
         cursor: pointer;
+    }
+}
+
+@media (orientation: landscape) {
+    form.editor {
+        position: fixed;
+        padding: 8px;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 50%;
+        input[type=text]#description {
+            width: calc(100% - 6px);
+        }
+        textarea#content {
+            width: calc(100% - 6px);
+            max-width: calc(100% - 6px);
+            height: calc(100% - 320px);
+        }
+        input[type=file]#file + .label-file {
+            width: calc(100% - 6px);
+        }
+    }
+
+    section.editor, body:has(form.editor) > header, body:has(form.editor) > footer {
+        margin-left: 50%;
     }
 }
 

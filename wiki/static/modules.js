@@ -121,10 +121,11 @@ const mediawiki = {
         let innerHTML = ''
         for (let i=0;i<args.length;i++) {
             if (i%cols == 0) innerHTML += '<tr>'
-            innerHTML += '<td>'+args[i]+'</td>'
-            if (i%cols-cols == -1) innerHTML += '</tr>'
+            innerHTML += (Wiklo.getTrue(kwargs['col'+(i%cols+1)+'header']) || Wiklo.getTrue(kwargs['row'+Math.floor(i/cols+1)+'header'])) ? '<th>'+args[i]+'</th>' : '<td>'+args[i]+'</td>'
+            if (i%cols == cols - 1) innerHTML += '</tr>'
         }
-        return `<table><tbody>${innerHTML}</tbody></table>`
+        if (Wiklo.getTrue(kwargs.fullwidth)) kwargs.style = 'width:100%;' + (kwargs.style || '')
+        return `<table${kwargs.class ? (' class="' + kwargs.class + '"') : ''}${kwargs.style ? (' style="' + kwargs.style + '"') : ''}>${kwargs.title ? ('<caption>' + kwargs.title + '</caption>') : ''}<tbody>${innerHTML}</tbody></table>`
     },
     'anchor': (args, kwargs) => '[['+args[0]+']]',
     'annotated link': (args, kwargs) => '[['+args[0]+']]',
