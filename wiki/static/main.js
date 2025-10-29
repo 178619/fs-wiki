@@ -1166,7 +1166,7 @@ window.addEventListener('load', () => {
             v.style.bottom = Math.min(window.innerHeight - e.clientY - window.scrollY + 12, window.innerHeight - v.clientHeight - window.scrollY - 4) + 'px'
         })
     })
-    document.body.onpopstate = Wiklo.loadFromSearch
+    document.body.onpopstate = ()=>Wiklo.loadFromSearch()
     Wiklo.loadFromSearch(Wiklo._searchEngineReferrers.includes(document.referrer))
     document.querySelector('#article_search').addEventListener('keydown', (e) => {
         if (e.key == 'Enter') {
