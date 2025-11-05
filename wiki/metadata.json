@@ -1326,10 +1326,7 @@
         ],
         "MIMEType": "text/wkl",
         "description": "A main character of [[Fortune Summoners]]",
-        "revisions": [
-            "6c32c463249040b7b7b1a7599f6bc66b",
-            "ca7a2f13f7874e0c87dc36f7c7217702"
-        ]
+        "revised": true
     },
     "b997c49c9d9741ffa20fef84f2f5d8aa": {
         "name": "Sana Poanet",
@@ -1341,10 +1338,7 @@
         ],
         "MIMEType": "text/wkl",
         "description": "A main character of [[Fortune Summoners]]",
-        "revisions": [
-            "cb255406db534c2d9e02262d2b2cb780",
-            "9842c51ea1ea402fbb4cc8d13ded293c"
-        ]
+        "revised": true
     },
     "82171c4f9e2d4b2ebea87ee2b92ab2dd": {
         "name": "Stella Mayberk",
@@ -1356,11 +1350,7 @@
         ],
         "MIMEType": "text/wkl",
         "description": "A main character of [[Fortune Summoners]]",
-        "revisions": [
-            "da43965f316942b0bef27116ac2d775c",
-            "c5a3a52cc7fd4391ba609c87b791342a",
-            "9fb4078fec6448d9898b1393a94deea8"
-        ]
+        "revised": true
     },
     "ae2a0dedd722494d8a8b4e36c980d7e1": {
         "name": "Carpe Fulgur",
@@ -1458,6 +1448,111 @@
             "00b870ab69de4865970cc63f4c943c4b",
             "c7731df6bb4146e298f99ff7f09bc12b",
             "1e14a595bea94931ae39fed0975ca430"
+        ]
+    },
+    "7617ae125bf0468c9622d7945358de19": {
+        "name": "Fictional character",
+        "author": "Fryze",
+        "lastModification": 1761703320159,
+        "creation": 1761703320159,
+        "categories": [
+            true
+        ],
+        "MIMEType": "text/wkl",
+        "description": "A created individual who appears in a fiction"
+    },
+    "a0091ed81dea41b69e8eff31d408d3d5": {
+        "name": "Arche Plumfield",
+        "author": "Fryze",
+        "lastModification": 1761703416006,
+        "creation": 1741360551936,
+        "categories": [
+            "644fab97b499426dbaa77a5ec956f9c4",
+            "7617ae125bf0468c9622d7945358de19"
+        ],
+        "MIMEType": "text/wkl",
+        "description": "A main character of [[Fortune Summoners]]",
+        "revised": true
+    },
+    "a17b52a0c2fb45609e0ada9b41f7fc1f": {
+        "name": "Sana Poanet",
+        "author": "Fryze",
+        "lastModification": 1761708511133,
+        "creation": 1741360617878,
+        "categories": [
+            "644fab97b499426dbaa77a5ec956f9c4",
+            "7617ae125bf0468c9622d7945358de19"
+        ],
+        "MIMEType": "text/wkl",
+        "description": "A main character of [[Fortune Summoners]]",
+        "revised": true
+    },
+    "2ceb745f5686436e80b5c409995619ac": {
+        "name": "Stella Mayberk",
+        "author": "Fryze",
+        "lastModification": 1761708523841,
+        "creation": 1741361663550,
+        "categories": [
+            "644fab97b499426dbaa77a5ec956f9c4",
+            "7617ae125bf0468c9622d7945358de19"
+        ],
+        "MIMEType": "text/wkl",
+        "description": "A main character of [[Fortune Summoners]]",
+        "revised": true
+    },
+    "400f375f73b640959f774248afb17481": {
+        "name": "Arche Plumfield",
+        "author": "Fryze",
+        "lastModification": 1762050207524,
+        "creation": 1741360551936,
+        "categories": [
+            "644fab97b499426dbaa77a5ec956f9c4",
+            "7617ae125bf0468c9622d7945358de19"
+        ],
+        "MIMEType": "text/wkl",
+        "description": "A main character of [[Fortune Summoners]]",
+        "revisions": [
+            "6c32c463249040b7b7b1a7599f6bc66b",
+            "ca7a2f13f7874e0c87dc36f7c7217702",
+            "ca141d71549c48ccb0143415065f29c9",
+            "a0091ed81dea41b69e8eff31d408d3d5"
+        ]
+    },
+    "19e7e31850d5491389f122ecd6d5f704": {
+        "name": "Sana Poanet",
+        "author": "Fryze",
+        "lastModification": 1762051484037,
+        "creation": 1741360617878,
+        "categories": [
+            "644fab97b499426dbaa77a5ec956f9c4",
+            "7617ae125bf0468c9622d7945358de19"
+        ],
+        "MIMEType": "text/wkl",
+        "description": "A main character of [[Fortune Summoners]]",
+        "revisions": [
+            "cb255406db534c2d9e02262d2b2cb780",
+            "9842c51ea1ea402fbb4cc8d13ded293c",
+            "b997c49c9d9741ffa20fef84f2f5d8aa",
+            "a17b52a0c2fb45609e0ada9b41f7fc1f"
+        ]
+    },
+    "406ef9b5975745bdb21f932584b46e28": {
+        "name": "Stella Mayberk",
+        "author": "Fryze",
+        "lastModification": 1762051730799,
+        "creation": 1741361663550,
+        "categories": [
+            "644fab97b499426dbaa77a5ec956f9c4",
+            "7617ae125bf0468c9622d7945358de19"
+        ],
+        "MIMEType": "text/wkl",
+        "description": "A main character of [[Fortune Summoners]]",
+        "revisions": [
+            "da43965f316942b0bef27116ac2d775c",
+            "c5a3a52cc7fd4391ba609c87b791342a",
+            "9fb4078fec6448d9898b1393a94deea8",
+            "82171c4f9e2d4b2ebea87ee2b92ab2dd",
+            "2ceb745f5686436e80b5c409995619ac"
         ]
     }
 }

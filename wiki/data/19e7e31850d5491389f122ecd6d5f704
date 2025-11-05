@@ -1,0 +1,61 @@
+{{Infobox
+|bodystyle=
+float: right;
+clear: right;
+|title=  サナ・ポアネット
+|above=  Sana Poanet
+|image=  {{nest|chara_sana2.jpg}}
+|label1= Voice (OG)
+|data1=  [[Sono Sachika]]
+|label2= Voice (DX)
+|data2=  [[Ueda Kana]]
+}}
+[[Sana Poanet]] is one of the three protagonists in [[Fortune Summoners]]. She lives in the [[Town of Tonkiness]].
+
+Being one of [[Arche Plumfield]]'s classmates, she often goes on an adventure following [[Arche]]. She doesn't have an outstanding talent, but her [[elemental stone]] '[[Eolamest]]' in her staff allows her to use healing magic and others.
+
+== Voice Sample ==
+* {{nest|voice_sana.mp3}}
+
+== Abilities ==
+{| class="wikitable sortable"
+!Name!!Requirement!!Command/Cost
+|-
+|Staff Smack||{{fs level|-1}}||{{fs key|x}} (Forward)<br>{{fs key|left+x}} (Backward)
+|-
+|Water Shoot||{{fs level|-1}}||{{fs key|down+x}} (Normal)<br>{{fs key|right+x}} (Long)<br>{{fs key|up+x}} (Air Shot)
+|-
+|Leap Back||{{fs level|8}}||{{fs key|down-left}} (Normal)<br>{{fs key|down-right}} (Flip)
+|-
+|Diamond Dust||{{fs level|-1}}||{{fs mp|3}}
+|-
+|Heal Water||{{fs level|-1}}||{{fs mp|3}}
+|-
+|Shield||{{fs level|3}}||{{fs mp|2}}
+|-
+|Sleep Mist||{{fs level|4}}||{{fs mp|3}}
+|-
+|Splash||{{fs level|5}}||{{fs mp|2}}
+|-
+|Mermaid Robe||{{fs level|6}}||{{fs mp|2}}
+|-
+|Turbid Squall||{{fs level|7}}||{{fs mp|3}}
+|-
+|Heal Water II||{{fs level|9}}||{{fs mp|6}}
+|-
+|Force Field||{{fs level|11}}||{{fs mp|5}}
+|-
+|Antidote||{{fs level|13}}||{{fs mp|4}}
+|-
+|Diamond Dust II||{{fs level|14}}||{{fs mp|6}}
+|-
+|Shield II||{{fs level|15}}||{{fs mp|5}}
+|-
+|Mirror Image||{{fs level|17}}||{{fs mp|5}}
+|-
+|Teleportation||{{fs level|19}}||{{fs mp|6}}
+|-
+|Water Blow||{{fs level|21}}||{{fs mp|8}}
+|-
+|Heal Mist||{{fs level|23}}||{{fs mp|12}}
+|}
