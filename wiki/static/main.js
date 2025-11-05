@@ -192,7 +192,7 @@ Wiklo.moduleHandlers = {
             if (uuid) source = './data/' + uuid
         }
         if (!source) '<img src="">'
-        return `<img src="${source}"${kwargs.class ? (' class="'+kwargs.class+'"') : ''} width="${kwargs.width}" height="${kwargs.height}" onerror="Wiklo.retryImage(this, '${uuid || args[0]}')">`
+        return `<img src="${source}"${kwargs.class ? (' class="'+kwargs.class+'"') : ''}${kwargs.alt ? (' alt="'+kwargs.alt+'"') : ''}${kwargs.width ? (' width="'+kwargs.width+'"') : ''}${kwargs.height ? (' height="'+kwargs.height+'"') : ''} onerror="Wiklo.retryImage(this, '${uuid || args[0]}')">`
     },
     'nestaudio': (args, kwargs) => {
         if (!args.length) return '<audio></audio>'
@@ -480,6 +480,52 @@ Wiklo.getRefname = (index, group=' ') => {
     return ((group && group != ' ') ? (group.replaceAll('<', '&#x3C;').replaceAll('>', '&#x3E;').replaceAll('"', '&#x22;').trim() + ' ') : '') + index.toString()
 }
 Wiklo.tagsHandlerMethods = {
+    'nowiki': (v) => {
+        v = v.split(/(<nowiki\s+.*?>|<nowiki>|<\/nowiki>)/g)
+        const tagList = Wiklo.tagsHandlerGetTagList(v)
+        for (let i = 0; i < tagList.length; i += 2) {
+            if (tagList[i].options) {
+                if (!tagList[i+1]) continue
+                let innerHTML = v.slice(tagList[i].index+1, tagList[i+1].index).join('')
+                for (let j = tagList[i].index; j <= tagList[i+1].index; j += 1) v[j] = ''
+                let node = document.createElement('nowiki')
+                Object.entries(tagList[i].options).forEach(([key, index])=>{
+                    try {
+                        node.setAttribute(key, index)
+                    } catch (e) {
+                    }
+                })
+                node.innerHTML = innerHTML.replaceAll('<', '&#x3C;').replaceAll('>', '&#x3E;')
+                v[tagList[i].index] = node.outerHTML.replaceAll('!', '&#x21;').replaceAll('[', '&#x5B;').replaceAll(']', '&#x5D;').replaceAll('|', '&#x7B;').replaceAll('{', '&#x7C;').replaceAll('}', '&#x7D;')
+            } else {
+                v[tagList[i].index] = ''
+            }
+        }
+        return v.join('')
+    },
+    'syntaxhighlight': (v) => {
+        v = v.split(/(<syntaxhighlight\s+.*?>|<syntaxhighlight>|<\/syntaxhighlight>)/g)
+        const tagList = Wiklo.tagsHandlerGetTagList(v)
+        for (let i = 0; i < tagList.length; i += 2) {
+            if (tagList[i].options) {
+                if (!tagList[i+1]) continue
+                let innerHTML = v.slice(tagList[i].index+1, tagList[i+1].index).join('')
+                for (let j = tagList[i].index; j <= tagList[i+1].index; j += 1) v[j] = ''
+                let node = document.createElement('syntaxhighlight')
+                Object.entries(tagList[i].options).forEach(([key, index])=>{
+                    try {
+                        node.setAttribute(key, index)
+                    } catch (e) {
+                    }
+                })
+                node.innerHTML = innerHTML.replaceAll('<', '&#x3C;').replaceAll('>', '&#x3E;')
+                v[tagList[i].index] = node.outerHTML.replaceAll('!', '&#x21;').replaceAll('[', '&#x5B;').replaceAll(']', '&#x5D;').replaceAll('|', '&#x7B;').replaceAll('{', '&#x7C;').replaceAll('}', '&#x7D;')
+            } else {
+                v[tagList[i].index] = ''
+            }
+        }
+        return v.join('')
+    },
     'ref': (v) => {
         v = v.split(/(<ref\s+.*?>|<ref>|<\/ref>)/g)
         const tagList = Wiklo.tagsHandlerGetTagList(v)
@@ -517,29 +563,6 @@ Wiklo.tagsHandlerMethods = {
             v.push(node.outerHTML + '\n')
             delete node
         }))
-        return v.join('')
-    },
-    'code': (v) => {
-        v = v.split(/(<code\s+.*?>|<code>|<\/code>)/g)
-        const tagList = Wiklo.tagsHandlerGetTagList(v)
-        for (let i = 0; i < tagList.length; i += 2) {
-            if (tagList[i].options) {
-                if (!tagList[i+1]) continue
-                let innerHTML = v.slice(tagList[i].index+1, tagList[i+1].index).join('')
-                for (let j = tagList[i].index; j <= tagList[i+1].index; j += 1) v[j] = ''
-                let node = document.createElement('code')
-                Object.entries(tagList[i].options).forEach(([key, index])=>{
-                    try {
-                        node.setAttribute(key, index)
-                    } catch (e) {
-                    }
-                })
-                node.innerHTML = innerHTML.replaceAll('<', '&#x3C;').replaceAll('>', '&#x3E;')
-                v[tagList[i].index] = node.outerHTML
-            } else {
-                v[tagList[i].index] = ''
-            }
-        }
         return v.join('')
     },
     // '': (v) => {
@@ -820,6 +843,7 @@ Wiklo.tableToHTML = (v) => {
 Wiklo.textToHTML = (v) => {
     return Wiklo.tagsHandler(Wiklo.modulesHandler(
         Wiklo.tagsHandler(v)
+        .replace(/.+[^\{\n]\{\|/gm, (v)=>v.slice(0, -1)+'&#x7C;')
         .replace(/^\n/gs, '')
         .replace(/^=[^\n]*=\s*?\n/gs, (v)=>((Wiklo.tryHead(v.slice(0, -1).trim())?.outerHTML)||v.slice(0, -1))+'\n')
         .replace(/^=[^\n]*=\s*?$/gm, (v)=>((Wiklo.tryHead(v.trim())?.outerHTML)||v))
@@ -833,6 +857,7 @@ Wiklo.textToHTML = (v) => {
         .replace(/''.*?''/g, (v)=>'<i>'+v.slice(2, -2)+'</i>')
         .replace(/^\}\}\n(?:[^\!\|])/gm, (v)=>'}}'+v.slice(-1))
         .replace(/^(\{\{[^\{\}]*?\}\})+\n/gm, (v)=>v.slice(0, -1))
+        .replace(/^-{4,}/gm, '<hr />')
         .replace(/^<[^<>]*?>\n/gm, (v)=>v.slice(0, -1))
         .replace(/\n<!--.*?-->\n/gs, (v)=>v.slice(1))
     ).replace(/\[https?:\/\/[^\]]+?\..+?\]/gm, (v)=>{
@@ -955,10 +980,108 @@ Wiklo.loadUUIDPage = async (uuid, hash=null, forceLatestVersion=false) => {
         document.querySelector('section').append(Wiklo.textToPage((metadata[uuid]?.description ? (metadata[uuid]?.description + '<hr>') : '') + 'This is an unknown file uploaded to this website. ('+metadata[uuid].MIMEType+') <a href="./data/'+uuid+'" download="'+safepagename+'">Download</a>', metadata[uuid]))
     }
     if (metadata[uuid].revised) Wiklo.alert('You are looking at a displaced revision.')
-    document.querySelectorAll('section.included').forEach(v=>{v.onloadedmetadata()})
-    document.querySelectorAll('article script').forEach(v=>{eval(v.textContent)})
+    Wiklo.afterPageLoad()
     if (hash || location.hash) document.getElementById(decodeURIComponent(hash?.slice(1) || location.hash.slice(1)))?.scrollIntoView()
     return true
+}
+Wiklo.afterPageLoad = () => {
+    document.querySelectorAll('section.included').forEach(v=>{v.onloadedmetadata()})
+    document.querySelectorAll('article script').forEach(v=>{eval(v.textContent)})
+    document.querySelectorAll('table.sortable').forEach(v=>{
+        // WIP
+        const headerRows = v.querySelectorAll('tr:not(.sorttop):not(.sortbottom):not(:last-child):not(:has(td)):not(:not(:has(th)) + tr)')
+        const headers = []
+        let lastRow = 0
+        headerRows.forEach((tr, ri) => {
+            tr.querySelectorAll('th').forEach(header => {
+                const y = ri + (header.rowSpan || 1) - 1
+                if (y > lastRow) {
+                    lastRow = y;
+                }
+                headers.push({header, y})
+            })
+        })
+        if (!headers.length) return
+        let sortIndex = -1
+        let sortDirection = 0
+        const rows = v.querySelectorAll('tr:not(.sorttop):not(.sortbottom):has(td)')
+        const bottom = v.querySelectorAll('tr.sortbottom, tr:has(th):last-child')
+        headers.filter(header=>header.y==lastRow).map(header=>header.header).forEach((header, index)=>{
+            if (header.className.includes('unsortable')) return
+            header.classList.add('sort-header')
+            header.onclick = () => {
+                if (sortIndex == index) {
+                    header.classList.remove('sort-direction-'+(sortDirection+2))
+                    if (sortDirection == 1) sortDirection = -1; else sortDirection += 1
+                    header.classList.add('sort-direction-'+(sortDirection+2))
+                } else {
+                    v.querySelector('.sort-header.sort-direction-'+(sortDirection+2))?.classList.remove('sort-direction-'+(sortDirection+2))
+                    sortIndex = index
+                    sortDirection = 1
+                    header.classList.add('sort-direction-3')
+                }
+                rows.forEach((row, ri)=>{
+                    const cells = row.querySelectorAll('th, td')
+                    cells.forEach((cell)=>{
+                        const rowSpan = cell.rowSpan
+                        if (rowSpan && rowSpan > 1) {
+                            cell.rowSpan = 1
+                            for (let i=1; i<rowSpan; i++) rows[ri+1].append(cell.cloneNode(true))
+                        }
+                    })
+                })
+                if (!sortDirection) {
+                    rows.forEach(row=>{
+                        row.remove()
+                    })
+                    rows.forEach(row=>{
+                        (v.querySelector('tbody') || v).append(row)
+                    })
+                    bottom.forEach(row=>{
+                        row.remove()
+                    })
+                    bottom.forEach(row=>{
+                        (v.querySelector('tbody') || v).append(row)
+                    })
+                    return
+                }
+                let dataSortType = header.getAttribute('data-sort-type')
+                if (!dataSortType) {
+                    dataSortType = 'number'
+                    rows.forEach((row, ri)=>{
+                        if (ri > 4) return
+                        const val = row.cells[sortIndex] ? (row.cells[sortIndex].getAttribute('data-sort-value') || row.cells[sortIndex].textContent) : ''
+                        if (val == '' || isNaN(Number(val.replace(/^[^-+\d](.+)/, '$1').replace(/\,|\s/g, '')))) dataSortType = 'text'
+                    })
+                }
+                const rowArray = Array.from(v.querySelectorAll('tr:not(.sorttop):not(.sortbottom):has(td)'))
+                rowArray.sort((row1, row2)=>{
+                    if (!row1.cells[sortIndex] && !row2.cells[sortIndex]) return 0
+                    if (!row2.cells[sortIndex]) return -Infinity
+                    const r1 = row1.cells[sortIndex].getAttribute('data-sort-value') || row1.cells[sortIndex].querySelector('[data-sort-value]')?.getAttribute('data-sort-value') || row1.cells[sortIndex].textContent
+                    const r2 = row2.cells[sortIndex].getAttribute('data-sort-value') || row2.cells[sortIndex].querySelector('[data-sort-value]')?.getAttribute('data-sort-value') || row2.cells[sortIndex].textContent
+                    if (dataSortType == 'number') {
+                        return ((Number(r1.replace(/^[^-+\d]/, '').replace(/\,|\s/g, '')) || -Infinity) - (Number(r2.replace(/^[^-+\d]/, '').replace(/\,|\s/g, '')) || -Infinity)) * sortDirection
+                    }
+                    if (r1.trim() > r2.trim()) return 1 * sortDirection
+                    if (r1.trim() < r2.trim()) return -1 * sortDirection
+                    return 0
+                })
+                rows.forEach(row=>{
+                    row.remove()
+                })
+                rowArray.forEach(row=>{
+                    (v.querySelector('tbody') || v).append(row)
+                })
+                bottom.forEach(row=>{
+                    row.remove()
+                })
+                bottom.forEach(row=>{
+                    (v.querySelector('tbody') || v).append(row)
+                })
+            }
+        })
+    })
 }
 Wiklo._forceScroll = (t) => {
     if (document.getElementById(t)) document.getElementById(t).scrollIntoView()

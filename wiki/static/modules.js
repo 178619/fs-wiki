@@ -197,7 +197,7 @@ const mediawiki = {
         let text = kwargs.text
         if (!text) {
             if (!args[0]) return ''
-            args = args.map(arg=>arg.replace('&#x7C;', '|'))
+            args = args.map(arg=>arg.replaceAll('&#x7C;', '|'))
             text = '[[' + args[0] + ']]'
             if (args[1]) text += `${args[2] ? ',' : ' or'} [[${args[1]}]]`
             for (let i=2;i<args.length;i++) text += `,${args[i+1] ? '' : ' or'} [[${args[i]}]]`

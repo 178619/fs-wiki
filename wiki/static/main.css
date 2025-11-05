@@ -437,10 +437,15 @@ article {
         font-style: inherit;
     }
 
-    code {
+    code, syntaxhighlight {
         font-family: var(--font-monospace);
         font-weight: 300;
         line-height: 1lh;
+    }
+
+    syntaxhighlight {
+        display: block;
+        white-space: break-spaces;
     }
 
     div.hatnote {
@@ -743,6 +748,25 @@ article {
             --error-text-color: #BF0000;
         }
     }
+
+    .sortable {
+        .sort-header {
+            cursor: pointer;
+            padding-right: 1.5em;
+        }
+        .sort-header::after {
+            position: absolute;
+            width: 1em;
+            text-align: right;
+            content: '⮁';
+        }
+        .sort-header.sort-direction-1::after {
+            content: '⭣';
+        }
+        .sort-header.sort-direction-3::after {
+            content: '⭡';
+        }
+    }
 }
 
 .wiklo-popup-layer {
@@ -954,7 +978,7 @@ form {
     CODE
 */
 
-code[lang="json"] {
+code[lang="json"], syntaxhighlight[lang="json"] {
     .key {
         color: #FF7FBF;
     }

@@ -114,7 +114,7 @@
                 creation: form.querySelector('input#uuid').value ? new Date(Wiklo.PAGEINFO && Wiklo.PAGEINFO.creation || 0).getTime() : new Date().getTime(),
                 lastModification: new Date().getTime()
             }))
-            document.querySelectorAll('section.included').forEach(v=>{v.onloadedmetadata()})
+            Wiklo.afterPageLoad()
         }
         form.addEventListener('keydown', (e) => {
             if (e.key == 'Enter') {
