@@ -251,7 +251,7 @@ Wiklo.media = (element) => {
         + (((Math.floor(v % 60) < 10 ? '0' : '') + Math.floor(v % 60)) || '00')
     }
     const mediamodule = element.parentElement
-    if (!mediamodule.className.includes('mediamodule')) return
+    if (!mediamodule.classList.contains('mediamodule')) return
     const mask = mediamodule.querySelector('.videomask')
     if (mask) {
         const rect = element.getBoundingClientRect()
@@ -269,23 +269,15 @@ Wiklo.media = (element) => {
         }
 
         mask.addEventListener('mouseenter', (e) => {
-            if (!mask.className.includes('shown')) {
-                mask.classList.add('shown')
-            }
+            mask.classList.add('shown')
         })
         mask.addEventListener('mouseleave', (e) => {
-            if (mask.classList.value.includes('shown')) {
-                mask.classList.remove('shown')
-            }
+            mask.classList.remove('shown')
         })
         mask.addEventListener('pointerdown', (e) => {
             if (e.target != mask || e.pointerType == 'mouse' && e.button != 0) return
             if (e.pointerType == 'touch') {
-                if (mask.classList.value.includes('shown')) {
-                    mask.classList.remove('shown')
-                } else {
-                    mask.classList.add('shown')
-                }
+                mask.classList.toggle('shown')
             } else {
                 if (!!(element.currentTime > 0 && !element.paused && !element.ended && element.readyState > 2)) {
                     element.pause()
@@ -1007,7 +999,7 @@ Wiklo.afterPageLoad = () => {
         const rows = v.querySelectorAll('tr:not(.sorttop):not(.sortbottom):has(td)')
         const bottom = v.querySelectorAll('tr.sortbottom, tr:has(th):last-child')
         headers.filter(header=>header.y==lastRow).map(header=>header.header).forEach((header, index)=>{
-            if (header.className.includes('unsortable')) return
+            if (header.classList.contains('unsortable')) return
             header.classList.add('sort-header')
             header.onclick = () => {
                 if (sortIndex == index) {
@@ -1050,7 +1042,7 @@ Wiklo.afterPageLoad = () => {
                     dataSortType = 'number'
                     rows.forEach((row, ri)=>{
                         if (ri > 4) return
-                        const val = row.cells[sortIndex] ? (row.cells[sortIndex].getAttribute('data-sort-value') || row.cells[sortIndex].textContent) : ''
+                        const val = row.cells[sortIndex] ? (row.cells[sortIndex].getAttribute('data-sort-value') ?? row.cells[sortIndex].textContent) : ''
                         if (val == '' || isNaN(Number(val.replace(/^[^-+\d](.+)/, '$1').replace(/\,|\s/g, '')))) dataSortType = 'text'
                     })
                 }
@@ -1058,8 +1050,8 @@ Wiklo.afterPageLoad = () => {
                 rowArray.sort((row1, row2)=>{
                     if (!row1.cells[sortIndex] && !row2.cells[sortIndex]) return 0
                     if (!row2.cells[sortIndex]) return -Infinity
-                    const r1 = row1.cells[sortIndex].getAttribute('data-sort-value') || row1.cells[sortIndex].querySelector('[data-sort-value]')?.getAttribute('data-sort-value') || row1.cells[sortIndex].textContent
-                    const r2 = row2.cells[sortIndex].getAttribute('data-sort-value') || row2.cells[sortIndex].querySelector('[data-sort-value]')?.getAttribute('data-sort-value') || row2.cells[sortIndex].textContent
+                    const r1 = row1.cells[sortIndex].getAttribute('data-sort-value') ?? row1.cells[sortIndex].querySelector('[data-sort-value]')?.getAttribute('data-sort-value') ?? row1.cells[sortIndex].textContent
+                    const r2 = row2.cells[sortIndex].getAttribute('data-sort-value') ?? row2.cells[sortIndex].querySelector('[data-sort-value]')?.getAttribute('data-sort-value') ?? row2.cells[sortIndex].textContent
                     if (dataSortType == 'number') {
                         return ((Number(r1.replace(/^[^-+\d]/, '').replace(/\,|\s/g, '')) || -Infinity) - (Number(r2.replace(/^[^-+\d]/, '').replace(/\,|\s/g, '')) || -Infinity)) * sortDirection
                     }
@@ -1263,7 +1255,7 @@ const updateButtons = (r=Wiklo.editable) => {
         if (deletelink) deletelink.remove()
     }
 }
-window.addEventListener('load', () => {
+document.addEventListener('DOMContentLoaded', () => {
     Wiklo.getMetadata()
     fetch('./editable', {method: 'HEAD'}).then(({status})=>{updateButtons(status==202)})
     document.querySelector('section').addEventListener('click', (e) => {
@@ -1272,13 +1264,13 @@ window.addEventListener('load', () => {
             return
         } else if (e.target.nodeName == 'A' && e.target.origin == location.origin && e.target.search) {
             e.preventDefault()
-            if (e.target.classList.value.includes('self-link')) return
+            if (e.target.classList.contains('self-link')) return
             if (e.target.search == location.search) {
                 document.getElementById(decodeURIComponent(e.target.hash.slice(1)))?.scrollIntoView()
                 window.history.replaceState(null, null, './?' + Wiklo.PAGEUUID + e.target.hash)
                 return
             }
-            if (e.target.classList.value.includes('no-article')) return Wiklo.alert(`Page '${decodeURIComponent(e.target.search.slice(1))}' does not exist.`, 'WARN')
+            if (e.target.classList.contains('no-article')) return Wiklo.alert(`Page '${decodeURIComponent(e.target.search.slice(1))}' does not exist.`, 'WARN')
             if (e.target.search.match(/^\?[0-9a-f]{32}$/)) Wiklo.loadUUIDPage(decodeURIComponent(e.target.search.slice(1)), e.target.hash).then(()=>{window.history.pushState(null, null, './?' + Wiklo.PAGEUUID + e.target.hash); updateButtons(); document.title = Wiklo.PAGENAME + ' - ' + Wiklo.title})
             else Wiklo.loadPageFromName(decodeURIComponent(e.target.search.slice(1)), Wiklo.PAGEINFO?.categories || [], e.target.hash).then(()=>{window.history.pushState(null, null, './?' + Wiklo.PAGEUUID + e.target.hash); updateButtons(); document.title = Wiklo.PAGENAME + ' - ' + Wiklo.title})
         }
