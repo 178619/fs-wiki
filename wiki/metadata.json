@@ -1273,12 +1273,7 @@
         ],
         "MIMEType": "text/wkl",
         "description": "A Japanese [[voice actress]]",
-        "revisions": [
-            "27c2805f4bd6449594c8a91bd04c5277",
-            "1df660c05af64496a669f3412d06a236",
-            "8d3553ddbbfa4904b3c5ae24e22273a3",
-            "7eaed4f82a1f412ea794a4431a607726"
-        ]
+        "revised": true
     },
     "cb4477782f0e4f56b0e5437f1458ae66": {
         "name": "msd_b.jpg",
@@ -1553,6 +1548,33 @@
             "9fb4078fec6448d9898b1393a94deea8",
             "82171c4f9e2d4b2ebea87ee2b92ab2dd",
             "2ceb745f5686436e80b5c409995619ac"
+        ]
+    },
+    "a8c10fe5ea7d45f4afdba1b17c145d6b": {
+        "name": "8AtUj7jp.jpg",
+        "author": "Fryze",
+        "lastModification": 1765324708871,
+        "creation": 1765324708871,
+        "categories": [],
+        "MIMEType": "image/jpeg",
+        "description": "A profile picture used by [[Kaori Aihara]]. Source: [[https://pbs.twimg.com/profile_images/1582330739336818688/8AtUj7jp.jpg]]"
+    },
+    "745ec90c7d4e4ea0b00883b35a8c9b0b": {
+        "name": "Kaori Aihara",
+        "author": "Fryze",
+        "lastModification": 1765327276415,
+        "creation": 1753181961101,
+        "categories": [
+            "47d21a65e84e45258ccd9b77ec2f52f0"
+        ],
+        "MIMEType": "text/wkl",
+        "description": "A Japanese [[voice actress]]",
+        "revisions": [
+            "27c2805f4bd6449594c8a91bd04c5277",
+            "1df660c05af64496a669f3412d06a236",
+            "8d3553ddbbfa4904b3c5ae24e22273a3",
+            "7eaed4f82a1f412ea794a4431a607726",
+            "1af17c2ce68b45efa4fda39047535241"
         ]
     }
 }
